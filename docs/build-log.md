@@ -23,3 +23,25 @@ day-by-day narrative. raw material for the submission writeup.
 - toolchain note: cargo-lambda 1.9.1's bundled zigbuild 0.20.1 chokes on
   rustc 1.99's --fix-cortex-a53-843419 linker flag. builds go through `cross`
   (containerized aarch64 gcc) until the toolchain catches up.
+
+## day 0, evening — open-data ingest (all verified live)
+
+- stack constraint set: open source + AWS native only. maplibre (BSD),
+  three.js (MIT), rust, CDK, duckdb/rasterio (MIT). Esri data arrives only
+  through the AWS-native Location Service. ARCore is the one exception, and
+  only for on-device pose estimation — no data flows through it.
+- site repo: disc-golf/ sibling prefix registered (#541, squash-merged).
+  excludes on both destructive sync lines, gate passes.
+- 3DEP 1m DEM: single tile covers both courses, now in our S3 prefix with a
+  course crop + 200x200 mesh grid. sampled anchors match EPQS to 0.1 ft.
+- NAIP 2022 60cm: single tile covers both courses (found via the state QQ
+  index). course-window JPEG + sidecar in S3.
+- Daylight OSM parquet: attempted, measured, rejected. query was
+  SELECT id, tags, wkt FROM read_parquet(
+  's3://daylight-openstreetmap/parquet/osm_features/release=v1.58/type=way/*')
+  WHERE max_lon >= -105.77 AND min_lon <= -105.71
+  AND max_lat >= 32.93 AND min_lat <= 32.98
+  AND (tags['highway'] IS NOT NULL OR ...). no spatial partitioning:
+  154 planet files, scan projected past 25 min for a 5 km box. the Overpass
+  bbox extract (same OSM data, 20 s) stands as the working copy.
+- Terrarium tiles: verified live, read at render time, no ingest needed.

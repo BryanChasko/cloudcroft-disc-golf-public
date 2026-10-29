@@ -23,9 +23,30 @@ status: to collect. see docs/ground-crew-checklist.md (to write).
 
 ## public geo data (Registry of Open Data on AWS + portals)
 
-- USGS 3DEP elevation (DEM): plays-like distance, slope gradients, hole profiles
-- Daylight / OpenStreetMap: park boundaries, trails, roads, parking near courses
-- USGS NAIP aerial imagery: fairway/tree-line reference under the vector map
+all pulls below are open data (public domain or ODbL) read with open-source
+tooling (rasterio, duckdb, pyshp). scripts live in dataset/scripts/.
+
+- USGS 3DEP 1m DEM, project NM_SouthEast_2018_D19: one 248MB tile
+  (USGS_1M_13_x43y365) covers both courses. full tile + course crop + 200x200
+  mesh grid in s3://bryanchasko.com/disc-golf/data/dem/. anchor elevations
+  sampled from the tile match EPQS to 0.1 ft (8664.5 / 8781.3).
+- USGS NAIP 2022 60cm RGB: one tile (m_3210503_nw) covers both courses,
+  located via the state's QQ shapefile index. course-window JPEG +
+  bbox sidecar in s3://bryanchasko.com/disc-golf/data/naip/.
+- OpenStreetMap: live Overpass API bbox extract (osm-cloudcroft.json, 2500
+  elements, 46 paths + 26 footways). the S3-native Daylight parquet path
+  (s3://daylight-openstreetmap/parquet/osm_features/release=v1.58) was
+  attempted with duckdb and abandoned on measurement: no spatial
+  partitioning, planet-wide scan projected past 25 minutes for a 5 km box.
+  same underlying data, bbox-native API, 20 seconds. query recorded in
+  docs/build-log.md.
+- Terrain Tiles (Terrarium): read directly from the public bucket at render
+  time, no ingest step. pattern:
+  s3://elevation-tiles-prod/terrarium/{z}/{x}/{y}.png
+  (Cloudcroft z14 tile verified). elevation = R*256 + G + B/256 - 32768.
+- Copernicus DEM 30m (s3://copernicus-dem-30m, N32W106 COG verified):
+  coarse fallback only. 30m sources give ~1 pixel per 100 ft hole, useless
+  for per-hole profiles — the 1m DEM is the elevation source of record.
 
 ## geocoding anchors (coarse, replaced by ground GPS)
 

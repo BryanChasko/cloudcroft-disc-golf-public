@@ -1,0 +1,16 @@
+[
+  {
+    "name": "tiki-anchor",
+    "lon": -105.73887,
+    "lat": 32.95787,
+    "ele_m": 2640.93,
+    "ele_ft": 8664.5
+  },
+  {
+    "name": "community-anchor",
+    "lon": -105.73996,
+    "lat": 32.9632,
+    "ele_m": 2676.55,
+    "ele_ft": 8781.3
+  }
+]
