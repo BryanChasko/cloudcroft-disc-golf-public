@@ -1,0 +1,31 @@
+{
+  "version": "2.0",
+  "routeKey": "GET /plays-like",
+  "rawPath": "/plays-like",
+  "rawQueryString": "from_lat=32.95787&from_lon=-105.73887&from_ele_ft=8664.5&to_lat=32.95887&to_lon=-105.73887&to_ele_ft=8704.5",
+  "headers": {},
+  "queryStringParameters": {
+    "from_lat": "32.95787",
+    "from_lon": "-105.73887",
+    "from_ele_ft": "8664.5",
+    "to_lat": "32.95887",
+    "to_lon": "-105.73887",
+    "to_ele_ft": "8704.5"
+  },
+  "requestContext": {
+    "accountId": "211125425201",
+    "apiId": "test",
+    "domainName": "test",
+    "domainPrefix": "test",
+    "http": {
+      "method": "GET",
+      "path": "/plays-like",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "127.0.0.1",
+      "userAgent": "smoke"
+    },
+    "requestId": "smoke-1",
+    "routeKey": "GET /plays-like",
+    "stage": "$default"
+  }
+}

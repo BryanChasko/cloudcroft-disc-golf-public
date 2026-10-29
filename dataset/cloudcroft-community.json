@@ -10,7 +10,11 @@
     "style": "wooded mountain course, 40-80+ ft elevation swings, opened 2019",
     "terrain": "dense pine forest, uneven footing, horseshoe layout",
     "distances_source": "tbd — ground collection + UDisc",
-    "coordinates_status": "provisional — awaiting ground GPS"
+    "coordinates_status": "provisional — awaiting ground GPS",
+    "anchor_lon": -105.73996,
+    "anchor_lat": 32.9632,
+    "anchor_ele_ft": 8781.4,
+    "anchor_source": "Amazon Location Service geocode (230 Mescalero Ave) + USGS EPQS 1m 3DEP"
   },
   "holes": [],
   "features": []

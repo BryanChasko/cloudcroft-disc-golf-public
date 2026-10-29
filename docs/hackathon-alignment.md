@@ -15,15 +15,15 @@ update as items land. same format as our re:invent planner entry.
 
 ## submission requirements
 
-| requirement                                                      | state                                  | owner |
-| ---------------------------------------------------------------- | -------------------------------------- | ----- |
-| previously unpublished project                                   | yes, new repo                          | done  |
-| dataset described: what is in it                                 | dataset/sources.md + readme            | open  |
-| how it got on the map: location/data service + why               | docs/build-log.md, how-this-works page | open  |
-| at least one AWS service in app or pipeline                      | location service + s3 + lambda         | open  |
-| link to live map, or running demo in video                       | deploy web/                            | open  |
-| public code repo (encouraged)                                    | chasko-labs/cloudcroft-disc-golf       | done  |
-| demo field: public video under 3 minutes, live map + exploration | record last                            | open  |
+| requirement                                                      | state                                                                                                      | owner   |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------- |
+| previously unpublished project                                   | yes, new repo                                                                                              | done    |
+| dataset described: what is in it                                 | dataset/sources.md + readme                                                                                | open    |
+| how it got on the map: location/data service + why               | docs/build-log.md, how-this-works page                                                                     | open    |
+| at least one AWS service in app or pipeline                      | location service + s3 + lambda                                                                             | open    |
+| link to live map, or running demo in video                       | deploy web/                                                                                                | open    |
+| public code repo (optional, encouraged)                          | private by choice, IP stays closed. mitigation: public how-it-works writeup documents the reusable pattern | decided |
+| demo field: public video under 3 minutes, live map + exploration | record last                                                                                                | open    |
 
 ## judging criteria and evidence (25% each)
 

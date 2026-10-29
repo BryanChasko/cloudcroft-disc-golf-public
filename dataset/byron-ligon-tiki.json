@@ -10,7 +10,11 @@
     "style": "putting course, all putters, redesigned May 2025",
     "terrain": "aspen and doug fir, mostly flat, hike/bike trail crossings",
     "distances_source": "Radius Disc Golf course page",
-    "coordinates_status": "provisional — awaiting ground GPS"
+    "coordinates_status": "provisional — awaiting ground GPS",
+    "anchor_lon": -105.73887,
+    "anchor_lat": 32.95787,
+    "anchor_ele_ft": 8664.5,
+    "anchor_source": "Amazon Location Service geocode (Zenith Park) + USGS EPQS 1m 3DEP"
   },
   "holes": [
     { "hole": 1, "par": 3, "distance_ft": 39, "note": "shortest" },

@@ -1,4 +1,6 @@
 target/
+backend/pkg/
+backend/**/out.json
 node_modules/
 dist/
 *.log
