@@ -1,0 +1,22 @@
+{
+  "name": "cloudcroft-disc-golf-infra",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc --noEmit",
+    "synth": "npx cdk synth --strict",
+    "diff": "npx cdk diff",
+    "deploy": "npx cdk deploy --require-approval never",
+    "build:lambdas": "../scripts/build-lambda-assets.sh"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.275.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "aws-cdk": "2.1146.1",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+[package]
+name = "scorecard"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+lambda_runtime = "0.14"
+lambda_http = "0.12"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt"] }
+aws-config = "1"
+aws-sdk-dynamodb = "1"

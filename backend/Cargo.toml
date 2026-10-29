@@ -1,3 +1,3 @@
 [workspace]
-members = ["plays-like"]
+members = ["plays-like", "scorecard"]
 resolver = "2"

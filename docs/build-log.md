@@ -45,3 +45,22 @@ day-by-day narrative. raw material for the submission writeup.
   154 planet files, scan projected past 25 min for a 5 km box. the Overpass
   bbox extract (same OSM data, 20 s) stands as the working copy.
 - Terrarium tiles: verified live, read at render time, no ingest needed.
+
+## day 0, night — CDK stack live
+
+- infra-cdk/ (TypeScript): L1 Location resources (2 maps, place index,
+  geofence collection, tracker, route calculator), stable-L2 Cognito guest
+  pool with scoped geo policies, 2 Rust ARM lambdas, DynamoDB scorecards
+  (PK round_id + SK entry, PITR), HTTP API with site-locked CORS.
+- CDK CLI ignores this box's SSO profiles; all cdk commands run with
+  `aws configure export-credentials` env creds. documented in README.
+- AWS::Location::APIKey fails CREATE (AccessDenied) and geo:CreateKey fails
+  via CLI too, even as AdministratorAccess. key creation moved out of the
+  stack (scripts/create-web-key.sh, kept for retry); web + android both use
+  the Cognito guest pool until unblocked.
+- scorecard died at init on glibc 2.38+ symbols from the cross gnu image
+  (provided.al2023 ships 2.34). both lambdas rebuilt static musl; full
+  round-trip verified: plays-like 404.8 ft, scorecard POST x2 + GET.
+- stack outputs: api https://sfss0zmepi.execute-api.us-east-1.amazonaws.com,
+  pool us-east-1:6f67bf3e-988c-491a-ab4c-b89211a7f82d. orphan clickops IAM
+  role deleted; zero hand-made resources remain.

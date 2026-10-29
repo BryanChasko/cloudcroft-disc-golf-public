@@ -23,7 +23,15 @@ build machine, and the site + CDN already live here.
 
 ## to create
 
-- lambda cloudcroft-disc-golf-plays-like (provided.al2023, arm64, live + verified 2026-10-29)
-- S3 bucket for dataset + web hosting (name tbd, cloudcroft-disc-golf-* free check first)
-- HTTP API in front of plays-like + scorecard table (DynamoDB on-demand)
-- CloudFront distro in front of the bucket (or reuse site pipeline)
+- CDK stack cloudcroft-disc-golf (us-east-1, deployed 2026-10-29):
+  api https://sfss0zmepi.execute-api.us-east-1.amazonaws.com
+  (GET /plays-like, GET+POST /scorecard)
+- lambdas cloudcroft-disc-golf-plays-like + cloudcroft-disc-golf-scorecard
+  (provided.al2023, arm64, musl-static, via CDK assets)
+- DynamoDB cloudcroft-disc-golf-scorecards (PK round_id + SK entry, PITR, retain)
+- Cognito identity pool us-east-1:6f67bf3e-988c-491a-ab4c-b89211a7f82d
+  (guest access; serves web + android after the CreateKey block, see README)
+- route calculator cloudcroft-disc-golf-routes (Esri)
+- web bundle + dataset: s3://bryanchasko.com/disc-golf/ (us-west-2 site bucket,
+  registered sibling prefix, served by the site CloudFront distro)
+- orphaned clickops leftovers to delete: IAM role cloudcroft-disc-golf-lambda

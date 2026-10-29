@@ -4,6 +4,10 @@ backend/**/out.json
 dataset/.venv/
 dataset/.work/
 node_modules/
+infra-cdk/cdk.out/
+infra-cdk/dist/
+infra-cdk/assets/
+*.tsbuildinfo
 dist/
 *.log
 .DS_Store
