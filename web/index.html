@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cloudcroft Disc Golf — AR map + scorecard</title>
+    <meta
+      name="description"
+      content="Explorable map of Cloudcroft NM disc golf: Byron Ligon Tiki + Community courses, trails, elevation, live scorecard."
+    />
+  </head>
+  <body>
+    <header id="topbar">
+      <h1>Cloudcroft disc golf</h1>
+      <nav id="course-tabs" aria-label="courses">
+        <button data-course="tiki" class="active">Byron Ligon Tiki · 9</button>
+        <button data-course="community">Community · 18</button>
+      </nav>
+    </header>
+    <main>
+      <div id="map" role="application" aria-label="course map"></div>
+      <aside id="panel">
+        <section id="layer-toggles">
+          <h2>Layers</h2>
+          <label
+            ><input type="radio" name="basemap" value="topo" checked />
+            Topo</label
+          >
+          <label
+            ><input type="radio" name="basemap" value="imagery" />
+            Satellite</label
+          >
+          <label
+            ><input type="checkbox" id="toggle-trails" checked /> Trails</label
+          >
+          <label
+            ><input type="checkbox" id="toggle-naip" /> NAIP 2022 overlay</label
+          >
+        </section>
+        <section id="hole-list">
+          <h2>Holes</h2>
+          <p id="gps-note" class="note">
+            Per-hole pins land with ground GPS. Distances below are the
+            published layout.
+          </p>
+          <table id="holes">
+            <thead>
+              <tr>
+                <th>Hole</th>
+                <th>Par</th>
+                <th>Dist</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+        <section id="scorecard">
+          <h2>Scorecard</h2>
+          <div id="round-controls">
+            <button id="new-round">Start round</button>
+            <span id="round-id"></span>
+          </div>
+          <div id="hole-score" hidden>
+            <label
+              >Hole
+              <input id="score-hole" type="number" min="1" max="18" value="1"
+            /></label>
+            <label
+              >Strokes
+              <input
+                id="score-strokes"
+                type="number"
+                min="1"
+                max="12"
+                value="3"
+            /></label>
+            <button id="save-score">Save</button>
+            <span id="save-status"></span>
+          </div>
+          <ul id="scores"></ul>
+        </section>
+      </aside>
+    </main>
+    <footer>
+      <span id="status">loading map…</span>
+      <button id="locate">Find me</button>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

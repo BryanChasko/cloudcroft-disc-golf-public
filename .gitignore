@@ -7,6 +7,8 @@ node_modules/
 infra-cdk/cdk.out/
 infra-cdk/dist/
 infra-cdk/assets/
+web/dist/
+web/public/data/
 *.tsbuildinfo
 dist/
 *.log

@@ -1,0 +1,250 @@
+/* cloudcroft disc golf map: deep forest green on warm paper white.
+   system stack, compact rail layout, no decoration that outshines the map. */
+:root {
+  --pine: #1f5c3f;
+  --pine-dark: #143d2a;
+  --paper: #f7f5ef;
+  --ink: #22271f;
+  --muted: #5c665c;
+  --line: #d8d4c6;
+  --panel-width: 330px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#topbar {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  flex-wrap: wrap;
+}
+
+#topbar h1 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--pine-dark);
+  letter-spacing: 0.01em;
+}
+
+#course-tabs {
+  display: flex;
+  gap: 0.4rem;
+}
+
+#course-tabs button,
+#round-controls button,
+#hole-score button,
+footer button {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+#course-tabs button.active {
+  background: var(--pine);
+  border-color: var(--pine);
+  color: #fff;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+#map {
+  flex: 1;
+  min-width: 0;
+}
+
+#panel {
+  width: var(--panel-width);
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-left: 1px solid var(--line);
+  background: var(--paper);
+  padding: 0.8rem 1rem 2rem;
+}
+
+#panel h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 1.2rem 0 0.5rem;
+}
+
+#panel h2:first-child {
+  margin-top: 0;
+}
+
+#layer-toggles label {
+  display: inline-block;
+  margin-right: 0.9rem;
+  font-size: 0.9rem;
+}
+
+.note {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0.3rem 0 0.5rem;
+}
+
+#holes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+#holes th,
+#holes td {
+  text-align: left;
+  padding: 0.25rem 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+#holes tbody tr:hover {
+  background: #efead9;
+  cursor: default;
+}
+
+#round-id {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-left: 0.5rem;
+}
+
+#hole-score[hidden] {
+  display: none;
+}
+
+#hole-score {
+  margin-top: 0.6rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+#hole-score label {
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+#hole-score input {
+  font: inherit;
+  width: 4.5rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+#save-status {
+  font-size: 0.82rem;
+  color: var(--pine);
+}
+
+#scores {
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0 0;
+  font-size: 0.88rem;
+}
+
+#scores li {
+  padding: 0.15rem 0;
+  border-bottom: 1px dotted var(--line);
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.45rem 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: var(--paper);
+}
+
+footer #status {
+  flex: 1;
+}
+
+.pin {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.4);
+  cursor: pointer;
+}
+
+.pin-tiki {
+  background: var(--pine);
+}
+
+.pin-community {
+  background: #7a4a1f;
+}
+
+@media (max-width: 760px) {
+  main {
+    flex-direction: column;
+  }
+
+  #map {
+    height: 52vh;
+    flex: none;
+  }
+
+  #panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

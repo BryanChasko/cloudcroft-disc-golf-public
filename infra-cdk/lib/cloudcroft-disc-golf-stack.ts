@@ -161,6 +161,7 @@ export class CloudcroftDiscGolfStack extends cdk.Stack {
           "https://www.bryanchasko.com",
         ],
         allowMethods: [apigwv2.CorsHttpMethod.GET, apigwv2.CorsHttpMethod.POST],
+        allowHeaders: ["content-type", "authorization"],
       },
     });
     api.addRoutes({

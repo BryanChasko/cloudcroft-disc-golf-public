@@ -64,3 +64,15 @@ day-by-day narrative. raw material for the submission writeup.
 - stack outputs: api https://sfss0zmepi.execute-api.us-east-1.amazonaws.com,
   pool us-east-1:6f67bf3e-988c-491a-ab4c-b89211a7f82d. orphan clickops IAM
   role deleted; zero hand-made resources remain.
+
+## day 0, late — web map live
+
+- vite + maplibre 5 + location auth-helper, Cognito guest auth, bundled
+  data copies (no extra fetches). topo/satellite toggle, trails, NAIP
+  overlay, course pins, hole table, geolocate, working scorecard UI.
+- bundler fix: the auth helper's credential-providers barrel drags Node-only
+  login provider into the web build; aliased to a leaf re-export shim.
+- CORS fix: HTTP API needed explicit allowHeaders for JSON posts.
+- verified live in headless chromium: tiles render, 9 hole rows, zero failed
+  requests, full scorecard click-path (start round, save hole 4, total).
+  live: https://bryanchasko.com/disc-golf/
