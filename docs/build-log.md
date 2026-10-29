@@ -76,3 +76,16 @@ day-by-day narrative. raw material for the submission writeup.
 - verified live in headless chromium: tiles render, 9 hole rows, zero failed
   requests, full scorecard click-path (start round, save hole 4, total).
   live: https://bryanchasko.com/disc-golf/
+
+## day 0, later — site pages, android auth, submission draft
+
+- site repo: landing page + how-it-works pattern doc + disk-golf alias
+  (#542, squash-merged, site deployed from origin/main detached — local
+  main has an unrelated stray compilers commit, left untouched).
+  all three URLs 200.
+- android auth path proven without the app: guest id -> temp creds ->
+  tracker write + read-back, geofence list + evaluate, map tile fetch,
+  place search, walking route (1.21 km between courses). test device
+  history deleted after. the native app replays these exact calls.
+- submission draft written (docs/submission-draft.md); video scripted,
+  recording waits on the ground visit.
