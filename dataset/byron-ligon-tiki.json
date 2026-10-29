@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "name": "byron-ligon-memorial-tiki-dgc",
+  "course": {
+    "name": "Byron Ligon Memorial Tiki DGC",
+    "location": "Zenith Park (west end), Cloudcroft, NM 88317",
+    "holes": 9,
+    "par": 27,
+    "length_ft": 901,
+    "style": "putting course, all putters, redesigned May 2025",
+    "terrain": "aspen and doug fir, mostly flat, hike/bike trail crossings",
+    "distances_source": "Radius Disc Golf course page",
+    "coordinates_status": "provisional — awaiting ground GPS"
+  },
+  "holes": [
+    { "hole": 1, "par": 3, "distance_ft": 39, "note": "shortest" },
+    { "hole": 2, "par": 3, "distance_ft": 118 },
+    { "hole": 3, "par": 3, "distance_ft": 133 },
+    { "hole": 4, "par": 3, "distance_ft": 134, "note": "longest" },
+    { "hole": 5, "par": 3, "distance_ft": 66 },
+    { "hole": 6, "par": 3, "distance_ft": 67 },
+    { "hole": 7, "par": 3, "distance_ft": 89 },
+    { "hole": 8, "par": 3, "distance_ft": 128 },
+    { "hole": 9, "par": 3, "distance_ft": 127 }
+  ],
+  "features": []
+}

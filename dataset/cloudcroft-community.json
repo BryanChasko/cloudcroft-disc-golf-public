@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "name": "cloudcroft-community-dgc",
+  "course": {
+    "name": "Cloudcroft Community DGC",
+    "location": "230 Mescalero Ave, Cloudcroft, NM (near old baseball field)",
+    "holes": 18,
+    "par": 63,
+    "length_ft": "tbd",
+    "style": "wooded mountain course, 40-80+ ft elevation swings, opened 2019",
+    "terrain": "dense pine forest, uneven footing, horseshoe layout",
+    "distances_source": "tbd — ground collection + UDisc",
+    "coordinates_status": "provisional — awaiting ground GPS"
+  },
+  "holes": [],
+  "features": []
+}
