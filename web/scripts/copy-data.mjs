@@ -21,6 +21,14 @@ const files = [
     "../dataset/anchor-elevations.json",
     "public/data/dem/anchor-elevations.json",
   ],
+  [
+    "../dataset/naip-course-window.jpg",
+    "public/data/naip/course-area-naip.jpg",
+  ],
+  [
+    "../dataset/naip-course-window.jpg.json",
+    "public/data/naip/course-area-naip.jpg.json",
+  ],
 ];
 for (const [src, dst] of files) {
   const from = join(root, src);

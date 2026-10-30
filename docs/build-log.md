@@ -89,3 +89,26 @@ day-by-day narrative. raw material for the submission writeup.
   history deleted after. the native app replays these exact calls.
 - submission draft written (docs/submission-draft.md); video scripted,
   recording waits on the ground visit.
+
+## day 1 — babylon walkthrough shipped, qa closed (gate d)
+
+- ported the walkthrough from three.js to babylon.js 9.33.1 (house
+  engine): 1m dem terrain + naip drape, osm trail ribbons, instanced
+  forest with trunks, baskets + windsocks + labels at both pins, orbit
+  - wasd walk + fly-to + toggles + pano placeholder + honest webxr
+    fallback. live: https://bryanchasko.com/disc-golf/walk.html
+- two blind critic rounds (docs/qa/critique-1.md, critique-2.md):
+  round 2 passed 8/8 functional sections. fix round 2 closed the rest:
+  walk pitch clamp + 4m eye, emissive diorama plinth (measured the
+  unlit-emissive dark-crushing on this pipeline, specified
+  display-direct values), instanced blob shadows (found + fixed rotated
+  instancing-base scattering), billboard edge-clamp for labels, pin
+  stop radius 3.0 + windsock colliders, pano card auto-hide.
+- answered (not fixed): residual walk-foreground smear is grazing
+  minification of 1m imagery amplified by swiftshader aniso=1; the app
+  requests max anisotropy so real gpus do much better. headed-chromium
+  still selected swiftshader under xvfb, so true-gpu pixels are
+  unverified — pixel 10 on site can confirm.
+- qa collateral lives in-repo, committed: web/scripts/verify-
+  walkthrough.py + public-pass.py, docs/qa/evidence/{public-pass,
+  final,live-smoke}. live smoke: 0 console errors, 0 failed requests.

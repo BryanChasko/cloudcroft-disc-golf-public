@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Walk the courses — Cloudcroft Disc Golf</title>
+    <meta
+      name="description"
+      content="Virtual walkthrough of Cloudcroft NM disc golf courses: 1m terrain, NAIP imagery, trails, and viewpoints."
+    />
+  </head>
+  <body>
+    <header id="topbar">
+      <h1><a href="./">Cloudcroft disc golf</a> / walkthrough</h1>
+      <div id="toolbar" role="toolbar" aria-label="walkthrough controls">
+        <button id="fly-tiki">Tiki course</button>
+        <button id="fly-community">Community course</button>
+        <button id="mode-orbit" class="active">Orbit</button>
+        <button id="mode-walk">Walk (WASD)</button>
+        <button id="toggle-trails-walk" class="active">Trails</button>
+        <button id="toggle-trees" class="active">Forest</button>
+        <button id="pano-tiki">Stand at Tiki (360)</button>
+        <button id="vr-enter">Enter VR</button>
+      </div>
+    </header>
+    <main>
+      <canvas id="scene"></canvas>
+      <div id="pano-card" hidden>
+        <strong>360° pano viewpoint</strong>
+        <p>
+          You are standing where the Tiki tee pano will play. The 360° photos
+          arrive with the ground survey — then this card becomes the viewer.
+        </p>
+        <button id="pano-dismiss">Keep walking</button>
+      </div>
+      <div id="error-overlay" hidden></div>
+      <div id="help">
+        drag to orbit · scroll to zoom · WASD/arrows to walk in walk mode ·
+        forest is illustrative until the canopy survey lands
+      </div>
+    </main>
+    <footer><span id="walk-status">loading terrain…</span></footer>
+    <script type="module" src="/src/walk.ts"></script>
+  </body>
+</html>

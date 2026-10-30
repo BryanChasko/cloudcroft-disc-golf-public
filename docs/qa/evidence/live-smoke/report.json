@@ -1,0 +1,8 @@
+{
+  "status": "walkthrough ready \u2014 orbit to explore, or switch to walk mode",
+  "walk_status": "walk mode \u2014 drag to look, WASD/arrows to move, shift to hurry",
+  "vr_status": "no immersive-vr headset found \u2014 orbit and walk modes work now",
+  "pano_status": "standing at the Tiki 360 viewpoint \u2014 pano arrives with the ground survey",
+  "console_errors": [],
+  "failed": []
+}

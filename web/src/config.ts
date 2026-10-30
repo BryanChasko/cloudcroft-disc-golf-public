@@ -33,7 +33,6 @@ export type CourseId = keyof typeof COURSES;
 
 export const DATA = {
   trails: "data/osm/trails.geojson",
-  naip: "https://bryanchasko.com/disc-golf/data/naip/course-area-naip.jpg",
-  naipMeta:
-    "https://bryanchasko.com/disc-golf/data/naip/course-area-naip.jpg.json",
+  naip: "data/naip/course-area-naip.jpg",
+  naipMeta: "data/naip/course-area-naip.jpg.json",
 };

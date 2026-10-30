@@ -75,6 +75,17 @@ footer button {
   color: #fff;
 }
 
+#walk-link {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--pine-dark);
+  text-decoration: none;
+  align-self: center;
+}
+
 main {
   flex: 1;
   display: flex;

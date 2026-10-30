@@ -18,5 +18,11 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     target: "es2022",
+    rollupOptions: {
+      input: {
+        main: "index.html",
+        walk: "walk.html",
+      },
+    },
   },
 });
