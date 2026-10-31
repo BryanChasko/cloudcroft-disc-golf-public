@@ -112,3 +112,21 @@ day-by-day narrative. raw material for the submission writeup.
 - qa collateral lives in-repo, committed: web/scripts/verify-
   walkthrough.py + public-pass.py, docs/qa/evidence/{public-pass,
   final,live-smoke}. live smoke: 0 console errors, 0 failed requests.
+
+## day 1, sprint execution (pre-survey)
+
+- map fixes live + verified: hole-row click-to-fly (anchor + popup
+  flash), scorecard labels (Hole N, totals vs par), per-course hole
+  range with inline validation, generation-guarded refresh (killed a
+  double-render race found during live verification).
+- ingest pipeline written before data lands, 14 pytest green:
+  validate_survey.py (counts/names/bbox/notes), build_holes.py (1m dem
+  sampling, sign cross-checks, v0 plays-like precompute in parity with
+  backend/plays-like), load_geofences.py (boto3, dry-run, 54 pins),
+  publish_panos.py (2:1 aspect + per-url 200 checks, manifest).
+- site truthfulness (#545, deployed): landing intro claims anchors not
+  pins; how-it-works corrects the terrarium render-time claim.
+  repo drift fixed too (readme babylon + android stretch, sources
+  pointer + terrarium).
+- android verdict from planning: conditional go, capped ~10h no-ar
+  slice only if core is green oct 31; never slips the nov 1 submit.
