@@ -10,7 +10,7 @@ marked `"fix": "provisional"` in the GeoJSON and get replaced by ground GPS.
 - compass bearing tee to basket per hole
 - photos of tee signs, hazards, hike/bike trail crossings, parking
 
-status: to collect. see docs/ground-crew-checklist.md (to write).
+status: to collect. see docs/ground-survey-guide.md (field procedure).
 
 ## course layout facts (public, attributed)
 
@@ -40,10 +40,11 @@ tooling (rasterio, duckdb, pyshp). scripts live in dataset/scripts/.
   partitioning, planet-wide scan projected past 25 minutes for a 5 km box.
   same underlying data, bbox-native API, 20 seconds. query recorded in
   docs/build-log.md.
-- Terrain Tiles (Terrarium): read directly from the public bucket at render
-  time, no ingest step. pattern:
-  s3://elevation-tiles-prod/terrarium/{z}/{x}/{y}.png
-  (Cloudcroft z14 tile verified). elevation = R*256 + G + B/256 - 32768.
+- Terrain Tiles (Terrarium): evaluated, not used. the Cloudcroft z14 tile
+  verified live (s3://elevation-tiles-prod/terrarium/{z}/{x}/{y}.png,
+  elevation = R*256 + G + B/256 - 32768), but both frontends render
+  elevation from the local 1m 3DEP DEM grid instead — nothing reads
+  Terrarium at render time.
 - Copernicus DEM 30m (s3://copernicus-dem-30m, N32W106 COG verified):
   coarse fallback only. 30m sources give ~1 pixel per 100 ft hole, useless
   for per-hole profiles — the 1m DEM is the elevation source of record.

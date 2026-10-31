@@ -59,6 +59,18 @@ let transformRequest: maplibregl.RequestTransformFunction;
 let currentCourse: CourseId = "tiki";
 let trailsVisible = true;
 let naipVisible = false;
+const courseMarkers = {} as Record<CourseId, maplibregl.Marker>;
+const holesCache = {} as Record<CourseId, HolesFile | undefined>;
+
+async function holesFor(courseId: CourseId): Promise<HolesFile> {
+  const cached = holesCache[courseId];
+  if (cached) return cached;
+  const data = (await (
+    await fetch(COURSES[courseId].holesUrl)
+  ).json()) as HolesFile;
+  holesCache[courseId] = data;
+  return data;
+}
 
 function basemap(): Basemap {
   const checked = document.querySelector(
@@ -93,7 +105,7 @@ function addOverlays(): void {
     const el = document.createElement("div");
     el.className = `pin pin-${id}`;
     el.textContent = id === "tiki" ? "9" : "18";
-    new maplibregl.Marker({ element: el })
+    courseMarkers[id as CourseId] = new maplibregl.Marker({ element: el })
       .setLngLat([c.lon, c.lat])
       .setPopup(
         new maplibregl.Popup({ offset: 18 }).setHTML(
@@ -143,9 +155,11 @@ async function renderHoles(courseId: CourseId): Promise<void> {
   const tbody = document.querySelector("#holes tbody") as HTMLElement;
   tbody.innerHTML = "";
   try {
-    const data = (await (
-      await fetch(COURSES[courseId].holesUrl)
-    ).json()) as HolesFile;
+    const data = await holesFor(courseId);
+    // Score form follows the active course (9 vs 18 holes).
+    (document.getElementById("score-hole") as HTMLInputElement).max = String(
+      data.course.holes,
+    );
     if (data.holes.length === 0) {
       const tr = document.createElement("tr");
       const td = document.createElement("td");
@@ -158,7 +172,15 @@ async function renderHoles(courseId: CourseId): Promise<void> {
     for (const h of data.holes) {
       const tr = document.createElement("tr");
       tr.innerHTML = `<td>${h.hole}</td><td>${h.par}</td><td>${h.distance_ft} ft${h.note ? ` (${h.note})` : ""}</td>`;
-      tr.title = "tee-to-basket line + plays-like unlock with ground GPS pins";
+      tr.title =
+        "click to fly here — tee-to-basket line + plays-like unlock with ground GPS pins";
+      tr.style.cursor = "pointer";
+      tr.addEventListener("click", () => {
+        // Now: fly to the course anchor. After the ground survey this
+        // flies to the hole's own tee pin instead.
+        flyToCourse(courseId);
+        courseMarkers[courseId]?.togglePopup();
+      });
       tbody.appendChild(tr);
     }
   } catch {
@@ -185,16 +207,22 @@ function currentRound(): string | null {
   return localStorage.getItem("disc-golf-round");
 }
 
+let refreshGen = 0;
 async function refreshScores(): Promise<void> {
+  const gen = ++refreshGen;
   const list = document.getElementById("scores") as HTMLElement;
   const roundId = currentRound();
-  list.innerHTML = "";
-  if (!roundId) return;
+  if (!roundId) {
+    list.innerHTML = "";
+    return;
+  }
   try {
     const res = await fetch(
       `${API_BASE}/scorecard?round_id=${encodeURIComponent(roundId)}`,
     );
     const data = (await res.json()) as { entries: Record<string, unknown>[] };
+    if (gen !== refreshGen) return; // superseded by a newer refresh
+    list.innerHTML = "";
     const holes = data.entries
       .filter(
         (e) =>
@@ -202,18 +230,48 @@ async function refreshScores(): Promise<void> {
           (e["entry"] as string).startsWith("hole#"),
       )
       .sort((a, b) => String(a["entry"]).localeCompare(String(b["entry"])));
+    if (holes.length === 0) {
+      list.innerHTML = "<li>no scores yet</li>";
+      return;
+    }
+    // Par lookup per entry course (rounds are single-course in practice,
+    // but entries carry their own course — honor it).
+    const parOf = new Map<string, number>();
+    for (const e of holes) {
+      const key = `${e["course"]}#${e["hole"]}`;
+      if (parOf.has(key)) continue;
+      try {
+        const file = await holesFor(e["course"] as CourseId);
+        const row = file.holes.find((r) => r.hole === Number(e["hole"]));
+        if (row) parOf.set(key, row.par);
+      } catch {
+        // Unknown par: total shows without vs-par below.
+      }
+    }
+    if (gen !== refreshGen) return; // superseded during par lookup
     let total = 0;
+    let parTotal = 0;
+    let parsKnown = true;
     for (const h of holes) {
+      const n = Number(String(h["entry"]).replace("hole#", ""));
+      const strokes = Number(h["strokes"] ?? 0);
       const li = document.createElement("li");
-      li.textContent = `${h["entry"]}: ${h["strokes"]} strokes`;
+      li.textContent = `Hole ${n} — ${strokes} strokes`;
       list.appendChild(li);
-      total += Number(h["strokes"] ?? 0);
+      total += strokes;
+      const par = parOf.get(`${h["course"]}#${h["hole"]}`);
+      if (par === undefined) parsKnown = false;
+      else parTotal += par;
     }
-    if (holes.length > 0) {
-      const li = document.createElement("li");
-      li.innerHTML = `<strong>total: ${total} (${holes.length} holes)</strong>`;
-      list.appendChild(li);
+    const li = document.createElement("li");
+    if (parsKnown) {
+      const diff = total - parTotal;
+      const vs = diff === 0 ? "E" : diff > 0 ? `+${diff}` : `${diff}`;
+      li.innerHTML = `<strong>Total: ${total} (${vs} vs par)</strong>`;
+    } else {
+      li.innerHTML = `<strong>Total: ${total} (${holes.length} holes)</strong>`;
     }
+    list.appendChild(li);
   } catch {
     list.innerHTML = "<li>scores failed to load</li>";
   }
@@ -262,6 +320,17 @@ function wireScorecard(): void {
       );
       const roundId = currentRound();
       if (!roundId) return;
+      const maxHole = Number(
+        (document.getElementById("score-hole") as HTMLInputElement).max,
+      );
+      if (!Number.isInteger(hole) || hole < 1 || hole > maxHole) {
+        status.textContent = `hole must be 1–${maxHole} on this course`;
+        return;
+      }
+      if (!Number.isInteger(strokes) || strokes < 1 || strokes > 20) {
+        status.textContent = "strokes must be 1–20";
+        return;
+      }
       status.textContent = "saving…";
       try {
         const res = await fetch(`${API_BASE}/scorecard`, {

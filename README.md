@@ -28,15 +28,15 @@ provisional until ground-truth GPS is collected on site. coarse anchors:
 - Amazon S3: dataset + tile hosting, static web hosting
 - AWS Lambda (Rust, ARM): plays-like distance, scorecard API
 - Amazon API Gateway + Amazon DynamoDB: scorecard reads/writes
-- web: MapLibre GL 2D map + three.js virtual walkthrough (VR toggle)
-- android: ARCore companion for on-site AR overlays
+- web: MapLibre GL 2D map + Babylon.js virtual walkthrough (VR toggle)
+- android: ARCore companion for on-site AR overlays (stretch goal, not yet scaffolded)
 
 ## layout
 
 - `dataset/` — GeoJSON + provenance
 - `backend/` — Rust lambda crates
 - `web/` — live map + walkthrough
-- `android/` — AR companion app
+- `android/` — AR companion app (stretch goal; directory lands with the scaffold)
 - `docs/` — hackathon alignment checklist, build log, submission draft
 
 ## status
