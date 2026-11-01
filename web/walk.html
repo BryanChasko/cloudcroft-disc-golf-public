@@ -8,6 +8,23 @@
       name="description"
       content="Virtual walkthrough of Cloudcroft NM disc golf courses: 1m terrain, NAIP imagery, trails, and viewpoints."
     />
+    <link rel="canonical" href="https://bryanchasko.com/disc-golf/walk.html" />
+    <meta name="theme-color" content="#143d2a" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Cloudcroft Disc Golf" />
+    <meta property="og:title" content="Walk the courses — Cloudcroft Disc Golf" />
+    <meta
+      property="og:description"
+      content="3D walkthrough of the Cloudcroft disc golf courses on 1m terrain: trails, forest, pano viewpoints."
+    />
+    <meta property="og:url" content="https://bryanchasko.com/disc-golf/walk.html" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Walk the courses — Cloudcroft Disc Golf" />
+    <meta
+      name="twitter:description"
+      content="3D walkthrough of the Cloudcroft disc golf courses on 1m terrain."
+    />
   </head>
   <body>
     <header id="topbar">
@@ -24,7 +41,12 @@
       </div>
     </header>
     <main>
-      <canvas id="scene"></canvas>
+      <canvas id="scene" role="img" aria-label="3D walkthrough of the Cloudcroft disc golf courses">
+        <p>
+          3D walkthrough needs WebGL. The course map and scorecard on the
+          <a href="./">main page</a> work without it.
+        </p>
+      </canvas>
       <div id="pano-card" hidden>
         <strong>360° pano viewpoint</strong>
         <p>
@@ -39,7 +61,7 @@
         forest is illustrative until the canopy survey lands
       </div>
     </main>
-    <footer><span id="walk-status">loading terrain…</span></footer>
+    <footer><span id="walk-status" role="status" aria-live="polite">loading terrain…</span></footer>
     <script type="module" src="/src/walk.ts"></script>
   </body>
 </html>

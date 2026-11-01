@@ -8,8 +8,60 @@
       name="description"
       content="A live demo of building an AR disc golf scorecard: ground GPS survey to playable card, hole by hole. Cloudcroft NM: Byron Ligon Tiki + Community courses."
     />
+    <link rel="canonical" href="https://bryanchasko.com/disc-golf/" />
+    <meta name="theme-color" content="#143d2a" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Cloudcroft Disc Golf" />
+    <meta property="og:title" content="Cloudcroft Disc Golf — watch an AR scorecard get built" />
+    <meta
+      property="og:description"
+      content="Ground GPS survey to playable scorecard, hole by hole: Byron Ligon Tiki (9) + Cloudcroft Community (18). Live map, walkthrough, open survey data."
+    />
+    <meta property="og:url" content="https://bryanchasko.com/disc-golf/" />
+    <meta property="og:image" content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg" />
+    <meta property="og:image:alt" content="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cloudcroft Disc Golf — watch an AR scorecard get built" />
+    <meta
+      name="twitter:description"
+      content="Ground GPS survey to playable scorecard, hole by hole. Live map, walkthrough, open survey data."
+    />
+    <meta name="twitter:image" content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SportsActivityLocation",
+            "name": "Byron Ligon Memorial Tiki Disc Golf Course",
+            "sport": "Disc Golf",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Cloudcroft",
+              "addressRegion": "NM",
+              "postalCode": "88317"
+            },
+            "geo": { "@type": "GeoCoordinates", "latitude": 32.95787, "longitude": -105.73887, "elevation": 8664.5 }
+          },
+          {
+            "@type": "SportsActivityLocation",
+            "name": "Cloudcroft Community Disc Golf Course",
+            "sport": "Disc Golf",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "230 Mescalero Ave",
+              "addressLocality": "Cloudcroft",
+              "addressRegion": "NM"
+            },
+            "geo": { "@type": "GeoCoordinates", "latitude": 32.9632, "longitude": -105.73996, "elevation": 8781.4 }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
+    <a class="skip-link" href="#holes">Skip to scorecard</a>
     <header id="topbar">
       <h1>Cloudcroft disc golf</h1>
       <p id="survey-status" class="note">survey in progress</p>
@@ -41,13 +93,17 @@
         </section>
         <section id="hole-list">
           <h2>Holes</h2>
-          <table id="holes">
+          <table id="holes" aria-describedby="survey-status">
+            <caption class="note">
+              Per-hole rows: surveyed where ground GPS landed, scaffold where
+              the survey has not reached yet.
+            </caption>
             <thead>
               <tr>
-                <th>Hole</th>
-                <th>Par</th>
-                <th>Dist</th>
-                <th>Status</th>
+                <th scope="col">Hole</th>
+                <th scope="col">Par</th>
+                <th scope="col">Dist</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -74,7 +130,7 @@
                 value="3"
             /></label>
             <button id="save-score">Save</button>
-            <span id="save-status"></span>
+            <span id="save-status" role="status" aria-live="polite"></span>
           </div>
           <ul id="scores"></ul>
         </section>
@@ -159,7 +215,7 @@
       </div>
     </section>
     <footer>
-      <span id="status">loading map…</span>
+      <span id="status" role="status" aria-live="polite">loading map…</span>
       <button id="locate">Find me</button>
     </footer>
     <script type="module" src="/src/main.ts"></script>

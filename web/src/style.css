@@ -14,6 +14,20 @@
   box-sizing: border-box;
 }
 
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--pine-dark);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
 html,
 body {
   margin: 0;
