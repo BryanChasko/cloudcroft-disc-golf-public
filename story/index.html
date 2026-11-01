@@ -164,8 +164,6 @@
         border-radius: 4px;
         font-size: 0.85em;
       }
-      .status-open { color: var(--accent); font-weight: 600; }
-      .status-done { color: var(--pine); font-weight: 600; }
       .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
       @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
       .skip-link {
@@ -186,6 +184,14 @@
         <p class="sub">AR map + scorecard for Cloudcroft NM disc golf — Weekend Challenge: Map it entry. Updated November 1, 2026.</p>
       </header>
       <main id="main">
+        <p>
+          On November 1 I walked the Cloudcroft Community course with a phone,
+          a field guide, and eight steps per hole. I came home with 21 averaged
+          GPS points, 15 photos, 5 panos, and the tee signs that carry the only
+          par numbers this course publishes. This page is what that field day
+          turned into: a scorecard that fills in hole by hole, and the recipe
+          so anyone can map their own course the same way.
+        </p>
         <div class="cta-row">
           <a href="/disc-golf/">Open the live map</a>
           <a class="ghost" href="/disc-golf/walk.html">3D walkthrough</a>
@@ -261,19 +267,6 @@
 # tiki: byron-ligon-tiki.json (0 surveyed rows, 6 survey points)</code></pre>
         </section>
 
-        <section class="card" aria-labelledby="h-criteria">
-          <h2 id="h-criteria">How it maps to the judging criteria</h2>
-          <table>
-            <thead><tr><th scope="col">Criterion</th><th scope="col">Evidence</th></tr></thead>
-            <tbody>
-              <tr><td>Technical innovation</td><td>Plays-like distance from 3DEP elevation fused with ground-truth tee/basket GPS; per-hole geofences for AR overlays; 360-pano VR walkthrough of a real mountain course.</td></tr>
-              <tr><td>Craft and execution</td><td>Live on AWS behind CloudFront: Location Service tiles, Cognito guest auth shared by web and Android, Rust ARM64 lambdas, DynamoDB scorecard. Map opens fast, click/zoom per hole.</td></tr>
-              <tr><td>Usefulness and impact</td><td>Players get distances, plays-like yardage, trail crossings, a pocket scorecard. Builders get the reusable pattern — every ingest script documented, five steps to map any course.</td></tr>
-              <tr><td>Creativity and storytelling</td><td>Haller's chainsaw-built course, the 39-foot Tiki opener vs 80-foot Community elevation swings — told hole by hole, on the map and in the demo video.</td></tr>
-            </tbody>
-          </table>
-        </section>
-
         <section class="card" aria-labelledby="h-services">
           <h2 id="h-services">AWS services used and why</h2>
           <table>
@@ -289,18 +282,16 @@
           </table>
         </section>
 
-        <section class="card" aria-labelledby="h-check">
-          <h2 id="h-check">Hackathon entry checklist</h2>
-          <table>
-            <thead><tr><th scope="col">Requirement</th><th scope="col">State</th></tr></thead>
-            <tbody>
-              <tr><td>Live map, publicly reachable on AWS</td><td><span class="status-done">Live</span> — <a href="/disc-golf/">bryanchasko.com/disc-golf/</a></td></tr>
-              <tr><td>3D walkthrough with VR toggle</td><td><span class="status-done">Live</span> — <a href="/disc-golf/walk.html">walk.html</a></td></tr>
-              <tr><td>Written project</td><td><span class="status-done">This page</span>, plus the Builder Center post</td></tr>
-              <tr><td>Demo video under 3 minutes</td><td><span class="status-open">Recording next</span> — script covers town, map tour, scorecard round, AR overlay, the pattern</td></tr>
-              <tr><td>Code</td><td>Private repo; the reusable pattern is the <a href="/disc-golf/how-this-works/">how-this-works writeup</a></td></tr>
-            </tbody>
-          </table>
+        <section class="card" aria-labelledby="h-status">
+          <h2 id="h-status">What is live, what is next</h2>
+          <p>
+            The <a href="/disc-golf/">map and scorecard</a> are live, as is the
+            <a href="/disc-golf/walk.html">3D walkthrough</a>. The repo stays
+            private; the reusable pattern is the
+            <a href="/disc-golf/how-this-works/">how-this-works writeup</a>.
+            Still to come: the under-3-minute demo video, then the Builder Center
+            project post.
+          </p>
           <figure>
             <img src="assets/walkthrough-hero.png" alt="3D walkthrough of the courses from orbit on 1-meter terrain" loading="lazy" />
             <figcaption>From orbit — pins, trail ribbons, 1-meter terrain under NAIP imagery.</figcaption>
@@ -309,16 +300,12 @@
             <img src="assets/kiosk.jpg" alt="Course kiosk with posted layout" loading="lazy" />
             <figcaption>Where every round starts — the course kiosk.</figcaption>
           </figure>
-        </section>
-
-        <section class="card" aria-labelledby="h-status">
-          <h2 id="h-status">Status</h2>
           <p>
-            Day-two build. Course anchors are geocoded, elevation comes from the
-            USGS 3DEP 1-meter DEM, trails from OpenStreetMap, imagery from NAIP
-            2022. Community holes 1–2 carry ground pins; per-hole tee and basket
-            pins for the rest land with the next survey — then AR overlays,
-            plays-like distances, and per-hole geofences switch on.
+            Day-two build underneath: anchors are geocoded, elevation comes from
+            the USGS 3DEP 1-meter DEM, trails from OpenStreetMap, imagery from NAIP
+            2022. Community holes 1–2 carry ground pins; the rest land with the
+            next survey — then AR overlays, plays-like distances, and per-hole
+            geofences switch on.
           </p>
         </section>
       </main>
