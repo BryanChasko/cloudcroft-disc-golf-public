@@ -6,14 +6,14 @@
     }
   ],
   "output": "/home/bryanchasko/code/chasko-labs/cloudcroft-disc-golf/web/public/evidence/hole2-tee-sign.jpg",
-  "dimensions": [1018, 1346],
-  "sha256": "26a1b57111292effadd758446f53ea248babff2ed8591c17213b5dbd14ccc80e",
-  "bytes": 192163,
+  "dimensions": [1618, 2143],
+  "sha256": "7c8c676d1a7af830e67131b0c951fb7179489c2950b088b2ed8e9024d728c45c",
+  "bytes": 411702,
   "pil_version": "12.2.0",
   "python_version": "3.12.3",
   "transforms": [
     "flatten_rgb",
-    "resize_w1000_lanczos",
+    "resize_w1600_lanczos",
     "vignette_navy_linear",
     "frame_6px_navy_3px_orange",
     "export_jpg_fallback_q82"

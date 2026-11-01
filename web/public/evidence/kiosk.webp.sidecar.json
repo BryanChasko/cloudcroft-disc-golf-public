@@ -6,17 +6,17 @@
     }
   ],
   "output": "/home/bryanchasko/code/chasko-labs/cloudcroft-disc-golf/web/public/evidence/kiosk.webp",
-  "dimensions": [1018, 1346],
-  "sha256": "93fe3ba577429f20df8c92e5b2d1f00511eeb48759b89d301628a7bd65f3ee14",
-  "bytes": 118038,
+  "dimensions": [1618, 2143],
+  "sha256": "fddbfc4517bb934f69de9b3f2b983ee8877f073b4721bd936aa665c0cf8af5fb",
+  "bytes": 347680,
   "pil_version": "12.2.0",
   "python_version": "3.12.3",
   "transforms": [
     "flatten_rgb",
-    "resize_w1000_lanczos",
+    "resize_w1600_lanczos",
     "vignette_navy_linear",
     "frame_6px_navy_3px_orange",
-    "export_webp_q82"
+    "export_webp_q88_m6"
   ],
   "text": "none added (UI capture / photo as-is)",
   "deviations": []

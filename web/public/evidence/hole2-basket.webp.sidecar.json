@@ -6,17 +6,17 @@
     }
   ],
   "output": "/home/bryanchasko/code/chasko-labs/cloudcroft-disc-golf/web/public/evidence/hole2-basket.webp",
-  "dimensions": [1018, 1346],
-  "sha256": "db765d6e7fdab7d8116d8bf20dd652dd0fdf3301c619e28d90bad6986a2f9896",
-  "bytes": 255824,
+  "dimensions": [1618, 2143],
+  "sha256": "9593ede25e38fb02ba0d8f6cf84b9f7564031d85e24ed0cd4335832dc2933d15",
+  "bytes": 756304,
   "pil_version": "12.2.0",
   "python_version": "3.12.3",
   "transforms": [
     "flatten_rgb",
-    "resize_w1000_lanczos",
+    "resize_w1600_lanczos",
     "vignette_navy_linear",
     "frame_6px_navy_3px_orange",
-    "export_webp_q82"
+    "export_webp_q88_m6"
   ],
   "text": "none added (UI capture / photo as-is)",
   "deviations": []

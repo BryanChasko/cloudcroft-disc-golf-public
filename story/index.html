@@ -165,6 +165,17 @@
         font-size: 0.85em;
       }
       .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+      main figure { position: relative; overflow: hidden; }
+      main figure::after {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / 0.09) 48%, transparent 62%);
+        background-size: 260% 260%;
+        animation: sheen 9s ease-in-out infinite;
+      }
+      @keyframes sheen {
+        0%, 100% { background-position: 120% 0; opacity: 0; }
+        50% { background-position: -20% 0; opacity: 1; }
+      }
       @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
       .skip-link {
         position: absolute; left: -9999px; top: 0;
@@ -172,6 +183,10 @@
         padding: 0.5rem 1rem; z-index: 100;
       }
       .skip-link:focus { left: 0; }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { transition: none !important; animation: none !important; }
+        main figure::after { display: none; }
+      }
       footer { color: var(--muted); font-size: 0.85rem; padding-top: 1rem; }
     </style>
   </head>
@@ -245,7 +260,7 @@
               <figcaption>Field capture: the averaged fix plus the remark that becomes the hole's row.</figcaption>
             </figure>
             <figure>
-              <img src="assets/hole2-tee-sign.jpg" alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds" loading="lazy" />
+              <img src="assets/hole2-tee-sign.webp" alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds" loading="lazy" />
               <figcaption>Hole 2 tee sign — the par source.</figcaption>
             </figure>
           </div>
@@ -297,7 +312,7 @@
             <figcaption>From orbit — pins, trail ribbons, 1-meter terrain under NAIP imagery.</figcaption>
           </figure>
           <figure>
-            <img src="assets/kiosk.jpg" alt="Course kiosk with posted layout" loading="lazy" />
+            <img src="assets/kiosk.webp" alt="Course kiosk with posted layout" loading="lazy" />
             <figcaption>Where every round starts — the course kiosk.</figcaption>
           </figure>
           <p>

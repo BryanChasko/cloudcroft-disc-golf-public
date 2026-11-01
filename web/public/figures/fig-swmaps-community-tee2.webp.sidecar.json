@@ -7,15 +7,15 @@
   ],
   "output": "/home/bryanchasko/code/chasko-labs/cloudcroft-disc-golf/web/public/figures/fig-swmaps-community-tee2.webp",
   "dimensions": [1298, 2874],
-  "sha256": "21bd1af3797a2ee510dd5a5966bbdea2f12031a08f0e3546805daa68846be1e8",
-  "bytes": 98668,
+  "sha256": "3a885dd91369620fad2834f9bf7056834bfd0c28f087ba2ac69d5fce94a1da65",
+  "bytes": 113792,
   "pil_version": "12.2.0",
   "python_version": "3.12.3",
   "transforms": [
     "flatten_rgb",
     "vignette_navy_linear",
     "frame_6px_navy_3px_orange",
-    "export_webp_q82"
+    "export_webp_q88_m6"
   ],
   "text": "none added (UI capture / photo as-is)",
   "deviations": []
