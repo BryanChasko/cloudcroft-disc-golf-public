@@ -101,3 +101,47 @@ def test_parse_note_variants():
         "bearing_deg": 7,
     }
     assert validate_survey.parse_note("muddy, fence left") == {}
+
+
+def _partial_drop(root):
+    drop = root / "2026-11-01-community"
+    drop.mkdir(parents=True)
+    feats = [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [-105.7424, 32.9623]},
+            "properties": {"remark": "community-tee-1 | par 4, 411 ft"},
+        },
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [-105.7420, 32.9612]},
+            "properties": {"remark": "community-basket-1 | rocky"},
+        },
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [-105.7416, 32.9617]},
+            "properties": {"remark": ""},
+        },
+    ]
+    (drop / "points.geojson").write_text(
+        json.dumps({"type": "FeatureCollection", "features": feats})
+    )
+
+
+def test_partial_ok(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(validate_survey, "SURVEY", tmp_path)
+    _partial_drop(tmp_path)
+    assert validate_survey.validate_partial() == 0
+    out = capsys.readouterr().out
+    assert "holes complete (tee+basket): [1]" in out
+    assert "unidentified points: 1" in out
+
+
+def test_partial_bbox_fails(tmp_path, monkeypatch):
+    monkeypatch.setattr(validate_survey, "SURVEY", tmp_path)
+    _partial_drop(tmp_path)
+    drop = tmp_path / "2026-11-01-community" / "points.geojson"
+    fc = json.loads(drop.read_text())
+    fc["features"][0]["geometry"]["coordinates"] = [-106.0, 33.0]
+    drop.write_text(json.dumps(fc))
+    assert validate_survey.validate_partial() == 1

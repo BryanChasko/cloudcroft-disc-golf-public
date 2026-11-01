@@ -28,7 +28,7 @@ def test_azimuth_cardinals():
     assert abs(build_holes.azimuth_deg(32.0, -105.0, 32.0, -104.0) - 90) < 0.5
 
 
-def _survey_fixture(tmp_path, tiki_distances):
+def _survey_fixture(tmp_path, tiki_distances, community_distances=None):
     """Write tiki+community survey files with self-consistent geometry."""
     survey = tmp_path / "survey"
     survey.mkdir()
@@ -37,7 +37,12 @@ def _survey_fixture(tmp_path, tiki_distances):
         for n in range(1, holes + 1):
             # Tee and basket spaced per the hole's published distance on a
             # due-east line; bearing 90.
-            dist = tiki_distances[n - 1] if course == "tiki" else 100
+            if course == "tiki":
+                dist = tiki_distances[n - 1]
+            elif community_distances and community_distances[n - 1] is not None:
+                dist = community_distances[n - 1]
+            else:
+                dist = 100
             lon0 = -105.74
             lat0 = 32.955 + n * 0.0001
             dlon = dist / (math.cos(math.radians(lat0)) * 364567.0)
@@ -69,8 +74,13 @@ def test_full_pipeline_no_write(tmp_path, monkeypatch):
 
     repo = Path(build_holes.__file__).resolve().parents[2]
     tiki = json.loads((repo / "dataset" / "byron-ligon-tiki.json").read_text())
+    community = json.loads(
+        (repo / "dataset" / "cloudcroft-community.json").read_text()
+    )
     survey = _survey_fixture(
-        tmp_path, [h["distance_ft"] for h in tiki["holes"]]
+        tmp_path,
+        [h["distance_ft"] for h in tiki["holes"]],
+        [h.get("distance_ft") for h in community.get("holes", [])] or None,
     )
     monkeypatch.setattr(validate_survey, "SURVEY", survey)
     # Fake the DEM sampler: flat 8600 ft everywhere.
@@ -93,8 +103,8 @@ def test_full_pipeline_no_write(tmp_path, monkeypatch):
     for r in anchor_ref:
         r["ele_ft"] = 8600.0
     (stub / "anchor-elevations.json").write_text(json.dumps(anchor_ref))
+    before = (stub / "byron-ligon-tiki.json").read_text()
     monkeypatch.setattr(sys, "argv", ["build_holes.py", "--no-write"])
     assert build_holes.main() == 0
     # --no-write must not touch the stub course files.
-    tiki = json.loads((stub / "byron-ligon-tiki.json").read_text())
-    assert tiki["features"] == []
+    assert (stub / "byron-ligon-tiki.json").read_text() == before

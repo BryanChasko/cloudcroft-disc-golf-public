@@ -40,9 +40,11 @@ function haversineFt(
 
 interface HoleRow {
   hole: number;
-  par: number;
-  distance_ft: number;
+  par?: number;
+  distance_ft?: number;
   note?: string;
+  status?: "surveyed" | "remote" | "scaffold";
+  par_source?: string;
 }
 interface HolesFile {
   course: {
@@ -52,6 +54,7 @@ interface HolesFile {
     length_ft: number | string;
   };
   holes: HoleRow[];
+  features?: unknown[];
 }
 
 let map: maplibregl.Map;
@@ -99,6 +102,41 @@ function addOverlays(): void {
     "visibility",
     trailsVisible ? "visible" : "none",
   );
+
+  // Survey features for the active course (tees, baskets, fairways).
+  if (!map.getSource("survey")) {
+    map.addSource("survey", {
+      type: "geojson",
+      data: { type: "FeatureCollection", features: [] },
+    });
+    map.addLayer({
+      id: "survey-fairway",
+      type: "line",
+      source: "survey",
+      filter: ["==", ["get", "kind"], "fairway"],
+      paint: { "line-color": "#2e7d32", "line-width": 3 },
+    });
+    map.addLayer({
+      id: "survey-points",
+      type: "circle",
+      source: "survey",
+      paint: {
+        "circle-radius": 6,
+        "circle-color": [
+          "match",
+          ["get", "kind"],
+          "tee",
+          "#1a5276",
+          "basket",
+          "#b7950b",
+          "#9e9e9e",
+        ],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 1.5,
+      },
+    });
+  }
+  void refreshSurveyLayer();
 
   // Course anchors.
   for (const [id, c] of Object.entries(COURSES)) {
@@ -151,6 +189,20 @@ async function setNaip(visible: boolean): Promise<void> {
   }
 }
 
+async function refreshSurveyLayer(): Promise<void> {
+  const src = map?.getSource("survey") as maplibregl.GeoJSONSource | undefined;
+  if (!src) return;
+  try {
+    const data = await holesFor(currentCourse);
+    src.setData({
+      type: "FeatureCollection",
+      features: (data.features ?? []) as never[],
+    });
+  } catch {
+    // leave prior features in place; table render reports failures
+  }
+}
+
 async function renderHoles(courseId: CourseId): Promise<void> {
   const tbody = document.querySelector("#holes tbody") as HTMLElement;
   tbody.innerHTML = "";
@@ -160,10 +212,15 @@ async function renderHoles(courseId: CourseId): Promise<void> {
     (document.getElementById("score-hole") as HTMLInputElement).max = String(
       data.course.holes,
     );
+    const surveyed = data.holes.filter((h) => h.status === "surveyed").length;
+    const statusEl2 = document.getElementById("survey-status");
+    if (statusEl2) {
+      statusEl2.textContent = `${surveyed} of ${data.course.holes} holes surveyed — watch the card fill in`;
+    }
     if (data.holes.length === 0) {
       const tr = document.createElement("tr");
       const td = document.createElement("td");
-      td.colSpan = 3;
+      td.colSpan = 4;
       td.textContent = `${data.course.holes} holes · par ${data.course.par} — per-hole survey lands with ground GPS.`;
       tr.appendChild(td);
       tbody.appendChild(tr);
@@ -171,20 +228,29 @@ async function renderHoles(courseId: CourseId): Promise<void> {
     }
     for (const h of data.holes) {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${h.hole}</td><td>${h.par}</td><td>${h.distance_ft} ft${h.note ? ` (${h.note})` : ""}</td>`;
-      tr.title =
-        "click to fly here — tee-to-basket line + plays-like unlock with ground GPS pins";
+      const status = h.status ?? "remote";
+      if (status === "scaffold") tr.className = "scaffold";
+      const par = h.par ?? "—";
+      const dist = h.distance_ft ? `${h.distance_ft} ft` : "awaiting survey";
+      const label =
+        status === "surveyed"
+          ? "surveyed"
+          : status === "scaffold"
+            ? "scaffold"
+            : "remote";
+      tr.innerHTML = `<td>${h.hole}</td><td>${par}</td><td>${dist}${h.note ? ` (${h.note})` : ""}</td><td><span class="status-chip">${label}</span></td>`;
+      tr.title = h.par_source
+        ? `par source: ${h.par_source}`
+        : "click to fly here";
       tr.style.cursor = "pointer";
       tr.addEventListener("click", () => {
-        // Now: fly to the course anchor. After the ground survey this
-        // flies to the hole's own tee pin instead.
         flyToCourse(courseId);
         courseMarkers[courseId]?.togglePopup();
       });
       tbody.appendChild(tr);
     }
   } catch {
-    tbody.innerHTML = '<tr><td colspan="3">hole data failed to load</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4">hole data failed to load</td></tr>';
   }
 }
 
@@ -243,7 +309,7 @@ async function refreshScores(): Promise<void> {
       try {
         const file = await holesFor(e["course"] as CourseId);
         const row = file.holes.find((r) => r.hole === Number(e["hole"]));
-        if (row) parOf.set(key, row.par);
+        if (row && row.par !== undefined) parOf.set(key, row.par);
       } catch {
         // Unknown par: total shows without vs-par below.
       }
@@ -420,6 +486,7 @@ async function main(): Promise<void> {
       currentCourse = (btn as HTMLElement).dataset["course"] as CourseId;
       flyToCourse(currentCourse);
       void renderHoles(currentCourse);
+      void refreshSurveyLayer();
     });
   });
 

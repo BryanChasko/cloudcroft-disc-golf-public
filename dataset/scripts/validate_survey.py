@@ -138,7 +138,62 @@ def validate_course(course: str, spec: dict, errors: list, warnings: list) -> li
     return points
 
 
+NAME_IN_RE = re.compile(r"(tiki|community)-(tee|basket)-(\d+)")
+
+
+def validate_partial() -> int:
+    """Demo contract: report coverage of a partial survey drop.
+
+    Reads survey/*/points.geojson (swm2_to_geojson output). Hard errors
+    only for data that would corrupt the map: bad geometry, points
+    outside the course bbox. Coverage gaps are reported, never errors —
+    partial is a supported state, not a failure.
+    """
+    errors: list = []
+    files = sorted(SURVEY.glob("*/points.geojson"))
+    if not files:
+        print("error: no survey/*/points.geojson found — run swm2_to_geojson first")
+        return 1
+    named = 0
+    for path in files:
+        data = json.loads(path.read_text())
+        feats = data.get("features", [])
+        holes: dict = {}
+        unidentified = 0
+        for i, f in enumerate(feats):
+            where = f"{path.parent.name} feature[{i}]"
+            geom = (f or {}).get("geometry") or {}
+            props = (f or {}).get("properties") or {}
+            if geom.get("type") != "Point":
+                errors.append(f"{where}: geometry must be Point")
+                continue
+            lon, lat = float(geom["coordinates"][0]), float(geom["coordinates"][1])
+            if not (BBOX[0] <= lon <= BBOX[2] and BBOX[1] <= lat <= BBOX[3]):
+                errors.append(f"{where}: ({lon},{lat}) outside course bbox")
+            m = NAME_IN_RE.search(str(props.get("remark") or ""))
+            if m:
+                named += 1
+                holes.setdefault(int(m.group(3)), set()).add(m.group(2))
+            else:
+                unidentified += 1
+        full = sorted(n for n, kinds in holes.items() if kinds == {"tee", "basket"})
+        half = sorted(set(holes) - set(full))
+        print(f"{path.parent.name}: {len(feats)} points — "
+              f"holes complete (tee+basket): {full or 'none'}; "
+              f"holes partial: {half or 'none'}; "
+              f"unidentified points: {unidentified}")
+    for e in errors:
+        print(f"error: {e}")
+    if errors:
+        print(f"partial survey INVALID: {len(errors)} error(s)")
+        return 1
+    print(f"partial survey ok: {named} named points, gaps are scaffolding")
+    return 0
+
+
 def main() -> int:
+    if "--partial" in sys.argv:
+        return validate_partial()
     errors: list = []
     warnings: list = []
     if not SURVEY.is_dir():

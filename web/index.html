@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cloudcroft Disc Golf — AR map + scorecard</title>
+    <title>Cloudcroft Disc Golf — watch an AR scorecard get built</title>
     <meta
       name="description"
-      content="Explorable map of Cloudcroft NM disc golf: Byron Ligon Tiki + Community courses, trails, elevation, live scorecard."
+      content="A live demo of building an AR disc golf scorecard: ground GPS survey to playable card, hole by hole. Cloudcroft NM: Byron Ligon Tiki + Community courses."
     />
   </head>
   <body>
     <header id="topbar">
       <h1>Cloudcroft disc golf</h1>
+      <p id="survey-status" class="note">survey in progress</p>
       <nav id="course-tabs" aria-label="courses">
         <button data-course="tiki" class="active">Byron Ligon Tiki · 9</button>
         <button data-course="community">Community · 18</button>
@@ -40,16 +41,13 @@
         </section>
         <section id="hole-list">
           <h2>Holes</h2>
-          <p id="gps-note" class="note">
-            Per-hole pins land with ground GPS. Distances below are the
-            published layout.
-          </p>
           <table id="holes">
             <thead>
               <tr>
                 <th>Hole</th>
                 <th>Par</th>
                 <th>Dist</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -82,6 +80,84 @@
         </section>
       </aside>
     </main>
+    <section id="how-built">
+      <h2>How this scorecard gets built</h2>
+      <ol>
+        <li>
+          <strong>Walk the course.</strong> At each tee an averaged GPS point
+          joins a photo of the tee sign and a note — par, distance, mando,
+          out-of-bounds. This one is real: community tee 2, par 3, 245 ft, mando
+          right, fence-line out of bounds right.
+          <figure>
+            <img
+              src="figures/fig-swmaps-community-tee2.webp"
+              alt="SW Maps recording community tee 2 with par, distance, and mando note"
+              loading="lazy"
+            />
+            <figcaption>
+              Field capture: averaged fix plus the remark that becomes this
+              hole's row.
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <strong>Hand off the raw day.</strong> The survey app's project backup
+          carries every point, note, and attached photo in one file. A small
+          extractor turns it into open GeoJSON — no app lock-in.
+        </li>
+        <li>
+          <strong>Validate.</strong> Points must land inside the course
+          boundary; named tees and baskets must parse. Gaps are reported, never
+          silently invented — unsurveyed holes stay visibly blank, like the
+          scaffolds in the table above.
+        </li>
+        <li>
+          <strong>Build the holes.</strong> Tee-to-basket lines, elevation, and
+          a plays-like distance come from the 1&nbsp;m terrain model,
+          cross-checked against the tee signs.
+        </li>
+        <li>
+          <strong>Publish.</strong> The map, walkthrough, and this card read the
+          same data files, so the next field day lights up new holes with no
+          code change.
+        </li>
+      </ol>
+      <h3>Field evidence</h3>
+      <div id="evidence">
+        <figure>
+          <img
+            src="evidence/kiosk.jpg"
+            alt="Course kiosk with posted layout"
+            loading="lazy"
+          />
+          <figcaption>Course kiosk.</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="evidence/hole1-basket.jpg"
+            alt="Basket 1 at Cloudcroft Community"
+            loading="lazy"
+          />
+          <figcaption>Community basket 1.</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="evidence/hole2-tee-sign.jpg"
+            alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds"
+            loading="lazy"
+          />
+          <figcaption>Hole 2 tee sign — the par source.</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="evidence/hole2-basket.jpg"
+            alt="Basket 2 with fairway behind"
+            loading="lazy"
+          />
+          <figcaption>Community basket 2.</figcaption>
+        </figure>
+      </div>
+    </section>
     <footer>
       <span id="status">loading map…</span>
       <button id="locate">Find me</button>

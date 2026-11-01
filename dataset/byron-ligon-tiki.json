@@ -10,22 +10,211 @@
     "style": "putting course, all putters, redesigned May 2025",
     "terrain": "aspen and doug fir, mostly flat, hike/bike trail crossings",
     "distances_source": "Radius Disc Golf course page",
-    "coordinates_status": "provisional — awaiting ground GPS",
+    "coordinates_status": "provisional \u2014 awaiting ground GPS",
     "anchor_lon": -105.73887,
     "anchor_lat": 32.95787,
     "anchor_ele_ft": 8664.5,
     "anchor_source": "Amazon Location Service geocode (Zenith Park) + USGS EPQS 1m 3DEP"
   },
   "holes": [
-    { "hole": 1, "par": 3, "distance_ft": 39, "note": "shortest" },
-    { "hole": 2, "par": 3, "distance_ft": 118 },
-    { "hole": 3, "par": 3, "distance_ft": 133 },
-    { "hole": 4, "par": 3, "distance_ft": 134, "note": "longest" },
-    { "hole": 5, "par": 3, "distance_ft": 66 },
-    { "hole": 6, "par": 3, "distance_ft": 67 },
-    { "hole": 7, "par": 3, "distance_ft": 89 },
-    { "hole": 8, "par": 3, "distance_ft": 128 },
-    { "hole": 9, "par": 3, "distance_ft": 127 }
+    {
+      "hole": 1,
+      "par": 3,
+      "distance_ft": 39,
+      "note": "shortest",
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 2,
+      "par": 3,
+      "distance_ft": 118,
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 3,
+      "par": 3,
+      "distance_ft": 133,
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 4,
+      "par": 3,
+      "distance_ft": 134,
+      "note": "longest",
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 5,
+      "par": 3,
+      "distance_ft": 66,
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 6,
+      "par": 3,
+      "distance_ft": 67,
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 7,
+      "par": 3,
+      "distance_ft": 89,
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 8,
+      "par": 3,
+      "distance_ft": 128,
+      "status": "remote",
+      "par_source": "remote listing"
+    },
+    {
+      "hole": 9,
+      "par": 3,
+      "distance_ft": 127,
+      "status": "remote",
+      "par_source": "remote listing"
+    }
   ],
-  "features": []
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.738308333, 32.956923333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2628.5,
+        "compass_brg": 262.023,
+        "accuracy_h_m": 7.143,
+        "accuracy_v_m": 2,
+        "averaging": 1,
+        "sats_in_use": 16,
+        "photos": ["cloudcroft-village-course_20261101_105648849.jpg"],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.73836, 32.956978333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "unknown-teebox",
+        "feature": "",
+        "remark": "unknown-teebox",
+        "seq": 0,
+        "elevation_m": 2619.7,
+        "compass_brg": 267.85,
+        "accuracy_h_m": 9.694,
+        "accuracy_v_m": 1,
+        "averaging": 1,
+        "sats_in_use": 19,
+        "photos": [],
+        "photo_remarks": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.738358788, 32.95691003]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "unknown-teebox",
+        "feature": "",
+        "remark": "unknown-teebox-front",
+        "seq": 0,
+        "elevation_m": 2619.498,
+        "compass_brg": 256.786,
+        "accuracy_h_m": 12.755,
+        "accuracy_v_m": 3,
+        "averaging": 55,
+        "sats_in_use": 22,
+        "photos": [],
+        "photo_remarks": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.738543333, 32.956883333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2618.5,
+        "compass_brg": 135.813,
+        "accuracy_h_m": 9.694,
+        "accuracy_v_m": 15,
+        "averaging": 1,
+        "sats_in_use": 17,
+        "photos": ["cloudcroft-village-course_20261101_110332646.jpg"],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.738553333, 32.956918333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2625.2,
+        "compass_brg": 252.936,
+        "accuracy_h_m": 6.122,
+        "accuracy_v_m": 4,
+        "averaging": 1,
+        "sats_in_use": 22,
+        "photos": ["cloudcroft-village-course_20261101_110347381.jpg"],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.738549722, 32.956943111]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "unknown-teebox",
+        "feature": "",
+        "remark": "pano-unknown-fairway",
+        "seq": 0,
+        "elevation_m": 2632.33,
+        "compass_brg": 260.094,
+        "accuracy_h_m": 12.245,
+        "accuracy_v_m": 1,
+        "averaging": 30,
+        "sats_in_use": 21,
+        "photos": [],
+        "photo_remarks": []
+      }
+    }
+  ]
 }

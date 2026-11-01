@@ -1,0 +1,161 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -105.738308333,
+     32.956923333
+    ]
+   },
+   "properties": {
+    "layer": "",
+    "feature": "",
+    "remark": "",
+    "seq": 0,
+    "elevation_m": 2628.5,
+    "compass_brg": 262.023,
+    "accuracy_h_m": 7.143,
+    "accuracy_v_m": 2,
+    "averaging": 1,
+    "sats_in_use": 16,
+    "photos": [
+     "cloudcroft-village-course_20261101_105648849.jpg"
+    ],
+    "photo_remarks": [
+     ""
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -105.73836,
+     32.956978333
+    ]
+   },
+   "properties": {
+    "layer": "unknown-teebox",
+    "feature": "",
+    "remark": "unknown-teebox",
+    "seq": 0,
+    "elevation_m": 2619.7,
+    "compass_brg": 267.85,
+    "accuracy_h_m": 9.694,
+    "accuracy_v_m": 1,
+    "averaging": 1,
+    "sats_in_use": 19,
+    "photos": [],
+    "photo_remarks": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -105.738358788,
+     32.95691003
+    ]
+   },
+   "properties": {
+    "layer": "unknown-teebox",
+    "feature": "",
+    "remark": "unknown-teebox-front",
+    "seq": 0,
+    "elevation_m": 2619.498,
+    "compass_brg": 256.786,
+    "accuracy_h_m": 12.755,
+    "accuracy_v_m": 3,
+    "averaging": 55,
+    "sats_in_use": 22,
+    "photos": [],
+    "photo_remarks": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -105.738543333,
+     32.956883333
+    ]
+   },
+   "properties": {
+    "layer": "",
+    "feature": "",
+    "remark": "",
+    "seq": 0,
+    "elevation_m": 2618.5,
+    "compass_brg": 135.813,
+    "accuracy_h_m": 9.694,
+    "accuracy_v_m": 15,
+    "averaging": 1,
+    "sats_in_use": 17,
+    "photos": [
+     "cloudcroft-village-course_20261101_110332646.jpg"
+    ],
+    "photo_remarks": [
+     ""
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -105.738553333,
+     32.956918333
+    ]
+   },
+   "properties": {
+    "layer": "",
+    "feature": "",
+    "remark": "",
+    "seq": 0,
+    "elevation_m": 2625.2,
+    "compass_brg": 252.936,
+    "accuracy_h_m": 6.122,
+    "accuracy_v_m": 4,
+    "averaging": 1,
+    "sats_in_use": 22,
+    "photos": [
+     "cloudcroft-village-course_20261101_110347381.jpg"
+    ],
+    "photo_remarks": [
+     ""
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -105.738549722,
+     32.956943111
+    ]
+   },
+   "properties": {
+    "layer": "unknown-teebox",
+    "feature": "",
+    "remark": "pano-unknown-fairway",
+    "seq": 0,
+    "elevation_m": 2632.33,
+    "compass_brg": 260.094,
+    "accuracy_h_m": 12.245,
+    "accuracy_v_m": 1,
+    "averaging": 30,
+    "sats_in_use": 21,
+    "photos": [],
+    "photo_remarks": []
+   }
+  }
+ ]
+}

@@ -105,3 +105,19 @@ aws s3 sync ./panos s3://bryanchasko.com/disc-golf/survey/panos/ \
 
 Then tell me it is up. Ingest (per-hole lines, geofences,
 plays-like, pano viewer) happens the same day.
+
+## Handoff v2 — direct FTP from the Pixel (no mac in the middle)
+
+Receiver: `scripts/swmaps_ftpd.py` (pyftpdlib, in `dataset/.venv`).
+LAN-only, one throwaway account jailed to
+`dataset/survey/_incoming/ftp/`. Start on rocm-aibox:
+
+```bash
+source dataset/.venv/bin/activate
+python scripts/swmaps_ftpd.py <throwaway-password>
+```
+
+On the Pixel (home wifi): SW Maps export each item, share/upload to FTP
+with host `192.168.4.53`, port `2121`, user `swmaps`, the throwaway
+password. Upload per project: GeoJSON points, GPX track, full project
+backup. Stop the server after ingest lands.

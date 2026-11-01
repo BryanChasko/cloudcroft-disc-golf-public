@@ -1,0 +1,23 @@
+{
+  "sources": [
+    {
+      "path": "/home/bryanchasko/code/chasko-labs/cloudcroft-disc-golf/dataset/survey/2026-11-01-community/photos/PXL_20261101_164259154.jpg",
+      "sha256": "26169c8ef03f2ff45f809338357bc37901eef7e1992158f6926a32bb21972897"
+    }
+  ],
+  "output": "/home/bryanchasko/code/chasko-labs/cloudcroft-disc-golf/web/public/evidence/kiosk.jpg",
+  "dimensions": [1018, 1346],
+  "sha256": "4af9ea24bd2dd0fe36ab7f031fff1e63e402b818ca20e0e486473822bd55b85e",
+  "bytes": 197340,
+  "pil_version": "12.2.0",
+  "python_version": "3.12.3",
+  "transforms": [
+    "flatten_rgb",
+    "resize_w1000_lanczos",
+    "vignette_navy_linear",
+    "frame_6px_navy_3px_orange",
+    "export_jpg_fallback_q82"
+  ],
+  "text": "none added (UI capture / photo as-is)",
+  "deviations": []
+}

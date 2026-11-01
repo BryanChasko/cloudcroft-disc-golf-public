@@ -30,7 +30,7 @@ body {
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 #topbar {
@@ -87,8 +87,8 @@ footer button {
 }
 
 main {
-  flex: 1;
   display: flex;
+  height: 72vh;
   min-height: 0;
 }
 
@@ -196,6 +196,71 @@ main {
 #scores li {
   padding: 0.15rem 0;
   border-bottom: 1px dotted var(--line);
+}
+
+#holes tr.scaffold {
+  opacity: 0.55;
+  font-style: italic;
+}
+
+.status-chip {
+  font-size: 0.7rem;
+  font-style: normal;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.08rem 0.45rem;
+  background: #fff;
+  white-space: nowrap;
+}
+
+#how-built {
+  padding: 1.4rem 1rem 2.4rem;
+  border-top: 1px solid var(--line);
+  max-width: 860px;
+}
+
+#how-built h2 {
+  color: var(--pine-dark);
+  font-size: 1.15rem;
+  margin: 0 0 0.6rem;
+}
+
+#how-built h3 {
+  color: var(--pine-dark);
+  font-size: 1rem;
+  margin: 1.4rem 0 0.5rem;
+}
+
+#how-built li {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+#how-built figure {
+  margin: 0.8rem 0;
+}
+
+#how-built img {
+  max-width: 360px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#how-built figcaption {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 0.35rem;
+}
+
+#evidence {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+#evidence img {
+  max-width: 100%;
 }
 
 footer {

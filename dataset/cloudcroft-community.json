@@ -9,13 +9,626 @@
     "length_ft": "tbd",
     "style": "wooded mountain course, 40-80+ ft elevation swings, opened 2019",
     "terrain": "dense pine forest, uneven footing, horseshoe layout",
-    "distances_source": "tbd — ground collection + UDisc",
-    "coordinates_status": "provisional — awaiting ground GPS",
+    "distances_source": "tbd \u2014 ground collection + UDisc",
+    "coordinates_status": "provisional \u2014 awaiting ground GPS",
     "anchor_lon": -105.73996,
     "anchor_lat": 32.9632,
     "anchor_ele_ft": 8781.4,
     "anchor_source": "Amazon Location Service geocode (230 Mescalero Ave) + USGS EPQS 1m 3DEP"
   },
-  "holes": [],
-  "features": []
+  "holes": [
+    {
+      "hole": 1,
+      "note": "pro-par 4, am-par 5, 411 ft, brg XXX",
+      "status": "surveyed",
+      "par_source": "tee remark",
+      "par": 4,
+      "distance_ft": 411.0
+    },
+    {
+      "hole": 2,
+      "note": "par 3, 245 ft, mando right, fence line OB right",
+      "status": "surveyed",
+      "par_source": "tee remark",
+      "par": 3,
+      "distance_ft": 245.0
+    },
+    {
+      "hole": 3,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 4,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 5,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 6,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 7,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 8,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 9,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 10,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 11,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 12,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 13,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 14,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 15,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 16,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 17,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    },
+    {
+      "hole": 18,
+      "status": "scaffold",
+      "par_source": "awaiting survey"
+    }
+  ],
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742411356, 32.962393644]
+      },
+      "properties": {
+        "kind": "tee",
+        "hole": 1,
+        "layer": "community-course-points",
+        "feature": "",
+        "remark": "community-tee-1 | pro-par 4, am-par 5, 411 ft, brg XXX",
+        "seq": 0,
+        "elevation_m": 2638.339,
+        "compass_brg": 135.85,
+        "accuracy_h_m": 7.653,
+        "accuracy_v_m": 2,
+        "averaging": 59,
+        "sats_in_use": 27,
+        "photos": [],
+        "photo_remarks": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742035914, 32.961246237]
+      },
+      "properties": {
+        "kind": "basket",
+        "hole": 1,
+        "layer": "community-course-points",
+        "feature": "",
+        "remark": "community-basket-1 | trail along fairway, rocky trail to basket, next tee left",
+        "seq": 0,
+        "elevation_m": 2665.995,
+        "compass_brg": 310.512,
+        "accuracy_h_m": 13.776,
+        "accuracy_v_m": 16,
+        "averaging": 62,
+        "sats_in_use": 25,
+        "photos": [],
+        "photo_remarks": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-105.742411356, 32.962393644],
+          [-105.742035914, 32.961246237]
+        ]
+      },
+      "properties": {
+        "kind": "fairway",
+        "hole": 1
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.741698, 32.961718125]
+      },
+      "properties": {
+        "kind": "tee",
+        "hole": 2,
+        "layer": "community-course-points",
+        "feature": "",
+        "remark": "community-tee-2 | par 3, 245 ft, mando right, fence line OB right",
+        "seq": 0,
+        "elevation_m": 2675.337,
+        "compass_brg": 335.858,
+        "accuracy_h_m": 15.306,
+        "accuracy_v_m": 11,
+        "averaging": 40,
+        "sats_in_use": 24,
+        "photos": [],
+        "photo_remarks": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742356667, 32.96286]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2652.6,
+        "compass_brg": 254.209,
+        "accuracy_h_m": 0.51,
+        "accuracy_v_m": 1,
+        "averaging": 1,
+        "sats_in_use": 25,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_094012035.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742363333, 32.962866667]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2648.2,
+        "compass_brg": 248.602,
+        "accuracy_h_m": 9.184,
+        "accuracy_v_m": 17,
+        "averaging": 1,
+        "sats_in_use": 23,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_094021346.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742076667, 32.962818333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2644.6,
+        "compass_brg": 93.863,
+        "accuracy_h_m": 3.571,
+        "accuracy_v_m": 1,
+        "averaging": 1,
+        "sats_in_use": 20,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_094559282.jpg"
+        ],
+        "photo_remarks": ["kiosk"]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.7423, 32.962648333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2652.4,
+        "compass_brg": 90.55,
+        "accuracy_h_m": 1.02,
+        "accuracy_v_m": 3,
+        "averaging": 1,
+        "sats_in_use": 25,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_094723924.jpg"
+        ],
+        "photo_remarks": ["this way to tee 1"]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742331667, 32.962533333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2658.5,
+        "compass_brg": 131.129,
+        "accuracy_h_m": 3.061,
+        "accuracy_v_m": 2,
+        "averaging": 1,
+        "sats_in_use": 17,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_094819861.jpg"
+        ],
+        "photo_remarks": ["tee 1 sign"]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742443333, 32.96241]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2646.3,
+        "compass_brg": 109.801,
+        "accuracy_h_m": 3.571,
+        "accuracy_v_m": 2,
+        "averaging": 1,
+        "sats_in_use": 27,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_094937388.jpg"
+        ],
+        "photo_remarks": ["tee 1 sign"]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742398333, 32.962375]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2648,
+        "compass_brg": 299.518,
+        "accuracy_h_m": 9.184,
+        "accuracy_v_m": 2,
+        "averaging": 1,
+        "sats_in_use": 18,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_095032451.jpg"
+        ],
+        "photo_remarks": ["hole 1 sign"]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742068333, 32.961263333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2665.9,
+        "compass_brg": 326.329,
+        "accuracy_h_m": 1.02,
+        "accuracy_v_m": 1,
+        "averaging": 1,
+        "sats_in_use": 11,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102323582.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.742076667, 32.961315]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2678.8,
+        "compass_brg": 245.89,
+        "accuracy_h_m": 9.694,
+        "accuracy_v_m": 2,
+        "averaging": 1,
+        "sats_in_use": 25,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102339185.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.741951667, 32.961276667]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2671.3,
+        "compass_brg": 30.026,
+        "accuracy_h_m": 10.714,
+        "accuracy_v_m": 3,
+        "averaging": 1,
+        "sats_in_use": 11,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102424908.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.741691667, 32.961696667]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2672.2,
+        "compass_brg": 282.131,
+        "accuracy_h_m": 7.143,
+        "accuracy_v_m": 12,
+        "averaging": 1,
+        "sats_in_use": 23,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102636706.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.74168, 32.96172]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2674.5,
+        "compass_brg": 339.867,
+        "accuracy_h_m": 9.694,
+        "accuracy_v_m": 6,
+        "averaging": 1,
+        "sats_in_use": 25,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102711164.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.741701667, 32.961688333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2672.1,
+        "compass_brg": 73.387,
+        "accuracy_h_m": 4.082,
+        "accuracy_v_m": 1,
+        "averaging": 1,
+        "sats_in_use": 17,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102752602.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.74168, 32.9617]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2673.4,
+        "compass_brg": 332.995,
+        "accuracy_h_m": 8.163,
+        "accuracy_v_m": 6,
+        "averaging": 1,
+        "sats_in_use": 25,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102857605.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.741668333, 32.961643333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2672.3,
+        "compass_brg": 126.552,
+        "accuracy_h_m": 23.469,
+        "accuracy_v_m": 21,
+        "averaging": 1,
+        "sats_in_use": 24,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_102909753.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.741678333, 32.961706667]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2674.5,
+        "compass_brg": 339.91,
+        "accuracy_h_m": 6.122,
+        "accuracy_v_m": 1,
+        "averaging": 1,
+        "sats_in_use": 24,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_103651536.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.74178, 32.962303333]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2666.1,
+        "compass_brg": 317.99,
+        "accuracy_h_m": 9.694,
+        "accuracy_v_m": 2,
+        "averaging": 1,
+        "sats_in_use": 13,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_103743581.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105.741783333, 32.96234]
+      },
+      "properties": {
+        "kind": "unidentified",
+        "layer": "",
+        "feature": "",
+        "remark": "",
+        "seq": 0,
+        "elevation_m": 2659.8,
+        "compass_brg": 64.156,
+        "accuracy_h_m": 15.816,
+        "accuracy_v_m": 22,
+        "averaging": 1,
+        "sats_in_use": 21,
+        "photos": [
+          "cloudcroft-community-disk-golf-course_20261101_103836675.jpg"
+        ],
+        "photo_remarks": [""]
+      }
+    }
+  ]
 }
