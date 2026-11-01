@@ -10,7 +10,34 @@ marked `"fix": "provisional"` in the GeoJSON and get replaced by ground GPS.
 - compass bearing tee to basket per hole
 - photos of tee signs, hazards, hike/bike trail crossings, parking
 
-status: to collect. see docs/ground-survey-guide.md (field procedure).
+status: partial collection landed 2026-11-01 (community holes 1-2 named,
+21 points; tiki 6 unnamed points). see docs/ground-survey-guide.md
+(field procedure) and dataset/survey/2026-11-01-*/MANIFEST.md.
+
+## field survey raw archive (S3, canonical)
+
+raw phone/Camera handoff for the 2026-11-01 drop, too large for git
+(GitHub 100 MB/file push limit). originals remain on macmini Downloads.
+
+- s3://bryanchasko.com/disc-golf/survey/raw/zip1-course.zip
+  (182,442,376 bytes, etag 0c9da48f276922f9ead040b9b3b85e3e-22):
+  39 files from the community course — 15 Pixel photos with camera GPS,
+  5 panos, 20 SW Maps screenshots. extracted + labeled in
+  dataset/survey/2026-11-01-community/.
+- s3://bryanchasko.com/disc-golf/survey/raw/zip2-nature.zip
+  (72,249,457 bytes, etag 767dc5c3dbc127b4622033e4c0f742f9-9):
+  48 older stock nature photos (2021-2022, birds/wildflowers/cattle) —
+  not survey, used for hackathon blog art (BRAND strips in the writing
+  repo, blog/assets/cloudcroft-disc-golf/). extracted set in
+  dataset/survey/_incoming/zip2/.
+- SW Maps project backups (.swmz incl. SQLite point db + in-app photos)
+  pulled separately from macmini Downloads into
+  dataset/survey/_incoming/swmz-{community,village}/; extracted GeoJSON
+  at dataset/survey/2026-11-01-*/points.geojson via
+  dataset/scripts/swm2_to_geojson.py.
+- Survey panos (walkthrough texture source):
+  s3://bryanchasko.com/disc-golf/survey/panos/2026-11-01-community/
+  (5 PANO files, also committed under dataset/survey/2026-11-01-community/panos/).
 
 ## course layout facts (public, attributed)
 

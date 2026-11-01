@@ -48,7 +48,9 @@ fence-line OB right — matches SW Maps remark below.
 | PXL_20261101_175756282.PANO.jpg | 32.956939 | -105.738344 | south area vista pano         |
 | PXL_20261101_180216070.PANO.jpg | 32.956922 | -105.738531 | aspen grove pano              |
 
-per field guide panos ship to s3, not git. local copies stay until bryan runs the sync.
+per field guide panos ship to s3, not git. local copies remain AND the
+set is synced at s3://bryanchasko.com/disc-golf/survey/panos/2026-11-01-community/
+(5 files, uploaded 2026-11-01).
 
 ## screenshots (20) — `screenshots/`
 
