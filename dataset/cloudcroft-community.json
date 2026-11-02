@@ -10,7 +10,7 @@
     "style": "wooded mountain course, 40-80+ ft elevation swings, opened 2019",
     "terrain": "dense pine forest, uneven footing, horseshoe layout",
     "distances_source": "tbd \u2014 ground collection + UDisc",
-    "coordinates_status": "provisional \u2014 awaiting ground GPS",
+    "coordinates_status": "ground GPS 2026-11-01: 21 points located, 3 named to holes, rest awaiting labels",
     "anchor_lon": -105.73996,
     "anchor_lat": 32.9632,
     "anchor_ele_ft": 8781.4,
@@ -135,7 +135,15 @@
         "averaging": 59,
         "sats_in_use": 27,
         "photos": [],
-        "photo_remarks": []
+        "photo_remarks": [],
+        "survey_id": "community-08",
+        "name": "community-tee-1",
+        "note": "pro-par 4, am-par 5, 411 ft, brg XXX",
+        "lat": 32.962393644,
+        "lon": -105.742411356,
+        "course": "community",
+        "photo": null,
+        "photos_web": []
       }
     },
     {
@@ -158,7 +166,15 @@
         "averaging": 62,
         "sats_in_use": 25,
         "photos": [],
-        "photo_remarks": []
+        "photo_remarks": [],
+        "survey_id": "community-09",
+        "name": "community-basket-1",
+        "note": "trail along fairway, rocky trail to basket, next tee left",
+        "lat": 32.961246237,
+        "lon": -105.742035914,
+        "course": "community",
+        "photo": null,
+        "photos_web": []
       }
     },
     {
@@ -195,7 +211,15 @@
         "averaging": 40,
         "sats_in_use": 24,
         "photos": [],
-        "photo_remarks": []
+        "photo_remarks": [],
+        "survey_id": "community-18",
+        "name": "community-tee-2",
+        "note": "par 3, 245 ft, mando right, fence line OB right",
+        "lat": 32.961718125,
+        "lon": -105.741698,
+        "course": "community",
+        "photo": null,
+        "photos_web": []
       }
     },
     {
@@ -219,7 +243,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_094012035.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-01",
+        "name": "community-survey-01",
+        "note": "",
+        "lat": 32.96286,
+        "lon": -105.742356667,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094012035.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_094012035.webp"
+        ]
       }
     },
     {
@@ -243,7 +277,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_094021346.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-02",
+        "name": "community-survey-02",
+        "note": "",
+        "lat": 32.962866667,
+        "lon": -105.742363333,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094021346.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_094021346.webp"
+        ]
       }
     },
     {
@@ -267,7 +311,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_094559282.jpg"
         ],
-        "photo_remarks": ["kiosk"]
+        "photo_remarks": ["kiosk"],
+        "survey_id": "community-03",
+        "name": "kiosk",
+        "note": "kiosk",
+        "lat": 32.962818333,
+        "lon": -105.742076667,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094559282.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_094559282.webp"
+        ]
       }
     },
     {
@@ -291,7 +345,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_094723924.jpg"
         ],
-        "photo_remarks": ["this way to tee 1"]
+        "photo_remarks": ["this way to tee 1"],
+        "survey_id": "community-04",
+        "name": "this way to tee 1",
+        "note": "this way to tee 1",
+        "lat": 32.962648333,
+        "lon": -105.7423,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094723924.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_094723924.webp"
+        ]
       }
     },
     {
@@ -315,7 +379,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_094819861.jpg"
         ],
-        "photo_remarks": ["tee 1 sign"]
+        "photo_remarks": ["tee 1 sign"],
+        "survey_id": "community-05",
+        "name": "tee 1 sign",
+        "note": "tee 1 sign",
+        "lat": 32.962533333,
+        "lon": -105.742331667,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094819861.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_094819861.webp"
+        ]
       }
     },
     {
@@ -339,7 +413,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_094937388.jpg"
         ],
-        "photo_remarks": ["tee 1 sign"]
+        "photo_remarks": ["tee 1 sign"],
+        "survey_id": "community-06",
+        "name": "tee 1 sign",
+        "note": "tee 1 sign",
+        "lat": 32.96241,
+        "lon": -105.742443333,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094937388.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_094937388.webp"
+        ]
       }
     },
     {
@@ -363,7 +447,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_095032451.jpg"
         ],
-        "photo_remarks": ["hole 1 sign"]
+        "photo_remarks": ["hole 1 sign"],
+        "survey_id": "community-07",
+        "name": "hole 1 sign",
+        "note": "hole 1 sign",
+        "lat": 32.962375,
+        "lon": -105.742398333,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_095032451.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_095032451.webp"
+        ]
       }
     },
     {
@@ -387,7 +481,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102323582.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-10",
+        "name": "community-survey-10",
+        "note": "",
+        "lat": 32.961263333,
+        "lon": -105.742068333,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102323582.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102323582.webp"
+        ]
       }
     },
     {
@@ -411,7 +515,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102339185.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-11",
+        "name": "community-survey-11",
+        "note": "",
+        "lat": 32.961315,
+        "lon": -105.742076667,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102339185.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102339185.webp"
+        ]
       }
     },
     {
@@ -435,7 +549,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102424908.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-12",
+        "name": "community-survey-12",
+        "note": "",
+        "lat": 32.961276667,
+        "lon": -105.741951667,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102424908.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102424908.webp"
+        ]
       }
     },
     {
@@ -459,7 +583,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102636706.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-13",
+        "name": "community-survey-13",
+        "note": "",
+        "lat": 32.961696667,
+        "lon": -105.741691667,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102636706.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102636706.webp"
+        ]
       }
     },
     {
@@ -483,7 +617,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102711164.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-14",
+        "name": "community-survey-14",
+        "note": "",
+        "lat": 32.96172,
+        "lon": -105.74168,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102711164.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102711164.webp"
+        ]
       }
     },
     {
@@ -507,7 +651,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102752602.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-15",
+        "name": "community-survey-15",
+        "note": "",
+        "lat": 32.961688333,
+        "lon": -105.741701667,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102752602.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102752602.webp"
+        ]
       }
     },
     {
@@ -531,7 +685,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102857605.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-16",
+        "name": "community-survey-16",
+        "note": "",
+        "lat": 32.9617,
+        "lon": -105.74168,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102857605.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102857605.webp"
+        ]
       }
     },
     {
@@ -555,7 +719,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_102909753.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-17",
+        "name": "community-survey-17",
+        "note": "",
+        "lat": 32.961643333,
+        "lon": -105.741668333,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102909753.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_102909753.webp"
+        ]
       }
     },
     {
@@ -579,7 +753,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_103651536.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-19",
+        "name": "community-survey-19",
+        "note": "",
+        "lat": 32.961706667,
+        "lon": -105.741678333,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_103651536.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_103651536.webp"
+        ]
       }
     },
     {
@@ -603,7 +787,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_103743581.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-20",
+        "name": "community-survey-20",
+        "note": "",
+        "lat": 32.962303333,
+        "lon": -105.74178,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_103743581.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_103743581.webp"
+        ]
       }
     },
     {
@@ -627,7 +821,17 @@
         "photos": [
           "cloudcroft-community-disk-golf-course_20261101_103836675.jpg"
         ],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "community-21",
+        "name": "community-survey-21",
+        "note": "",
+        "lat": 32.96234,
+        "lon": -105.741783333,
+        "course": "community",
+        "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_103836675.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-community-disk-golf-course_20261101_103836675.webp"
+        ]
       }
     }
   ]

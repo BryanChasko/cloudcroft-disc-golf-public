@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Copy versioned dataset JSON into the web bundle so the app serves
 // same-origin data with zero extra requests config. Runs as prebuild.
-import { copyFileSync, mkdirSync } from "node:fs";
+import { copyFileSync, mkdirSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,13 +29,19 @@ const files = [
     "../dataset/naip-course-window.jpg.json",
     "public/data/naip/course-area-naip.jpg.json",
   ],
-  ...[
-    "PXL_20261101_170324214.webp",
-    "PXL_20261101_171610748.webp",
-    "PXL_20261101_173918101.webp",
-    "PXL_20261101_175756282.webp",
-    "PXL_20261101_180216070.webp",
-  ].map((f) => [`../dataset/panos-web/${f}`, `public/data/panos/${f}`]),
+  ["../dataset/survey-assets.json", "public/data/survey-assets.json"],
+  ...readdirSync(join(root, "../dataset/panos-web"))
+    .filter((f) => f.endsWith(".webp"))
+    .map((f) => [`../dataset/panos-web/${f}`, `public/data/panos/${f}`]),
+  // WebP derivatives from dataset/scripts/web_assets.py
+  ...["photos", "screenshots"].flatMap((sub) =>
+    readdirSync(join(root, `../dataset/web-assets/${sub}`))
+      .filter((f) => f.endsWith(".webp"))
+      .map((f) => [
+        `../dataset/web-assets/${sub}/${f}`,
+        `public/data/${sub}/${f}`,
+      ]),
+  ),
 ];
 for (const [src, dst] of files) {
   const from = join(root, src);

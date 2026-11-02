@@ -46,11 +46,46 @@ def load_survey(path: Path) -> list:
     return json.loads(path.read_text())["features"]
 
 
+def webp_path(basename: str) -> str:
+    return f"data/photos/{Path(basename).stem}.webp"
+
+
+def point_meta(course_id: str, points: list) -> dict:
+    """Stable per-point display metadata, keyed by id(feature).
+
+    name: remark head (before " | "), else first photo remark, else a
+    generated survey name in file order. note: remark tail, else photo
+    remarks. photo/photos_web: served webp paths (web_assets.py emits
+    the files; copy-data.mjs publishes them)."""
+    meta = {}
+    for idx, f in enumerate(points, start=1):
+        p = f["properties"]
+        remark = (p.get("remark") or "").strip()
+        remarks = [r.strip() for r in p.get("photo_remarks", []) if r and r.strip()]
+        head, _, tail = remark.partition("|")
+        name = head.strip() or (remarks[0] if remarks else "") or f"{course_id}-survey-{idx:02d}"
+        note = tail.strip() or "; ".join(remarks)
+        photos = p.get("photos") or []
+        lon, lat = f["geometry"]["coordinates"][:2]
+        meta[id(f)] = {
+            "survey_id": f"{course_id}-{idx:02d}",
+            "name": name,
+            "note": note,
+            "lat": lat,
+            "lon": lon,
+            "course": course_id,
+            "photo": webp_path(photos[0]) if photos else None,
+            "photos_web": [webp_path(b) for b in photos],
+        }
+    return meta
+
+
 def adapt(course_id: str, spec: dict) -> dict:
     path = REPO / "dataset" / spec["file"]
     data = json.loads(path.read_text())
     points = load_survey(spec["survey"])
 
+    meta = point_meta(course_id, points)
     named = {}  # (kind, hole) -> feature
     unidentified = []
     for f in points:
@@ -108,6 +143,7 @@ def adapt(course_id: str, spec: dict) -> dict:
                             "kind": kind,
                             "hole": hole,
                             **feat["properties"],
+                            **meta[id(feat)],
                         },
                     }
                 )
@@ -130,12 +166,22 @@ def adapt(course_id: str, spec: dict) -> dict:
             {
                 "type": "Feature",
                 "geometry": f["geometry"],
-                "properties": {"kind": "unidentified", **f["properties"]},
+                "properties": {
+                    "kind": "unidentified",
+                    **f["properties"],
+                    **meta[id(f)],
+                },
             }
         )
 
     data["holes"] = rows
     data["features"] = features
+    if isinstance(data.get("course"), dict):
+        named_n = len(named)
+        data["course"]["coordinates_status"] = (
+            f"ground GPS 2026-11-01: {len(points)} points located, "
+            f"{named_n} named to holes, rest awaiting labels"
+        )
     surveyed = sum(1 for r in rows if r["status"] == "surveyed")
     return {"path": path, "data": data, "surveyed": surveyed, "points": len(points)}
 

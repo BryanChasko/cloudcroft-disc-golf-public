@@ -1,0 +1,380 @@
+{
+  "generated_from": "dataset/survey/2026-11-01-community/MANIFEST.md + screenshots/",
+  "counts": {
+    "photo": 15,
+    "pano": 5,
+    "screenshot": 20
+  },
+  "assets": [
+    {
+      "asset_id": "PXL_20261101_164259154.jpg",
+      "kind": "photo",
+      "label": "kiosk close-up, course map posted",
+      "lat": 32.962761,
+      "lon": -105.742167,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_164259154.jpg",
+      "web_url": "data/photos/PXL_20261101_164259154.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_164414699.jpg",
+      "kind": "photo",
+      "label": "basket 3 + tee-4 marker (80 ft)",
+      "lat": 32.962911,
+      "lon": -105.7419,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_164414699.jpg",
+      "web_url": "data/photos/PXL_20261101_164414699.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_164448812.jpg",
+      "kind": "photo",
+      "label": "covered tee pad, fairway view",
+      "lat": 32.962911,
+      "lon": -105.7419,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_164448812.jpg",
+      "web_url": "data/photos/PXL_20261101_164448812.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_164454363.jpg",
+      "kind": "photo",
+      "label": "covered tee pad, second angle",
+      "lat": 32.962911,
+      "lon": -105.7419,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_164454363.jpg",
+      "web_url": "data/photos/PXL_20261101_164454363.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_164814470.jpg",
+      "kind": "photo",
+      "label": "tee-1 sign on stump with arrow",
+      "lat": 32.962533,
+      "lon": -105.742331,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_164814470.jpg",
+      "web_url": "data/photos/PXL_20261101_164814470.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_170619902.jpg",
+      "kind": "photo",
+      "label": "tee area, signage + rubber pad, uphill fairway",
+      "lat": 32.962319,
+      "lon": -105.742417,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_170619902.jpg",
+      "web_url": "data/photos/PXL_20261101_170619902.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_170626805.jpg",
+      "kind": "photo",
+      "label": "same tee, second angle",
+      "lat": 32.962319,
+      "lon": -105.742417,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_170626805.jpg",
+      "web_url": "data/photos/PXL_20261101_170626805.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_171528886.MP.jpg",
+      "kind": "photo",
+      "label": "basket 1 close-up with flag",
+      "lat": 32.961281,
+      "lon": -105.742064,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_171528886.MP.jpg",
+      "web_url": "data/photos/PXL_20261101_171528886.MP.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_172609455.jpg",
+      "kind": "photo",
+      "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+      "lat": 32.961539,
+      "lon": -105.741769,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_172609455.jpg",
+      "web_url": "data/photos/PXL_20261101_172609455.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_173546702.jpg",
+      "kind": "photo",
+      "label": "wooded fairway with orange marker",
+      "lat": 32.961703,
+      "lon": -105.741678,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_173546702.jpg",
+      "web_url": "data/photos/PXL_20261101_173546702.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_173801288.jpg",
+      "kind": "photo",
+      "label": "basket 2 wide, fairway behind",
+      "lat": 32.962328,
+      "lon": -105.741778,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_173801288.jpg",
+      "web_url": "data/photos/PXL_20261101_173801288.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_173824802.jpg",
+      "kind": "photo",
+      "label": "basket close-up, yellow band",
+      "lat": 32.962328,
+      "lon": -105.741778,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_173824802.jpg",
+      "web_url": "data/photos/PXL_20261101_173824802.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_175522409.jpg",
+      "kind": "photo",
+      "label": "rubber tee pad in woods",
+      "lat": 32.956964,
+      "lon": -105.738342,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_175522409.jpg",
+      "web_url": "data/photos/PXL_20261101_175522409.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_180320124.jpg",
+      "kind": "photo",
+      "label": "aspen grove fairway view",
+      "lat": 32.956922,
+      "lon": -105.738531,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_180320124.jpg",
+      "web_url": "data/photos/PXL_20261101_180320124.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_180555239.jpg",
+      "kind": "photo",
+      "label": "basket in trees, fairway behind",
+      "lat": 32.956975,
+      "lon": -105.738617,
+      "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_180555239.jpg",
+      "web_url": "data/photos/PXL_20261101_180555239.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_170324214.PANO.jpg",
+      "kind": "pano",
+      "pano_id": "tee2",
+      "course": "community",
+      "label": "hole area pano, north cluster",
+      "lat": 32.962347,
+      "lon": -105.742392,
+      "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_170324214.PANO.jpg",
+      "web_url": "data/panos/PXL_20261101_170324214.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_171610748.PANO.jpg",
+      "kind": "pano",
+      "pano_id": "basket1",
+      "course": "community",
+      "label": "basket-1 area pano",
+      "lat": 32.961281,
+      "lon": -105.742064,
+      "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_171610748.PANO.jpg",
+      "web_url": "data/panos/PXL_20261101_171610748.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_173918101.PANO.jpg",
+      "kind": "pano",
+      "pano_id": "basket2",
+      "course": "community",
+      "label": "basket-2 area pano",
+      "lat": 32.962383,
+      "lon": -105.741778,
+      "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_173918101.PANO.jpg",
+      "web_url": "data/panos/PXL_20261101_173918101.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_175756282.PANO.jpg",
+      "kind": "pano",
+      "pano_id": "tiki-vista",
+      "course": "tiki",
+      "label": "south area vista pano",
+      "lat": 32.956939,
+      "lon": -105.738344,
+      "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_175756282.PANO.jpg",
+      "web_url": "data/panos/PXL_20261101_175756282.webp"
+    },
+    {
+      "asset_id": "PXL_20261101_180216070.PANO.jpg",
+      "kind": "pano",
+      "pano_id": "tiki-aspen",
+      "course": "tiki",
+      "label": "aspen grove pano",
+      "lat": 32.956922,
+      "lon": -105.738531,
+      "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_180216070.PANO.jpg",
+      "web_url": "data/panos/PXL_20261101_180216070.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-063118.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 06:31",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-063118.png",
+      "web_url": "data/screenshots/Screenshot_20261101-063118.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-092935.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 09:29",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-092935.png",
+      "web_url": "data/screenshots/Screenshot_20261101-092935.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-093039.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 09:30",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-093039.png",
+      "web_url": "data/screenshots/Screenshot_20261101-093039.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-093247.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 09:32",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-093247.png",
+      "web_url": "data/screenshots/Screenshot_20261101-093247.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-093503.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 09:35",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-093503.png",
+      "web_url": "data/screenshots/Screenshot_20261101-093503.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-093512.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 09:35",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-093512.png",
+      "web_url": "data/screenshots/Screenshot_20261101-093512.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-093517.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 09:35",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-093517.png",
+      "web_url": "data/screenshots/Screenshot_20261101-093517.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-093523.png",
+      "kind": "screenshot",
+      "label": "SW Maps project + point-layer setup \u2014 09:35",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-093523.png",
+      "web_url": "data/screenshots/Screenshot_20261101-093523.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-095348.png",
+      "kind": "screenshot",
+      "label": "SW Maps map view over the course \u2014 09:53",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-095348.png",
+      "web_url": "data/screenshots/Screenshot_20261101-095348.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-095531.png",
+      "kind": "screenshot",
+      "label": "SW Maps map view over the course \u2014 09:55",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-095531.png",
+      "web_url": "data/screenshots/Screenshot_20261101-095531.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-095543.png",
+      "kind": "screenshot",
+      "label": "SW Maps map view over the course \u2014 09:55",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-095543.png",
+      "web_url": "data/screenshots/Screenshot_20261101-095543.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-100113.png",
+      "kind": "screenshot",
+      "label": "Recording averaged GPS points \u2014 10:01",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-100113.png",
+      "web_url": "data/screenshots/Screenshot_20261101-100113.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-100122.png",
+      "kind": "screenshot",
+      "label": "Recording averaged GPS points \u2014 10:01",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-100122.png",
+      "web_url": "data/screenshots/Screenshot_20261101-100122.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-101956.png",
+      "kind": "screenshot",
+      "label": "Recording averaged GPS points \u2014 10:19",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-101956.png",
+      "web_url": "data/screenshots/Screenshot_20261101-101956.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-102135.png",
+      "kind": "screenshot",
+      "label": "Recording averaged GPS points \u2014 10:21",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-102135.png",
+      "web_url": "data/screenshots/Screenshot_20261101-102135.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-102312.png",
+      "kind": "screenshot",
+      "label": "Recording averaged GPS points \u2014 10:23",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-102312.png",
+      "web_url": "data/screenshots/Screenshot_20261101-102312.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-103311.png",
+      "kind": "screenshot",
+      "label": "Recording averaged GPS points \u2014 10:33",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-103311.png",
+      "web_url": "data/screenshots/Screenshot_20261101-103311.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-103445.png",
+      "kind": "screenshot",
+      "label": "Recording community-tee-2 \u2014 par 3, 245 ft, mando right, fence line OB right (37-fix average)",
+      "lat": 32.961717387,
+      "lon": -105.741697207,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-103445.png",
+      "web_url": "data/screenshots/Screenshot_20261101-103445.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-110003.png",
+      "kind": "screenshot",
+      "label": "Second project: cloudcroft-village-course (Tiki) \u2014 11:00",
+      "lat": null,
+      "lon": null,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-110003.png",
+      "web_url": "data/screenshots/Screenshot_20261101-110003.webp"
+    },
+    {
+      "asset_id": "Screenshot_20261101-110039.png",
+      "kind": "screenshot",
+      "label": "Recording unknown-teebox-front at the south (Tiki) area",
+      "lat": 32.956911667,
+      "lon": -105.738341667,
+      "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-110039.png",
+      "web_url": "data/screenshots/Screenshot_20261101-110039.webp"
+    }
+  ]
+}

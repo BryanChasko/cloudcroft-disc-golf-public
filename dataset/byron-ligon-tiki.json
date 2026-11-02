@@ -10,7 +10,7 @@
     "style": "putting course, all putters, redesigned May 2025",
     "terrain": "aspen and doug fir, mostly flat, hike/bike trail crossings",
     "distances_source": "Radius Disc Golf course page",
-    "coordinates_status": "provisional \u2014 awaiting ground GPS",
+    "coordinates_status": "ground GPS 2026-11-01: 6 points located, 0 named to holes, rest awaiting labels",
     "anchor_lon": -105.73887,
     "anchor_lat": 32.95787,
     "anchor_ele_ft": 8664.5,
@@ -103,7 +103,17 @@
         "averaging": 1,
         "sats_in_use": 16,
         "photos": ["cloudcroft-village-course_20261101_105648849.jpg"],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "tiki-01",
+        "name": "tiki-survey-01",
+        "note": "",
+        "lat": 32.956923333,
+        "lon": -105.738308333,
+        "course": "tiki",
+        "photo": "data/photos/cloudcroft-village-course_20261101_105648849.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-village-course_20261101_105648849.webp"
+        ]
       }
     },
     {
@@ -125,7 +135,15 @@
         "averaging": 1,
         "sats_in_use": 19,
         "photos": [],
-        "photo_remarks": []
+        "photo_remarks": [],
+        "survey_id": "tiki-02",
+        "name": "unknown-teebox",
+        "note": "",
+        "lat": 32.956978333,
+        "lon": -105.73836,
+        "course": "tiki",
+        "photo": null,
+        "photos_web": []
       }
     },
     {
@@ -147,7 +165,15 @@
         "averaging": 55,
         "sats_in_use": 22,
         "photos": [],
-        "photo_remarks": []
+        "photo_remarks": [],
+        "survey_id": "tiki-03",
+        "name": "unknown-teebox-front",
+        "note": "",
+        "lat": 32.95691003,
+        "lon": -105.738358788,
+        "course": "tiki",
+        "photo": null,
+        "photos_web": []
       }
     },
     {
@@ -169,7 +195,17 @@
         "averaging": 1,
         "sats_in_use": 17,
         "photos": ["cloudcroft-village-course_20261101_110332646.jpg"],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "tiki-04",
+        "name": "tiki-survey-04",
+        "note": "",
+        "lat": 32.956883333,
+        "lon": -105.738543333,
+        "course": "tiki",
+        "photo": "data/photos/cloudcroft-village-course_20261101_110332646.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-village-course_20261101_110332646.webp"
+        ]
       }
     },
     {
@@ -191,7 +227,17 @@
         "averaging": 1,
         "sats_in_use": 22,
         "photos": ["cloudcroft-village-course_20261101_110347381.jpg"],
-        "photo_remarks": [""]
+        "photo_remarks": [""],
+        "survey_id": "tiki-05",
+        "name": "tiki-survey-05",
+        "note": "",
+        "lat": 32.956918333,
+        "lon": -105.738553333,
+        "course": "tiki",
+        "photo": "data/photos/cloudcroft-village-course_20261101_110347381.webp",
+        "photos_web": [
+          "data/photos/cloudcroft-village-course_20261101_110347381.webp"
+        ]
       }
     },
     {
@@ -213,7 +259,15 @@
         "averaging": 30,
         "sats_in_use": 21,
         "photos": [],
-        "photo_remarks": []
+        "photo_remarks": [],
+        "survey_id": "tiki-06",
+        "name": "pano-unknown-fairway",
+        "note": "",
+        "lat": 32.956943111,
+        "lon": -105.738549722,
+        "course": "tiki",
+        "photo": null,
+        "photos_web": []
       }
     }
   ]
