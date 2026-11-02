@@ -2,7 +2,7 @@
   "generated_from": "dataset/survey/2026-11-01-community/MANIFEST.md + screenshots/",
   "counts": {
     "photo": 15,
-    "pano": 5,
+    "pano": 6,
     "screenshot": 20
   },
   "assets": [
@@ -27,7 +27,7 @@
     {
       "asset_id": "PXL_20261101_164448812.jpg",
       "kind": "photo",
-      "label": "covered tee pad, fairway view",
+      "label": "Cloudcroft Community kiosk/tiki, fairway view",
       "lat": 32.962911,
       "lon": -105.7419,
       "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_164448812.jpg",
@@ -36,7 +36,7 @@
     {
       "asset_id": "PXL_20261101_164454363.jpg",
       "kind": "photo",
-      "label": "covered tee pad, second angle",
+      "label": "Cloudcroft Community kiosk/tiki, second angle",
       "lat": 32.962911,
       "lon": -105.7419,
       "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_164454363.jpg",
@@ -117,7 +117,7 @@
     {
       "asset_id": "PXL_20261101_175522409.jpg",
       "kind": "photo",
-      "label": "rubber tee pad in woods",
+      "label": "Byron Ligon teebox 3 rubber pad in woods",
       "lat": 32.956964,
       "lon": -105.738342,
       "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_175522409.jpg",
@@ -126,7 +126,7 @@
     {
       "asset_id": "PXL_20261101_180320124.jpg",
       "kind": "photo",
-      "label": "aspen grove fairway view",
+      "label": "Byron Ligon fairway 3, aspen grove view",
       "lat": 32.956922,
       "lon": -105.738531,
       "source": "dataset/survey/2026-11-01-community/photos/PXL_20261101_180320124.jpg",
@@ -146,7 +146,7 @@
       "kind": "pano",
       "pano_id": "tee1-area",
       "course": "community",
-      "label": "hole area pano, north cluster",
+      "label": "Community teebox 1 pano (hole 1)",
       "lat": 32.962347,
       "lon": -105.742392,
       "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_170324214.PANO.jpg",
@@ -157,20 +157,31 @@
       "kind": "pano",
       "pano_id": "basket1",
       "course": "community",
-      "label": "basket-1 area pano",
+      "label": "Community basket 1 pano (hole 1)",
       "lat": 32.961281,
       "lon": -105.742064,
       "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_171610748.PANO.jpg",
       "web_url": "data/panos/PXL_20261101_171610748.webp"
     },
     {
+      "asset_id": "PXL_20261101_173005849.PANO.jpg",
+      "kind": "pano",
+      "pano_id": "tee2-area",
+      "course": "community",
+      "label": "Community teebox 2 pano (mountaintop)",
+      "lat": 32.961722,
+      "lon": -105.741683,
+      "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_173005849.PANO.jpg",
+      "web_url": "data/panos/PXL_20261101_173005849.webp"
+    },
+    {
       "asset_id": "PXL_20261101_173918101.PANO.jpg",
       "kind": "pano",
       "pano_id": "basket2",
       "course": "community",
-      "label": "basket-2 area pano",
+      "label": "Community basket 2 area pano (hole 2)",
       "lat": 32.962383,
-      "lon": -105.741778,
+      "lon": -105.741786,
       "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_173918101.PANO.jpg",
       "web_url": "data/panos/PXL_20261101_173918101.webp"
     },
@@ -179,7 +190,7 @@
       "kind": "pano",
       "pano_id": "tiki-vista",
       "course": "tiki",
-      "label": "south area vista pano",
+      "label": "Byron Ligon teebox 3 pano",
       "lat": 32.956939,
       "lon": -105.738344,
       "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_175756282.PANO.jpg",
@@ -190,7 +201,7 @@
       "kind": "pano",
       "pano_id": "tiki-aspen",
       "course": "tiki",
-      "label": "aspen grove pano",
+      "label": "Byron Ligon fairway 3 pano, aspen grove",
       "lat": 32.956922,
       "lon": -105.738531,
       "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_180216070.PANO.jpg",
@@ -370,7 +381,7 @@
     {
       "asset_id": "Screenshot_20261101-110039.png",
       "kind": "screenshot",
-      "label": "Recording unknown-teebox-front at the south (Tiki) area",
+      "label": "Recording unknown-teebox-front (Byron Ligon teebox 3 area, identified nov 2026)",
       "lat": 32.956911667,
       "lon": -105.738341667,
       "source": "dataset/survey/2026-11-01-community/screenshots/Screenshot_20261101-110039.png",

@@ -75,6 +75,14 @@ tooling (rasterio, duckdb, pyshp). scripts live in dataset/scripts/.
 - Copernicus DEM 30m (s3://copernicus-dem-30m, N32W106 COG verified):
   coarse fallback only. 30m sources give ~1 pixel per 100 ft hole, useless
   for per-hole profiles — the 1m DEM is the elevation source of record.
+- NOAA U.S. Climate Normals 1991-2020 (Registry of Open Data on AWS,
+  s3://noaa-normals-pds): monthly normals for station USC00291931
+  (CLOUDCROFT, NM, 32.9544/-105.7353, 2645.4 m) in
+  dataset/climate-normals-cloudcroft.json via
+  dataset/scripts/noaa_normals.py. NOAA NCEI attribution; no endorsement
+  implied. full audit of which of the above are genuinely Registry
+  fetches: docs/open-data-provenance.md — the heading above groups
+  Registry + portals, and only this entry is a proven Registry fetch.
 
 ## geocoding anchors (coarse, replaced by ground GPS)
 
