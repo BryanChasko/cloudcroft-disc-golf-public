@@ -16,7 +16,9 @@ writes into dataset/{cloudcroft-community,byron-ligon-tiki}.json:
 
 Deterministic: pure function of the points.geojson inputs.
 """
+
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -27,6 +29,55 @@ SURVEY = REPO / "dataset" / "survey"
 HOLE_RE = re.compile(r"(tiki|community)-(tee|basket)-(\d+)")
 PAR_RE = re.compile(r"par\s*(\d+)", re.IGNORECASE)
 DIST_RE = re.compile(r"(\d+(?:\.\d+)?)\s*ft", re.IGNORECASE)
+
+# Pixel field photos join points by GPS proximity, not by filename.
+# 50 m keeps every genuine pad-side match (max observed 43 m) while the
+# north and south clusters sit ~600 m apart, so nothing crosses over.
+FIELD_PHOTO_M = 50.0
+
+
+def haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    r = 6371000.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (
+        math.sin(dlat / 2) ** 2
+        + math.cos(math.radians(lat1))
+        * math.cos(math.radians(lat2))
+        * math.sin(dlon / 2) ** 2
+    )
+    return 2 * r * math.asin(math.sqrt(a))
+
+
+def load_field_photos() -> list:
+    """Pixel field photos with EXIF GPS, from survey-assets.json."""
+    data = json.loads((REPO / "dataset" / "survey-assets.json").read_text())
+    return [
+        a
+        for a in data["assets"]
+        if a["kind"] == "photo"
+        and a.get("lat") is not None
+        and a.get("lon") is not None
+    ]
+
+
+def field_matches(lat: float, lon: float, photos: list) -> list:
+    """Nearest-first Pixel photos within FIELD_PHOTO_M. Deterministic."""
+    out = []
+    for a in photos:
+        d = haversine_m(lat, lon, a["lat"], a["lon"])
+        if d <= FIELD_PHOTO_M:
+            out.append(
+                {
+                    "web_url": a["web_url"],
+                    "label": a["label"],
+                    "dist_m": round(d, 1),
+                    "asset_id": a["asset_id"],
+                }
+            )
+    out.sort(key=lambda r: (r["dist_m"], r["asset_id"]))
+    return [{k: r[k] for k in ("web_url", "label", "dist_m")} for r in out]
+
 
 COURSES = {
     "community": {
@@ -56,14 +107,20 @@ def point_meta(course_id: str, points: list) -> dict:
     name: remark head (before " | "), else first photo remark, else a
     generated survey name in file order. note: remark tail, else photo
     remarks. photo/photos_web: served webp paths (web_assets.py emits
-    the files; copy-data.mjs publishes them)."""
+    the files; copy-data.mjs publishes them). field_photos: nearest
+    Pixel field photos by GPS (survey-assets.json EXIF), nearest first."""
+    field_photos_src = load_field_photos()
     meta = {}
     for idx, f in enumerate(points, start=1):
         p = f["properties"]
         remark = (p.get("remark") or "").strip()
         remarks = [r.strip() for r in p.get("photo_remarks", []) if r and r.strip()]
         head, _, tail = remark.partition("|")
-        name = head.strip() or (remarks[0] if remarks else "") or f"{course_id}-survey-{idx:02d}"
+        name = (
+            head.strip()
+            or (remarks[0] if remarks else "")
+            or f"{course_id}-survey-{idx:02d}"
+        )
         note = tail.strip() or "; ".join(remarks)
         photos = p.get("photos") or []
         lon, lat = f["geometry"]["coordinates"][:2]
@@ -76,6 +133,7 @@ def point_meta(course_id: str, points: list) -> dict:
             "course": course_id,
             "photo": webp_path(photos[0]) if photos else None,
             "photos_web": [webp_path(b) for b in photos],
+            "field_photos": field_matches(lat, lon, field_photos_src),
         }
     return meta
 
@@ -190,8 +248,10 @@ def main():
     for course_id, spec in COURSES.items():
         out = adapt(course_id, spec)
         out["path"].write_text(json.dumps(out["data"], indent=1) + "\n")
-        print(f"{course_id}: {out['path'].name} "
-              f"({out['surveyed']} surveyed rows, {out['points']} survey points)")
+        print(
+            f"{course_id}: {out['path'].name} "
+            f"({out['surveyed']} surveyed rows, {out['points']} survey points)"
+        )
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@
       href="https://bryanchasko.com/cloudcroft-disc-golf/"
     />
     <meta name="theme-color" content="#143d2a" />
-    <link rel="icon" type="image/svg+xml" href="/disc-golf/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/cloudcroft-disc-golf/app/favicon.svg" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Bryan Chasko" />
     <meta
@@ -489,6 +489,32 @@
       #throw-note {
         min-height: 1.5em;
       }
+      /* live map embed + visual river (top of page) */
+      .map-embed {
+        margin: 0.8rem 0 0.4rem;
+      }
+      .map-embed iframe {
+        width: 100%;
+        height: 34rem;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--card);
+        box-shadow: var(--shadow2);
+        display: block;
+      }
+      @media (max-width: 640px) {
+        .map-embed iframe {
+          height: 26rem;
+        }
+      }
+      .river-h {
+        font-size: 1.15rem;
+        color: var(--pine-dark);
+        margin: 1.4rem 0 0.5rem;
+      }
+      #radio-top {
+        margin-top: 0.8rem;
+      }
       /* mini scorecard game */
       .play-row {
         display: grid;
@@ -956,25 +982,30 @@
         <p class="sub">
           AR map + scorecard for Cloudcroft, New Mexico disc golf.
         </p>
+        <nav data-site-nav></nav>
       </header>
       <div id="progress" aria-hidden="true"><div id="progress-bar"></div></div>
       <main id="main">
-        <p>
-          On November 1 I walked the Cloudcroft Community course with a phone, a
-          field guide, and eight steps per hole. I came home with 21 averaged
-          GPS points, 15 photos, 5 panos, and the tee signs that carry the only
-          par numbers this course publishes. This page is what that field day
-          turned into: a scorecard that fills in hole by hole, and the recipe so
-          anyone can map their own course the same way.
-        </p>
+        <div id="radio-top" data-radio-tuner></div>
+        <figure class="map-embed">
+          <iframe
+            src="/cloudcroft-disc-golf/app/?course=community"
+            title="Live Cloudcroft disc golf map — click any survey point for its photo and coordinates"
+            loading="eager"
+          ></iframe>
+          <figcaption>
+            The live map, right here. Click any colored point for its name,
+            coordinates, and field photo. Bigger:
+            <a href="/cloudcroft-disc-golf/app/">full map + scorecard</a> ·
+            <a href="/cloudcroft-disc-golf/app/walk.html">3D walkthrough</a>
+          </figcaption>
+        </figure>
         <div class="cta-row">
-          <a href="/disc-golf/">Open the live map</a>
-          <a class="ghost" href="/disc-golf/walk.html">3D walkthrough</a>
-          <a class="ghost" href="/disc-golf/how-this-works/">How this works</a>
+          <a href="/cloudcroft-disc-golf/app/">Open the live map</a>
+          <a class="ghost" href="/cloudcroft-disc-golf/app/walk.html">3D walkthrough</a>
           <button id="throw-btn" type="button">
             Hold to charge — release to throw
           </button>
-          <a class="ghost" href="#h-radio">Mountain radio ↓</a>
         </div>
         <div class="throw-stage" aria-hidden="true">
           <div id="disc"></div>
@@ -1043,22 +1074,14 @@
           Hole 2: 245 feet of thin mountain air. Land the power in the green —
           the wind moves the basket.
         </p>
-        <figure>
-          <picture
-            ><source type="image/webp" srcset="assets/map-hero.webp" />
-            <img
-              src="assets/map-hero.png"
-              alt="Live 2D map of the Cloudcroft disc golf courses with trails and hole pins"
-              width="1440"
-              height="900"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-          /></picture>
-          <figcaption>
-            The live map — topo tiles, trails, hole table, cloud scorecard.
-          </figcaption>
-        </figure>
+        <h2 class="river-h">Stand on the mountain — tap a panorama</h2>
+        <div id="gal-panos" class="gal" aria-live="polite">
+          <p class="meta">loading panoramas…</p>
+        </div>
+        <h2 class="river-h">The field day in pictures</h2>
+        <div id="gal-photos" class="gal" aria-live="polite">
+          <p class="meta">loading photos…</p>
+        </div>
 
         <section class="card" aria-labelledby="h-story">
           <h2 id="h-story">Two courses hand-built by Ray Haller</h2>
@@ -1091,7 +1114,7 @@
             <p>
               Under aspen and doug fir at the west end of Zenith Park,
               redesigned May 2025.
-              <a href="/disc-golf/?course=tiki">Open Tiki on the map →</a>
+              <a href="/cloudcroft-disc-golf/app/?course=tiki">Open Tiki on the map →</a>
             </p>
           </div>
           <div class="course-pane" data-course-pane="community" hidden>
@@ -1108,7 +1131,7 @@
             <p>
               A wooded mountain track near the old baseball field, opened 2019,
               rated 4.6 stars from 500+ reviews.
-              <a href="/disc-golf/?course=community"
+              <a href="/cloudcroft-disc-golf/app/?course=community"
                 >Open Community on the map →</a
               >
             </p>
@@ -1223,20 +1246,6 @@
               /></picture>
               <figcaption>Hole 2 tee sign — the par source.</figcaption>
             </figure>
-          </div>
-          <h3>Every photo from the field day</h3>
-          <p class="meta">
-            All 15 GPS-tagged photos with their coordinates, the 5 panoramas
-            (tap one to stand in it), and all 20 SW Maps screenshots — loaded
-            live from the same data files the
-            <a href="/disc-golf/">map</a> reads.
-          </p>
-          <div id="gal-photos" class="gal" aria-live="polite">
-            <p class="meta">loading photos…</p>
-          </div>
-          <h3>Panoramas — tap to stand there</h3>
-          <div id="gal-panos" class="gal" aria-live="polite">
-            <p class="meta">loading panoramas…</p>
           </div>
           <h3>The survey as it happened — SW Maps screenshots</h3>
           <div id="gal-shots" class="shots" aria-live="polite">
@@ -1365,15 +1374,15 @@
             <span class="vs vs-even">E</span>
           </div>
           <p id="play-total" role="status" aria-live="polite">
-            Even through 2. <a href="/disc-golf/">Open the full card →</a>
+            Even through 2. <a href="/cloudcroft-disc-golf/app/">Open the full card →</a>
           </p>
           <p class="meta">
             Take it to the real card:
-            <a href="/disc-golf/?course=community&amp;hole=1"
+            <a href="/cloudcroft-disc-golf/app/?course=community&amp;hole=1"
               >hole 1 on the map →</a
             >
             ·
-            <a href="/disc-golf/?course=community&amp;hole=2"
+            <a href="/cloudcroft-disc-golf/app/?course=community&amp;hole=2"
               >hole 2 on the map →</a
             >
             <button type="button" id="play-reset" class="svc-chip-reset">
@@ -1457,14 +1466,12 @@
         </section>
 
         <section class="card" aria-labelledby="h-radio">
-          <h2 id="h-radio">Mountain radio</h2>
+          <h2 id="h-radio">More mountain radio</h2>
           <p class="meta">
-            The drive up and the round at 8,676 feet, in streams. One tuner for
-            the story, the <a href="/disc-golf/">map</a>, and the
-            <a href="/disc-golf/walk.html">walk</a> — pick a station here and it
-            follows you there.
+            The player is at the <a href="#radio-top">top of this page</a> — the
+            same tuner rides along on the <a href="/cloudcroft-disc-golf/app/">map</a> and the
+            <a href="/cloudcroft-disc-golf/app/walk.html">walk</a>.
           </p>
-          <div data-radio-tuner></div>
           <p class="radio-links">
             On their home platforms:
             <a href="https://live365.com/" rel="noopener" target="_blank"
@@ -1504,7 +1511,7 @@
               <p>
                 For the bots: semantic HTML, JSON-LD for both courses, alt and
                 ARIA on every image and control, honest status text. Crawl the
-                <a href="/disc-golf/">map</a> and this page — nothing needs a
+                <a href="/cloudcroft-disc-golf/app/">map</a> and this page — nothing needs a
                 screenshot to parse.
               </p>
             </div>
@@ -1567,10 +1574,10 @@
             loading survey points…
           </p>
           <p>
-            The <a href="/disc-golf/">map and scorecard</a> are live, as is the
-            <a href="/disc-golf/walk.html">3D walkthrough</a>. The repo stays
+            The <a href="/cloudcroft-disc-golf/app/">map and scorecard</a> are live, as is the
+            <a href="/cloudcroft-disc-golf/app/walk.html">3D walkthrough</a>. The repo stays
             private; the reusable pattern is the
-            <a href="/disc-golf/how-this-works/">how-this-works writeup</a>.
+            <a href="/cloudcroft-disc-golf/app/how-this-works/">how-this-works writeup</a>.
             Still to come: the under-3-minute demo video, then the Builder
             Center project post.
           </p>
@@ -1835,7 +1842,7 @@
                 ? "+" + total + " through 2."
                 : total + " through 2 — nice.";
           totalEl.innerHTML =
-            t + ' <a href="/disc-golf/">Open the full card →</a>';
+            t + ' <a href="/cloudcroft-disc-golf/app/">Open the full card →</a>';
         }
         rows.forEach(function (row) {
           var out = row.querySelector("output");
@@ -1917,7 +1924,7 @@
       })();
       (function () {
         // live data, same files the map serves: galleries, points, dots
-        var BASE = "/disc-golf/";
+        var BASE = "/cloudcroft-disc-golf/app/";
         function esc(s) {
           return String(s == null ? "" : s)
             .replaceAll("&", "&amp;")
@@ -1994,7 +2001,7 @@
           })
           .catch(function () {
             document.getElementById("gal-photos").innerHTML =
-              '<p class="meta">gallery failed to load — see the <a href="/disc-golf/">map</a>.</p>';
+              '<p class="meta">gallery failed to load — see the <a href="/cloudcroft-disc-golf/app/">map</a>.</p>';
           });
         Promise.all([
           fetch(BASE + "data/holes/cloudcroft-community.json").then(
@@ -2022,9 +2029,22 @@
                   "?course=" +
                   encodeURIComponent(p.course || "community") +
                   (p.hole ? "&hole=" + p.hole : "");
-                var photo = p.photo
-                  ? '<a href="' + BASE + esc(p.photo) + '">photo</a>'
-                  : "—";
+                var links = [];
+                if (p.photo)
+                  links.push(
+                    '<a href="' + BASE + esc(p.photo) + '">photo</a>',
+                  );
+                (p.field_photos || []).slice(0, 3).forEach(function (f, i) {
+                  links.push(
+                    '<a href="' +
+                      BASE +
+                      esc(f.web_url) +
+                      '">field' +
+                      (i + 1) +
+                      "</a>",
+                  );
+                });
+                var photo = links.length ? links.join(" ") : "—";
                 return (
                   '<tr><td><a href="' +
                   mapHref +
@@ -2065,6 +2085,21 @@
                   "?course=" +
                   encodeURIComponent(p.course || "community") +
                   (p.hole ? "&hole=" + p.hole : "");
+                var dotLinks = [];
+                if (p.photo)
+                  dotLinks.push(
+                    '<a href="' + BASE + esc(p.photo) + '">field photo</a>',
+                  );
+                (p.field_photos || []).slice(0, 2).forEach(function (f, i) {
+                  dotLinks.push(
+                    '<a href="' +
+                      BASE +
+                      esc(f.web_url) +
+                      '">nearby' +
+                      (i + 1) +
+                      "</a>",
+                  );
+                });
                 info.innerHTML =
                   "<strong>" +
                   esc(p.name) +
@@ -2080,9 +2115,7 @@
                   '<a href="' +
                   mapHref +
                   '">open on the map →</a>' +
-                  (p.photo
-                    ? ' · <a href="' + BASE + esc(p.photo) + '">field photo</a>'
-                    : "");
+                  (dotLinks.length ? " · " + dotLinks.join(" ") : "");
               });
               dots.appendChild(b);
             });
@@ -2093,7 +2126,7 @@
             var t = document.querySelector("#pts-table tbody");
             if (t)
               t.innerHTML =
-                '<tr><td colspan="6">survey points failed to load — see the <a href="/disc-golf/">map</a>.</td></tr>';
+                '<tr><td colspan="6">survey points failed to load — see the <a href="/cloudcroft-disc-golf/app/">map</a>.</td></tr>';
           });
       })();
       (function () {
@@ -2153,6 +2186,7 @@
         arm();
       })();
     </script>
-    <script src="/disc-golf/shared/radio-tuner.js" defer></script>
+    <script src="/cloudcroft-disc-golf/app/shared/radio-tuner.js" defer></script>
+    <script src="/cloudcroft-disc-golf/app/shared/site-nav.js" defer></script>
   </body>
 </html>

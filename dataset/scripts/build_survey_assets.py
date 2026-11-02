@@ -11,6 +11,7 @@ them to web/src/config.ts PANOS.
 
 Deterministic: pure function of MANIFEST.md + directory listings.
 """
+
 import json
 import re
 import sys
@@ -27,14 +28,16 @@ ROW_RE = re.compile(
 )
 PANO_IDS = {
     "PXL_20261101_171610748.PANO.jpg": "basket1",
-    "PXL_20261101_170324214.PANO.jpg": "tee2",
+    # 170324214 shoots the Hole 1 tee area (GPS + sign both read Hole 1);
+    # it was mislabeled tee2 until the Nov 2026 mountaintop correction.
+    "PXL_20261101_170324214.PANO.jpg": "tee1-area",
     "PXL_20261101_173918101.PANO.jpg": "basket2",
     "PXL_20261101_180216070.PANO.jpg": "tiki-aspen",
     "PXL_20261101_175756282.PANO.jpg": "tiki-vista",
 }
 PANO_COURSE = {
     "basket1": "community",
-    "tee2": "community",
+    "tee1-area": "community",
     "basket2": "community",
     "tiki-aspen": "tiki",
     "tiki-vista": "tiki",
@@ -113,7 +116,10 @@ def main() -> int:
         if shot.name in TRANSCRIBED:
             rec.update(TRANSCRIBED[shot.name])
         assets.append(rec)
-    kinds = {k: sum(1 for a in assets if a["kind"] == k) for k in ("photo", "pano", "screenshot")}
+    kinds = {
+        k: sum(1 for a in assets if a["kind"] == k)
+        for k in ("photo", "pano", "screenshot")
+    }
     OUT.write_text(
         json.dumps(
             {

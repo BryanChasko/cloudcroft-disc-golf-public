@@ -143,7 +143,29 @@
         "lon": -105.742411356,
         "course": "community",
         "photo": null,
-        "photos_web": []
+        "photos_web": [],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_170619902.webp",
+            "label": "tee area, signage + rubber pad, uphill fairway",
+            "dist_m": 8.3
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_170626805.webp",
+            "label": "same tee, second angle",
+            "dist_m": 8.3
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 17.2
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 46.8
+          }
+        ]
       }
     },
     {
@@ -174,7 +196,19 @@
         "lon": -105.742035914,
         "course": "community",
         "photo": null,
-        "photos_web": []
+        "photos_web": [],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_171528886.MP.webp",
+            "label": "basket 1 close-up with flag",
+            "dist_m": 4.7
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 41.0
+          }
+        ]
       }
     },
     {
@@ -219,7 +253,19 @@
         "lon": -105.741698,
         "course": "community",
         "photo": null,
-        "photos_web": []
+        "photos_web": [],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173546702.webp",
+            "label": "wooded fairway with orange marker",
+            "dist_m": 2.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 21.0
+          }
+        ]
       }
     },
     {
@@ -253,6 +299,33 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094012035.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_094012035.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 20.8
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 36.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164414699.webp",
+            "label": "basket 3 + tee-4 marker (80 ft)",
+            "dist_m": 43.0
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164448812.webp",
+            "label": "covered tee pad, fairway view",
+            "dist_m": 43.0
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164454363.webp",
+            "label": "covered tee pad, second angle",
+            "dist_m": 43.0
+          }
         ]
       }
     },
@@ -287,6 +360,33 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094021346.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_094021346.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 21.8
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 37.2
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164414699.webp",
+            "label": "basket 3 + tee-4 marker (80 ft)",
+            "dist_m": 43.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164448812.webp",
+            "label": "covered tee pad, fairway view",
+            "dist_m": 43.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164454363.webp",
+            "label": "covered tee pad, second angle",
+            "dist_m": 43.5
+          }
         ]
       }
     },
@@ -321,6 +421,33 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094559282.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_094559282.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 10.6
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164414699.webp",
+            "label": "basket 3 + tee-4 marker (80 ft)",
+            "dist_m": 19.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164448812.webp",
+            "label": "covered tee pad, fairway view",
+            "dist_m": 19.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164454363.webp",
+            "label": "covered tee pad, second angle",
+            "dist_m": 19.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 39.6
+          }
         ]
       }
     },
@@ -355,6 +482,43 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094723924.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_094723924.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 13.1
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 17.6
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_170619902.webp",
+            "label": "tee area, signage + rubber pad, uphill fairway",
+            "dist_m": 38.2
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_170626805.webp",
+            "label": "same tee, second angle",
+            "dist_m": 38.2
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164414699.webp",
+            "label": "basket 3 + tee-4 marker (80 ft)",
+            "dist_m": 47.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164448812.webp",
+            "label": "covered tee pad, fairway view",
+            "dist_m": 47.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164454363.webp",
+            "label": "covered tee pad, second angle",
+            "dist_m": 47.4
+          }
         ]
       }
     },
@@ -389,6 +553,28 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094819861.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_094819861.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 0.1
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_170619902.webp",
+            "label": "tee area, signage + rubber pad, uphill fairway",
+            "dist_m": 25.1
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_170626805.webp",
+            "label": "same tee, second angle",
+            "dist_m": 25.1
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 29.6
+          }
         ]
       }
     },
@@ -423,6 +609,28 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_094937388.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_094937388.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_170619902.webp",
+            "label": "tee area, signage + rubber pad, uphill fairway",
+            "dist_m": 10.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_170626805.webp",
+            "label": "same tee, second angle",
+            "dist_m": 10.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 17.2
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 46.8
+          }
         ]
       }
     },
@@ -457,6 +665,28 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_095032451.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_095032451.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_170619902.webp",
+            "label": "tee area, signage + rubber pad, uphill fairway",
+            "dist_m": 6.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_170626805.webp",
+            "label": "same tee, second angle",
+            "dist_m": 6.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164814470.webp",
+            "label": "tee-1 sign on stump with arrow",
+            "dist_m": 18.7
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_164259154.webp",
+            "label": "kiosk close-up, course map posted",
+            "dist_m": 48.0
+          }
         ]
       }
     },
@@ -491,6 +721,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102323582.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102323582.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_171528886.MP.webp",
+            "label": "basket 1 close-up with flag",
+            "dist_m": 2.0
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 41.5
+          }
         ]
       }
     },
@@ -525,6 +767,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102339185.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102339185.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_171528886.MP.webp",
+            "label": "basket 1 close-up with flag",
+            "dist_m": 4.0
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 38.0
+          }
         ]
       }
     },
@@ -559,6 +813,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102424908.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102424908.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_171528886.MP.webp",
+            "label": "basket 1 close-up with flag",
+            "dist_m": 10.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 33.8
+          }
         ]
       }
     },
@@ -593,6 +859,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102636706.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102636706.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173546702.webp",
+            "label": "wooded fairway with orange marker",
+            "dist_m": 1.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 19.0
+          }
         ]
       }
     },
@@ -627,6 +905,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102711164.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102711164.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173546702.webp",
+            "label": "wooded fairway with orange marker",
+            "dist_m": 1.9
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 21.8
+          }
         ]
       }
     },
@@ -661,6 +951,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102752602.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102752602.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173546702.webp",
+            "label": "wooded fairway with orange marker",
+            "dist_m": 2.7
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 17.8
+          }
         ]
       }
     },
@@ -695,6 +997,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102857605.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102857605.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173546702.webp",
+            "label": "wooded fairway with orange marker",
+            "dist_m": 0.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 19.7
+          }
         ]
       }
     },
@@ -729,6 +1043,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_102909753.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_102909753.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173546702.webp",
+            "label": "wooded fairway with orange marker",
+            "dist_m": 6.7
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 14.9
+          }
         ]
       }
     },
@@ -763,6 +1089,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_103651536.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_103651536.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173546702.webp",
+            "label": "wooded fairway with orange marker",
+            "dist_m": 0.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_172609455.webp",
+            "label": "hole-2 tee sign: 245 ft PAR 3, mando + fence-line OB, tee-3 arrow",
+            "dist_m": 20.5
+          }
         ]
       }
     },
@@ -797,6 +1135,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_103743581.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_103743581.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173801288.webp",
+            "label": "basket 2 wide, fairway behind",
+            "dist_m": 2.7
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_173824802.webp",
+            "label": "basket close-up, yellow band",
+            "dist_m": 2.7
+          }
         ]
       }
     },
@@ -831,6 +1181,18 @@
         "photo": "data/photos/cloudcroft-community-disk-golf-course_20261101_103836675.webp",
         "photos_web": [
           "data/photos/cloudcroft-community-disk-golf-course_20261101_103836675.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_173801288.webp",
+            "label": "basket 2 wide, fairway behind",
+            "dist_m": 1.4
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_173824802.webp",
+            "label": "basket close-up, yellow band",
+            "dist_m": 1.4
+          }
         ]
       }
     }

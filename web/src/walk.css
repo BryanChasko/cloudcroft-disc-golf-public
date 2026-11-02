@@ -151,6 +151,15 @@ main {
   display: none;
 }
 
+#pin-photos {
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+#pin-photos[hidden] {
+  display: none;
+}
+
 #pin-card p {
   margin: 0.35rem 0;
   color: var(--muted);

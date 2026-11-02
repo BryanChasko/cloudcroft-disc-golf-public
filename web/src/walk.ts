@@ -18,7 +18,7 @@ import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTextur
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color.js";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration.js";
-import { COURSES, MOUNTAINTOP_PANO, PANOS } from "./config";
+import { COURSES, MOUNTAINTOP, PANOS } from "./config";
 import type { CourseId, PanoView } from "./config";
 import { PhotoDome } from "@babylonjs/core/Helpers/photoDome.js";
 import "./walk.css";
@@ -298,6 +298,7 @@ async function main(): Promise<void> {
     new Color3(0.23, 0.42, 0.23),
     new Color3(0.15, 0.3, 0.17),
   ];
+  const crownMats: StandardMaterial[] = [];
   const crownBases = crownGreens.map((g, gi) => {
     const m = MeshBuilder.CreateCylinder(
       `crown${gi}`,
@@ -309,6 +310,7 @@ async function main(): Promise<void> {
     mat.diffuseColor = g;
     mat.specularColor = Color3.Black();
     m.material = mat;
+    crownMats.push(mat);
     return m;
   });
   // Blob shadow grounding each trunk (the sun shadow map's normal bias
@@ -347,7 +349,15 @@ async function main(): Promise<void> {
     });
   }
   const forest = new Mesh("forest", scene);
-  placed.forEach((t, i) => {
+  // No trunk on the pad: keep every 360° photo spot clear so the first
+  // thing a pano shows is the course, not bark. (Applies to orbit too —
+  // pads read as groomed clearings.)
+  const panoClear: [number, number][] = PANOS.map((p) => toWorld(p.lon, p.lat));
+  const placedKept = placed.filter(({ x, z }) =>
+    panoClear.every(([ax, az]) => Math.hypot(x - ax, z - az) > 12),
+  );
+  // Pads stay groomed: no trunk inside any 360° clearing.
+  placedKept.forEach((t, i) => {
     const trunk = trunkBase.createInstance(`trunk${i}`);
     trunk.position.set(t.x, t.y + 0.7 * t.s, t.z);
     trunk.scaling.setAll(t.s);
@@ -499,6 +509,8 @@ async function main(): Promise<void> {
       lat?: number;
       lon?: number;
       photo?: string | null;
+      photos_web?: string[];
+      field_photos?: { web_url: string; label: string; dist_m: number }[];
       elevation_m?: number;
       accuracy_h_m?: number;
     };
@@ -507,6 +519,8 @@ async function main(): Promise<void> {
     features?: HoleFeature[];
   }
   const pinCard = document.getElementById("pin-card") as HTMLElement | null;
+  // All surveyed pins, cached for the mountaintop jump + pin clicks.
+  let pinFeats: HoleFeature[] = [];
   function showPinCard(p: HoleFeature["properties"]): void {
     if (!pinCard) return;
     const title = document.getElementById("pin-title");
@@ -528,8 +542,43 @@ async function main(): Promise<void> {
       if (typeof p.accuracy_h_m === "number") meta.push(`±${p.accuracy_h_m} m`);
       coords.textContent = meta.join(" · ");
     }
+    // Every photo at the pin: attached survey shot + nearest field photos.
+    let strip = document.getElementById("pin-photos") as HTMLElement | null;
+    if (!strip) {
+      strip = document.createElement("div");
+      strip.id = "pin-photos";
+      strip.className = "pin-photos";
+      pinCard.insertBefore(strip, pinCard.querySelector("#pin-text"));
+    }
+    const shots: { src: string; label: string }[] = [
+      ...(p.photos_web ?? []).map((src) => ({
+        src,
+        label: `Survey photo at ${p.name ?? "survey point"}`,
+      })),
+      ...(p.field_photos ?? []).map((f) => ({
+        src: f.web_url,
+        label: f.label,
+      })),
+    ];
+    const seen = new Set<string>();
+    strip.innerHTML = "";
+    for (const s of shots) {
+      if (seen.has(s.src)) continue;
+      seen.add(s.src);
+      const el = document.createElement("img");
+      el.src = s.src;
+      el.alt = s.label;
+      el.loading = "lazy";
+      strip.appendChild(el);
+    }
+    strip.hidden = shots.length === 0;
     if (img) {
-      if (p.photo) {
+      // Legacy single-photo slot kept for the first shot (deep-link
+      // targets and older styles); hidden when the strip carries photos.
+      if (shots.length > 0) {
+        img.hidden = true;
+        img.removeAttribute("src");
+      } else if (p.photo) {
         img.src = p.photo;
         img.alt = `Field photo at ${p.name ?? "survey point"}`;
         img.hidden = false;
@@ -547,6 +596,7 @@ async function main(): Promise<void> {
       ),
     );
     const feats = files.flatMap((d) => d.features ?? []);
+    pinFeats = feats;
     const teeMat = new StandardMaterial("teeMat", scene);
     teeMat.diffuseColor = new Color3(0.1, 0.32, 0.46);
     teeMat.emissiveColor = new Color3(0.04, 0.12, 0.2);
@@ -610,6 +660,9 @@ async function main(): Promise<void> {
     setStatus(
       `${pins} survey pins from the November 1 field day — click any pin for its photo and coordinates`,
     );
+    // holePins resolves after fetch: if a pano opened first, its pins
+    // arrived late and visible — re-apply pano hiding to them.
+    if (!panoCard.hidden) setPanoMode(true);
   }
   void holePins();
 
@@ -687,24 +740,55 @@ async function main(): Promise<void> {
   // Meshes that block the 360° photo (forest + survey pins): hidden in
   // pano mode so the photo, not the illustrative geometry, is the view.
   const panoOccluders: Mesh[] = [];
+  // Forest visibility rides a flag, not forest.isEnabled(): the container
+  // mesh is always enabled (children carry the geometry), so reading the
+  // container lied — once hidden, the toggle could never bring trees back.
+  let forestOn =
+    (
+      document.getElementById("toggle-trees") as HTMLElement | null
+    )?.classList.contains("active") ?? true;
   function treesWanted(): boolean {
-    return (
-      (
-        document.getElementById("toggle-trees") as HTMLElement | null
-      )?.classList.contains("active") ?? true
-    );
+    return forestOn;
+  }
+  const forestMats: { mat: StandardMaterial; base: number }[] = [
+    { mat: trunkMat, base: 1 },
+    ...crownMats.map((mat) => ({ mat, base: 1 })),
+    { mat: blobMat, base: 0.42 },
+  ];
+  function setForestVisible(v: boolean): void {
+    // Instance meshes ignore enabled/visible/parent changes in this Babylon
+    // version (verified on screen), but they share materials — fading those
+    // to zero hides all ~6000 instances at once. Blob-shadow discs restore
+    // to their own base alpha, not 1. (This also fixes the Forest toolbar
+    // button, which never actually hid anything.) Residual real-time
+    // shadows with the forest off are soft and faint; acceptable.
+    for (const { mat, base } of forestMats) mat.alpha = v ? base : 0;
   }
   function setPanoMode(on: boolean): void {
-    forest.setEnabled(on ? treesWanted() : false);
+    setForestVisible(on ? treesWanted() : false);
     panoOccluders.forEach((m) => m.setEnabled(!on));
+    // In a 360° photo the ground, trails, and course art are already in
+    // the picture — the 3D versions only mismatch it. All regular meshes,
+    // so setEnabled takes.
+    terrain.setEnabled(!on);
+    trailsMesh.setEnabled(on ? false : trailsVisibleNow());
+    for (const m of [...windsocks, ...labels]) m.setEnabled(!on);
+  }
+  function trailsVisibleNow(): boolean {
+    return (
+      (
+        document.getElementById("toggle-trails-walk") as HTMLElement | null
+      )?.classList.contains("active") ?? true
+    );
   }
   const panoCard = document.getElementById("pano-card") as HTMLElement;
   const panoCaption = document.getElementById("pano-caption") as HTMLElement;
   const veil = document.getElementById("fade-veil") as HTMLElement;
   let panoDome: PhotoDome | null = null;
-  let panoIdx = PANOS.indexOf(MOUNTAINTOP_PANO);
-  // Stand on the mountaintop: real 360° survey photo at the tee, walk camera
-  // at disc-flight height so drag looks around from the pad.
+  let panoIdx = 0;
+  // Stand on the mountaintop: walk camera on the highest surveyed pad
+  // (Community tee box 2) with its real pad-side field photos. No 360°
+  // exists at tee 2 yet, so this opens the pin card — not a wrong pano.
   function showPanoAt(idx: number): void {
     panoIdx = ((idx % PANOS.length) + PANOS.length) % PANOS.length;
     const p: PanoView = PANOS[panoIdx];
@@ -712,6 +796,10 @@ async function main(): Promise<void> {
       enterWalk(p.course);
       const [px, pz] = toWorld(p.lon, p.lat);
       walkCam.position.set(px, heightAt(p.lon, p.lat) + 2, pz);
+      // Face the photographed clearing, not the treeline behind the pad.
+      // yaw is verified per pano in config (default = walk heading).
+      yaw = p.yaw ?? Math.PI;
+      applyWalkRotation();
       if (!panoDome) {
         panoDome = new PhotoDome("pano", p.file, { size: 400 }, scene);
       } else {
@@ -858,20 +946,51 @@ async function main(): Promise<void> {
   (
     document.getElementById("toggle-trees") as HTMLButtonElement
   ).addEventListener("click", (e) => {
-    forest.setEnabled(!forest.isEnabled());
-    (e.target as HTMLElement).classList.toggle("active", forest.isEnabled());
+    forestOn = !forestOn;
+    setForestVisible(forestOn);
+    (e.target as HTMLElement).classList.toggle("active", forestOn);
   });
+  // Mountaintop: fly the walk camera to Community tee box 2 and open its
+  // pin card with the real pad-side field photos (sign + fairway).
+  function goMountaintop(): void {
+    hidePano();
+    enterWalk(MOUNTAINTOP.course);
+    (document.getElementById("mode-walk") as HTMLElement).classList.add(
+      "active",
+    );
+    (document.getElementById("mode-orbit") as HTMLElement).classList.remove(
+      "active",
+    );
+    const [px, pz] = toWorld(MOUNTAINTOP.lon, MOUNTAINTOP.lat);
+    walkCam.position.set(
+      px,
+      heightAt(MOUNTAINTOP.lon, MOUNTAINTOP.lat) + 2,
+      pz,
+    );
+    yaw = MOUNTAINTOP.yaw;
+    // Tip the view down to the pad: the default walk pitch aims at sky.
+    pitch = -0.05;
+    applyWalkRotation();
+    const tee2 = pinFeats.find(
+      (f) => f.properties.name === "community-tee-2",
+    )?.properties;
+    if (tee2) {
+      showPinCard(tee2);
+    } else {
+      showPinCard({
+        kind: "tee",
+        hole: 2,
+        name: MOUNTAINTOP.name,
+        note: MOUNTAINTOP.note,
+        lat: MOUNTAINTOP.lat,
+        lon: MOUNTAINTOP.lon,
+      });
+    }
+    setStatus("mountaintop — Community tee box 2, par 3, 245 ft");
+  }
   (document.getElementById("pano-tiki") as HTMLButtonElement).addEventListener(
     "click",
-    () => {
-      showPanoAt(PANOS.indexOf(MOUNTAINTOP_PANO));
-      (document.getElementById("mode-walk") as HTMLElement).classList.add(
-        "active",
-      );
-      (document.getElementById("mode-orbit") as HTMLElement).classList.remove(
-        "active",
-      );
-    },
+    () => goMountaintop(),
   );
   (document.getElementById("pano-prev") as HTMLButtonElement).addEventListener(
     "click",
@@ -892,8 +1011,10 @@ async function main(): Promise<void> {
   )?.addEventListener("click", () => {
     if (pinCard) pinCard.hidden = true;
   });
-  // Deep link from the map/story galleries: walk.html?pano=tee2
-  const wantPano = new URLSearchParams(location.search).get("pano");
+  // Deep link from the map/story galleries: walk.html?pano=tee1-area.
+  // tee2 aliases the relabeled Hole 1 pano for links minted before the fix.
+  const rawPano = new URLSearchParams(location.search).get("pano");
+  const wantPano = rawPano === "tee2" ? "tee1-area" : rawPano;
   if (wantPano) {
     const idx = PANOS.findIndex((p) => p.id === wantPano);
     if (idx >= 0) showPanoAt(idx);

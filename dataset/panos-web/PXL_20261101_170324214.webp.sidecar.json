@@ -2,10 +2,10 @@
   "source": "dataset/survey/2026-11-01-community/panos/PXL_20261101_170324214.PANO.jpg",
   "source_sha256": "f76f17428deab8a0aaf086d1d43b5ef37a5500d887e9f162c328b9721e9a89d0",
   "output": "dataset/panos-web/PXL_20261101_170324214.webp",
-  "dimensions": [2048, 319],
-  "sha256": "692fa07e80a35c1c5790f93b083aedd3a140f75047306816c8bd5e4d8dadd2c4",
-  "bytes": 187848,
+  "dimensions": [4096, 638],
+  "sha256": "6c2191a71acbf9b13c0ebbf461f69fd98769f308acf3fb840c67d4aaf6f43a6d",
+  "bytes": 786224,
   "pil_version": "13.0.0",
   "python_version": "3.13.12",
-  "transforms": ["resize_w2048_lanczos", "export_webp_q80_m6"]
+  "transforms": ["resize_w4096_lanczos", "export_webp_q80_m6"]
 }

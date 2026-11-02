@@ -2,9 +2,10 @@
 """pano_web.py — web derivatives of the survey 360° panos.
 
 Source panos are 19k-pixel wide (12-31 MB) — fine for the archive, useless
-on a phone. Web derivatives: 2048px wide WebP q80 (a few hundred KB), which
-is what the walkthrough PhotoDome loads. Deterministic: fixed width and
-quality; sidecar per output with source sha.
+on a phone. Web derivatives: 4096px wide WebP q80, which is what the
+walkthrough PhotoDome loads (a 2048px dome texture reads as blur on a
+360° sphere). Deterministic: fixed width and quality; sidecar per output
+with source sha.
 
 Usage: python pano_web.py [src-dir] [dst-dir]
 Defaults: dataset/survey/2026-11-01-community/panos -> dataset/panos-web/
@@ -18,7 +19,7 @@ import PIL
 from PIL import Image
 
 REPO = Path(__file__).resolve().parents[2]
-WIDTH = 2048
+WIDTH = 4096
 QUALITY = 80
 
 

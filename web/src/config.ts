@@ -40,6 +40,8 @@ export interface PanoView {
   lat: number;
   course: CourseId;
   note: string;
+  /** initial look direction (radians); verified per pano on screen */
+  yaw?: number;
 }
 export const PANOS: PanoView[] = [
   {
@@ -53,14 +55,17 @@ export const PANOS: PanoView[] = [
     note: "Basket 1 area — a real 360° shot from the November 1 ground survey. Drag to look around.",
   },
   {
-    id: "tee2",
+    // Shot + GPS both read Hole 1: the north-cluster 360 at the Hole 1
+    // tee area (mislabeled tee2 before the Nov 2026 mountaintop fix).
+    id: "tee1-area",
     lot: "tee",
-    label: "Community tee box 2 — par 3, 245 ft",
+    label: "Community tee box 1 area — Hole 1, par 4, 411 ft",
     file: "data/panos/PXL_20261101_170324214.webp",
     lon: -105.742392,
     lat: 32.962347,
     course: "community",
-    note: "You are standing at Community tee box 2, 8,676 feet up, in a real 360° shot from the November 1 ground survey. Par 3, 245 ft — mando right, fence-line out of bounds right. Drag to look around the Sacramento Mountains.",
+    note: "North-cluster 360° at the Hole 1 tee area — a real shot from the November 1 ground survey. Pro-par 4, 411 ft uphill. Drag to look around.",
+    yaw: 1.6,
   },
   {
     id: "basket2",
@@ -93,7 +98,26 @@ export const PANOS: PanoView[] = [
     note: "South-area vista at the Byron Ligon Tiki course — a real 360° shot from the November 1 ground survey. Drag to look around.",
   },
 ];
-export const MOUNTAINTOP_PANO: PanoView = PANOS[1];
+export interface Mountaintop {
+  course: CourseId;
+  lon: number;
+  lat: number;
+  /** initial walk look direction (radians); from the tee-2 compass fix. */
+  yaw: number;
+  name: string;
+  note: string;
+}
+// The mountaintop is the highest surveyed pad: Community tee box 2
+// (SW Maps 40-fix average, elev 2675.3 m). No 360° exists there yet —
+// the walk shows its real pad-side field photos instead of a wrong pano.
+export const MOUNTAINTOP: Mountaintop = {
+  course: "community",
+  lon: -105.741698,
+  lat: 32.961718125,
+  yaw: -2.72,
+  name: "Community tee box 2",
+  note: "par 3, 245 ft — mando right, fence-line out of bounds right",
+};
 
 export const DATA = {
   trails: "data/osm/trails.geojson",

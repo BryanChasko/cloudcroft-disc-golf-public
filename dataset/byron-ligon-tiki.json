@@ -113,6 +113,23 @@
         "photo": "data/photos/cloudcroft-village-course_20261101_105648849.webp",
         "photos_web": [
           "data/photos/cloudcroft-village-course_20261101_105648849.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_175522409.webp",
+            "label": "rubber tee pad in woods",
+            "dist_m": 5.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180320124.webp",
+            "label": "aspen grove fairway view",
+            "dist_m": 20.8
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180555239.webp",
+            "label": "basket in trees, fairway behind",
+            "dist_m": 29.4
+          }
         ]
       }
     },
@@ -143,7 +160,24 @@
         "lon": -105.73836,
         "course": "tiki",
         "photo": null,
-        "photos_web": []
+        "photos_web": [],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_175522409.webp",
+            "label": "rubber tee pad in woods",
+            "dist_m": 2.3
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180320124.webp",
+            "label": "aspen grove fairway view",
+            "dist_m": 17.1
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180555239.webp",
+            "label": "basket in trees, fairway behind",
+            "dist_m": 24.0
+          }
+        ]
       }
     },
     {
@@ -173,7 +207,24 @@
         "lon": -105.738358788,
         "course": "tiki",
         "photo": null,
-        "photos_web": []
+        "photos_web": [],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_175522409.webp",
+            "label": "rubber tee pad in woods",
+            "dist_m": 6.2
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180320124.webp",
+            "label": "aspen grove fairway view",
+            "dist_m": 16.1
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180555239.webp",
+            "label": "basket in trees, fairway behind",
+            "dist_m": 25.2
+          }
+        ]
       }
     },
     {
@@ -205,6 +256,23 @@
         "photo": "data/photos/cloudcroft-village-course_20261101_110332646.webp",
         "photos_web": [
           "data/photos/cloudcroft-village-course_20261101_110332646.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_180320124.webp",
+            "label": "aspen grove fairway view",
+            "dist_m": 4.5
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180555239.webp",
+            "label": "basket in trees, fairway behind",
+            "dist_m": 12.3
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_175522409.webp",
+            "label": "rubber tee pad in woods",
+            "dist_m": 20.8
+          }
         ]
       }
     },
@@ -237,6 +305,23 @@
         "photo": "data/photos/cloudcroft-village-course_20261101_110347381.webp",
         "photos_web": [
           "data/photos/cloudcroft-village-course_20261101_110347381.webp"
+        ],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_180320124.webp",
+            "label": "aspen grove fairway view",
+            "dist_m": 2.1
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180555239.webp",
+            "label": "basket in trees, fairway behind",
+            "dist_m": 8.7
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_175522409.webp",
+            "label": "rubber tee pad in woods",
+            "dist_m": 20.4
+          }
         ]
       }
     },
@@ -267,7 +352,24 @@
         "lon": -105.738549722,
         "course": "tiki",
         "photo": null,
-        "photos_web": []
+        "photos_web": [],
+        "field_photos": [
+          {
+            "web_url": "data/photos/PXL_20261101_180320124.webp",
+            "label": "aspen grove fairway view",
+            "dist_m": 2.9
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_180555239.webp",
+            "label": "basket in trees, fairway behind",
+            "dist_m": 7.2
+          },
+          {
+            "web_url": "data/photos/PXL_20261101_175522409.webp",
+            "label": "rubber tee pad in woods",
+            "dist_m": 19.5
+          }
+        ]
       }
     }
   ]

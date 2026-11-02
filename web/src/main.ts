@@ -46,6 +46,11 @@ interface HoleRow {
   status?: "surveyed" | "remote" | "scaffold";
   par_source?: string;
 }
+interface FieldPhoto {
+  web_url: string;
+  label: string;
+  dist_m: number;
+}
 interface SurveyFeature {
   type: "Feature";
   geometry: { type: string; coordinates: unknown };
@@ -61,6 +66,7 @@ interface SurveyFeature {
     course?: string;
     photo?: string | null;
     photos_web?: string[];
+    field_photos?: FieldPhoto[];
     photo_remarks?: string[];
     elevation_m?: number;
     accuracy_h_m?: number;
@@ -110,9 +116,21 @@ function surveyPopupHtml(p: SurveyFeature["properties"]): string {
   bits.push(
     `<span class="pop-kind">${esc(p.kind ?? "")}${p.hole ? ` · hole ${p.hole}` : ""} · ${esc(p.survey_id ?? "")}</span>`,
   );
-  if (p.photo) {
+  // Every photo taken at the point: the SW Maps attached shot plus the
+  // nearest Pixel field photos from the same field day.
+  const shots: { src: string; label: string }[] = [
+    ...(p.photos_web ?? []).map((src) => ({
+      src,
+      label: `Survey photo at ${p.name ?? "survey point"}`,
+    })),
+    ...(p.field_photos ?? []).map((f) => ({ src: f.web_url, label: f.label })),
+  ];
+  const seen = new Set<string>();
+  for (const s of shots) {
+    if (seen.has(s.src)) continue;
+    seen.add(s.src);
     bits.push(
-      `<img class="pop-photo" src="${esc(p.photo)}" alt="Field photo at ${esc(p.name ?? "survey point")}" loading="lazy">`,
+      `<img class="pop-photo" src="${esc(s.src)}" alt="${esc(s.label)}" loading="lazy">`,
     );
   }
   if (p.note) bits.push(`<span>${esc(p.note)}</span>`);
@@ -231,6 +249,41 @@ function addOverlays(): void {
   }
   void refreshSurveyLayer();
 
+  // Field-day imagery as its own markers: every Pixel photo + pano from
+  // survey-assets.json, so the map shows all 15 photos and 5 panos where
+  // the phone actually took them — not just the point they annotate.
+  if (!map.getSource("field-shots")) {
+    map.addSource("field-shots", {
+      type: "geojson",
+      data: { type: "FeatureCollection", features: [] },
+    });
+    map.addLayer({
+      id: "field-photos",
+      type: "circle",
+      source: "field-shots",
+      filter: ["==", ["get", "kind"], "photo"],
+      paint: {
+        "circle-radius": 4,
+        "circle-color": "#b34700",
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 1,
+      },
+    });
+    map.addLayer({
+      id: "field-panos",
+      type: "circle",
+      source: "field-shots",
+      filter: ["==", ["get", "kind"], "pano"],
+      paint: {
+        "circle-radius": 7,
+        "circle-color": "#00838f",
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 2,
+      },
+    });
+  }
+  void refreshFieldShots();
+
   // Course anchors.
   for (const [id, c] of Object.entries(COURSES)) {
     const el = document.createElement("div");
@@ -293,6 +346,39 @@ async function refreshSurveyLayer(): Promise<void> {
     });
   } catch {
     // leave prior features in place; table render reports failures
+  }
+}
+
+async function refreshFieldShots(): Promise<void> {
+  const src = map?.getSource("field-shots") as
+    maplibregl.GeoJSONSource | undefined;
+  if (!src) return;
+  try {
+    const data = (await (await fetch(DATA.surveyAssets)).json()) as {
+      assets: SurveyAsset[];
+    };
+    src.setData({
+      type: "FeatureCollection",
+      features: data.assets
+        .filter(
+          (a) =>
+            (a.kind === "photo" || a.kind === "pano") &&
+            a.lat !== null &&
+            a.lon !== null,
+        )
+        .map((a) => ({
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [a.lon, a.lat] },
+          properties: {
+            kind: a.kind,
+            label: a.label,
+            web_url: a.web_url,
+            pano_id: a.pano_id ?? null,
+          },
+        })) as never[],
+    });
+  } catch {
+    // gallery render reports failures; markers stay empty
   }
 }
 
@@ -563,6 +649,33 @@ async function main(): Promise<void> {
   map.on("mouseleave", "survey-points", () => {
     map.getCanvas().style.cursor = "";
   });
+  // Field-shot popups: the Pixel photo, or the pano with a walk link.
+  const shotPopup = (
+    e: maplibregl.MapMouseEvent & { features?: maplibregl.GeoJSONFeature[] },
+  ) => {
+    const props = (e.features?.[0]?.properties ?? {}) as {
+      kind?: string;
+      label?: string;
+      web_url?: string;
+      pano_id?: string | null;
+    };
+    const walkLink =
+      props.kind === "pano" && props.pano_id
+        ? `<br><a href="./walk.html?pano=${encodeURIComponent(props.pano_id)}">stand here in the 3D walk →</a>`
+        : "";
+    new maplibregl.Popup({ offset: 12, maxWidth: "320px" })
+      .setLngLat(e.lngLat)
+      .setHTML(
+        `<strong>${esc(props.label ?? "field photo")}</strong><br>` +
+          (props.web_url
+            ? `<img class="pop-photo" src="${esc(props.web_url)}" alt="${esc(props.label ?? "field photo")}" loading="lazy"><br>`
+            : "") +
+          `<span class="pop-coords">${e.lngLat.lat.toFixed(6)}, ${e.lngLat.lng.toFixed(6)}</span>${walkLink}`,
+      )
+      .addTo(map);
+  };
+  map.on("click", "field-photos", shotPopup);
+  map.on("click", "field-panos", shotPopup);
   const readout = document.getElementById("coord-readout");
   if (readout) {
     map.on("mousemove", (e) => {
@@ -594,6 +707,15 @@ async function main(): Promise<void> {
         "visibility",
         trailsVisible ? "visible" : "none",
       );
+    }
+  });
+
+  (
+    document.getElementById("toggle-shots") as HTMLInputElement
+  ).addEventListener("change", (e) => {
+    const vis = (e.target as HTMLInputElement).checked ? "visible" : "none";
+    for (const layer of ["field-photos", "field-panos"]) {
+      if (map.getLayer(layer)) map.setLayoutProperty(layer, "visibility", vis);
     }
   });
 

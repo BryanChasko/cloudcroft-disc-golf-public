@@ -111,6 +111,9 @@ const counts = await page.evaluate(() => ({
     '#pts-table tbody a[href*="data/photos/"]',
   ).length,
   dots: document.querySelectorAll("#survey-dots .dot").length,
+  rowsWithLinks: [...document.querySelectorAll("#pts-table tbody tr")].filter(
+    (tr) => tr.querySelector('a[href*="data/photos/"]'),
+  ).length,
   firstCoord:
     document.querySelector("#pts-table tbody td.coords")?.textContent ?? "",
 }));
@@ -119,9 +122,11 @@ check("gallery: 5 panos", counts.panos === 5, String(counts.panos));
 check("gallery: 20 screenshots", counts.shots === 20, String(counts.shots));
 check("points table: 27 rows", counts.rows === 27, String(counts.rows));
 check(
-  "points table: 21 photo links",
-  counts.photoLinks === 21,
-  String(counts.photoLinks),
+  // 21 attached shots + nearest Pixel field shots (up to 3 per row);
+  // every one of the 27 rows links at least one photo
+  "points table: photo + field links on every row",
+  counts.photoLinks >= 21 + 15 && counts.rowsWithLinks === 27,
+  `${counts.photoLinks} links, ${counts.rowsWithLinks}/27 rows`,
 );
 check(
   "points table: coordinates as text",
@@ -272,6 +277,7 @@ const walk = await page.evaluate(() => ({
       ?.textContent ?? "",
   pinCard: !!document.getElementById("pin-card"),
   tuner: !!document.querySelector("[data-radio-tuner] .rt-play"),
+  panoBtn: !!document.getElementById("pano-tiki"),
 }));
 check(
   "walk: 27 survey pins status",
@@ -307,7 +313,71 @@ check(
   /aspen/i.test(pano.title) && /32\.956922/.test(pano.text),
   `${pano.title} · ${pano.caption}`,
 );
+// the mountaintop button must land on tee box 2 (pin card, real pad
+// photos) — never the Hole 1 pano it showed before the Nov 2026 fix
+await page.goto(`${APP}/walk.html`, { waitUntil: "load", timeout: 60000 });
+await page.waitForTimeout(1500);
+await page.click("#pano-tiki");
+await page.waitForFunction(() => !document.getElementById("pin-card")?.hidden, null, { timeout: 60000 }).catch(() => {});
+const top = await page.evaluate(() => ({
+  title: document.getElementById("pin-title")?.textContent ?? "",
+  coords: document.getElementById("pin-coords")?.textContent ?? "",
+  photos: document.querySelectorAll("#pin-photos img").length,
+}));
+check(
+  "walk: mountaintop button -> tee box 2",
+  /tee-2/.test(top.title) && /32\.961718/.test(top.coords) && top.photos >= 2,
+  `${top.title} · ${top.coords} · ${top.photos} photos`,
+);
 await shot("walk-pano-tiki.png");
+
+// ?pano=tee2 aliases the relabeled Hole 1 pano (back-compat, honest label)
+await page.goto(`${APP}/walk.html?pano=tee2`, {
+  waitUntil: "load",
+  timeout: 60000,
+});
+await page
+  .waitForFunction(() => !document.getElementById("pano-card")?.hidden, null, {
+    timeout: 60000,
+  })
+  .catch(() => {});
+const alias = await page.evaluate(() => ({
+  title: document.getElementById("pano-title")?.textContent ?? "",
+  caption: document.getElementById("pano-caption")?.textContent ?? "",
+}));
+check(
+  "walk: ?pano=tee2 alias -> Hole 1 area",
+  /box 1 area/i.test(alias.title),
+  `${alias.title} · ${alias.caption}`,
+);
+
+// every swmz point carries its photos: tee 2 links the pad-side shots
+const holes = await page.evaluate(async () => {
+  const base = location.href.split("/walk.html")[0];
+  const res = await fetch(`${base}/data/holes/cloudcroft-community.json`);
+  const data = await res.json();
+  const pts = (data.features || []).filter(
+    (f) => f.geometry && f.geometry.type === "Point",
+  );
+  const byName = {};
+  for (const f of pts) byName[f.properties.name] = f.properties;
+  return {
+    points: pts.length,
+    tee2field: (byName["community-tee-2"]?.field_photos || []).map(
+      (p) => p.web_url,
+    ),
+    withField: pts.filter((f) =>
+      (f.properties.field_photos || []).length > 0,
+    ).length,
+  };
+});
+check(
+  "data: 21 community points, tee 2 links hole-2 sign",
+  holes.points === 21 &&
+    holes.tee2field.some((u) => /172609455/.test(u)) &&
+    holes.withField === 21,
+  `${holes.points} pts, ${holes.withField} with field photos`,
+);
 
 // old slug redirects (query preserved)
 await page.goto(`${ORIGIN}/disc-golf/?course=community&hole=2`, {
