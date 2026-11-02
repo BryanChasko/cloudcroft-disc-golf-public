@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Build + deploy the web map to the disc-golf/ sibling prefix.
+# Build + deploy the web map under the story page:
+# https://bryanchasko.com/cloudcroft-disc-golf/app/ (one slug).
 set -euo pipefail
 cd "$(dirname "$0")/../web"
 
 npm run build
 
 BUCKET="bryanchasko.com"
-PREFIX="disc-golf"
+PREFIX="cloudcroft-disc-golf/app"
 PROFILE="${AWS_PROFILE:-aerospaceug-admin}"
 REGION="us-west-2"
 DISTRO="E2E9BSL5RVN6DI"

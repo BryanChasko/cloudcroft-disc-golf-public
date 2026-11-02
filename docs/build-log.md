@@ -75,7 +75,7 @@ day-by-day narrative. raw material for the submission writeup.
 - CORS fix: HTTP API needed explicit allowHeaders for JSON posts.
 - verified live in headless chromium: tiles render, 9 hole rows, zero failed
   requests, full scorecard click-path (start round, save hole 4, total).
-  live: https://bryanchasko.com/disc-golf/
+  live: https://bryanchasko.com/cloudcroft-disc-golf/app/
 
 ## day 0, later — site pages, android auth, submission draft
 
@@ -96,7 +96,7 @@ day-by-day narrative. raw material for the submission writeup.
   engine): 1m dem terrain + naip drape, osm trail ribbons, instanced
   forest with trunks, baskets + windsocks + labels at both pins, orbit
   - wasd walk + fly-to + toggles + pano placeholder + honest webxr
-    fallback. live: https://bryanchasko.com/disc-golf/walk.html
+    fallback. live: https://bryanchasko.com/cloudcroft-disc-golf/app/walk.html
 - two blind critic rounds (docs/qa/critique-1.md, critique-2.md):
   round 2 passed 8/8 functional sections. fix round 2 closed the rest:
   walk pitch clamp + 4m eye, emissive diorama plinth (measured the

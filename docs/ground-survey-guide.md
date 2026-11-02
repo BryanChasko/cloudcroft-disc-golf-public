@@ -80,8 +80,8 @@ At the basket:
 
 ## On-site phone check (5 min, counts as QA)
 
-On LTE (not wifi): open `https://bryanchasko.com/disc-golf/` and
-`https://bryanchasko.com/disc-golf/walk.html`. Confirm the map loads,
+On LTE (not wifi): open `https://bryanchasko.com/cloudcroft-disc-golf/app/` and
+`https://bryanchasko.com/cloudcroft-disc-golf/app/walk.html`. Confirm the map loads,
 a hole saves to the scorecard, and walk mode looks clean. Report back:
 loads y/n, scorecard saves y/n, any visible glitches, and roughly how
 strong the signal is at each course (matters for the AR app).

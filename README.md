@@ -41,6 +41,6 @@ provisional until ground-truth GPS is collected on site. coarse anchors:
 
 ## status
 
-live map: https://bryanchasko.com/disc-golf/ — topo/satellite bases, trails,
+live map: https://bryanchasko.com/cloudcroft-disc-golf/app/ — topo/satellite bases, trails,
 NAIP overlay, hole table, working scorecard. per-hole pins unlock with
 ground GPS.

@@ -37,7 +37,7 @@ Amazon DynamoDB, Amazon S3, Amazon CloudFront, AWS CloudFormation (via CDK).
 
 ## live map
 
-https://bryanchasko.com/disc-golf/
+https://bryanchasko.com/cloudcroft-disc-golf/app/
 
 Story + reusable pattern: https://bryanchasko.com/cloudcroft-disc-golf/
 and /cloudcroft-disc-golf/how-this-works/.
