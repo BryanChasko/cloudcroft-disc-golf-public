@@ -47,7 +47,7 @@ export const PANOS: PanoView[] = [
   {
     id: "basket1",
     lot: "basket",
-    label: "Community basket 1",
+    label: "Community Hole 1 — basket 1",
     file: "data/panos/PXL_20261101_171610748.webp",
     lon: -105.742064,
     lat: 32.961281,
@@ -59,7 +59,7 @@ export const PANOS: PanoView[] = [
     // tee area (mislabeled tee2 before the Nov 2026 mountaintop fix).
     id: "tee1-area",
     lot: "tee",
-    label: "Community tee box 1 area — Hole 1, par 4, 411 ft",
+    label: "Community Hole 1 — tee box 1, par 4, 411 ft",
     file: "data/panos/PXL_20261101_170324214.webp",
     lon: -105.742392,
     lat: 32.962347,
@@ -70,7 +70,7 @@ export const PANOS: PanoView[] = [
   {
     id: "basket2",
     lot: "basket",
-    label: "Community basket 2",
+    label: "Community Hole 2 — basket 2",
     file: "data/panos/PXL_20261101_173918101.webp",
     lon: -105.741778,
     lat: 32.962383,
@@ -78,9 +78,21 @@ export const PANOS: PanoView[] = [
     note: "Basket 2 area — a real 360° shot from the November 1 ground survey. Drag to look around.",
   },
   {
+    id: "tee2-area",
+    lot: "tee",
+    label: "Community tee box 2 — Hole 2, par 3, 245 ft",
+    file: "data/panos/PXL_20261101_173005849.webp",
+    lon: -105.741683,
+    lat: 32.961722,
+    course: "community",
+    note: "Mountaintop 360° at the Community tee box 2 pad — a real shot from the November 1 ground survey. Par 3, 245 ft, mando right. Drag to look around.",
+    // Verified tee-2 compass fix — same heading as MOUNTAINTOP below.
+    yaw: -2.72,
+  },
+  {
     id: "tiki-aspen",
     lot: "vista",
-    label: "Tiki south area — aspen grove",
+    label: "Byron Ligon Hole 3 — fairway 3, aspen grove",
     file: "data/panos/PXL_20261101_180216070.webp",
     lon: -105.738531,
     lat: 32.956922,
@@ -90,7 +102,7 @@ export const PANOS: PanoView[] = [
   {
     id: "tiki-vista",
     lot: "vista",
-    label: "Tiki south area vista",
+    label: "Byron Ligon Hole 3 — tee box 3",
     file: "data/panos/PXL_20261101_175756282.webp",
     lon: -105.738344,
     lat: 32.956939,
@@ -108,8 +120,9 @@ export interface Mountaintop {
   note: string;
 }
 // The mountaintop is the highest surveyed pad: Community tee box 2
-// (SW Maps 40-fix average, elev 2675.3 m). No 360° exists there yet —
-// the walk shows its real pad-side field photos instead of a wrong pano.
+// (SW Maps 40-fix average, elev 2675.3 m). Its 360° (tee2-area,
+// PXL_20261101_173005849) was ingested 2026-11-02 — the walk jumps
+// straight to that pano.
 export const MOUNTAINTOP: Mountaintop = {
   course: "community",
   lon: -105.741698,
