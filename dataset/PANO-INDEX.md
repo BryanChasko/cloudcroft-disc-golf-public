@@ -62,23 +62,19 @@ Deploy evidence: `scripts/deploy-web.sh` syncs `web/dist/` to
 relative `data/panos/<file>.webp` shape. Local md5s of
 `dataset/panos-web/*.webp` and `web/public/data/panos/*.webp` match per file.
 
-| code | pano_id      | photographer ground truth        | canonical public panorama                                                               | live check                               |
-| ---- | ------------ | -------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------- |
-| A    | `tee1-area`  | Community teebox 1               | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_170324214.webp | 200 image/webp, 786224 B                 |
-| B    | `basket1`    | Community hole 1, basket 1       | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_171610748.webp | 200 image/webp, 543210 B                 |
-| C    | `basket2`    | Community hole 2 (basket 2 area) | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_173918101.webp | 200 image/webp, 573778 B                 |
-| D    | `tiki-vista` | Byron Ligon teebox 3             | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_175756282.webp | 200 image/webp, 900758 B                 |
-| E    | `tiki-aspen` | Byron Ligon fairway 3            | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_180216070.webp | 200 image/webp, 981838 B                 |
-| F    | `tee2-area`  | Community teebox 2               | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_173005849.webp | **404 on 2026-11-02 — not yet deployed** |
+| code | pano_id      | photographer ground truth        | canonical public panorama                                                               | live check               |
+| ---- | ------------ | -------------------------------- | --------------------------------------------------------------------------------------- | ------------------------ |
+| A    | `tee1-area`  | Community teebox 1               | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_170324214.webp | 200 image/webp, 786224 B |
+| B    | `basket1`    | Community hole 1, basket 1       | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_171610748.webp | 200 image/webp, 543210 B |
+| C    | `basket2`    | Community hole 2 (basket 2 area) | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_173918101.webp | 200 image/webp, 573778 B |
+| D    | `tiki-vista` | Byron Ligon teebox 3             | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_175756282.webp | 200 image/webp, 900758 B |
+| E    | `tiki-aspen` | Byron Ligon fairway 3            | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_180216070.webp | 200 image/webp, 981838 B |
+| F    | `tee2-area`  | Community teebox 2               | https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_173005849.webp | 200 image/webp, 950626 B |
 
-F exists locally (`dataset/panos-web/PXL_20261101_173005849.webp`,
-`web/public/data/panos/PXL_20261101_173005849.webp`, original under
-`dataset/survey/2026-11-01-community/panos/`, all untracked at check time)
-and in the working-tree `survey-assets.json` (6 panos), but the live
-`survey-assets.json` still counts 5 panos and the canonical F URL above
-returns 404. Do not present F as live until a commit + `deploy-web.sh` run
-flips both to 200 / 6. Its embed below therefore uses the repo-relative
-path, which renders for repo viewers once committed.
+F shipped 2026-11-02: committed (`dataset/panos-web/`, original under
+`dataset/survey/2026-11-01-community/panos/`) plus a `deploy-web.sh` run —
+live `survey-assets.json` counts 6 panos and the canonical F URL above
+returns 200.
 
 ### Not public links — do not use as public embeds
 
@@ -134,15 +130,11 @@ are the geolocated field photos in `survey-assets.json`
 
 [![Byron Ligon fairway 3, aspen grove view](https://bryanchasko.com/cloudcroft-disc-golf/app/data/photos/PXL_20261101_180320124.webp)](https://bryanchasko.com/cloudcroft-disc-golf/app/data/photos/PXL_20261101_180320124.webp)
 
-### F — Community teebox 2 (`tee2-area`) — pending deploy
+### F — Community teebox 2 (`tee2-area`) — live
 
-[![Community teebox 2 panorama (repo-relative, pending deploy)](panos-web/PXL_20261101_173005849.webp)](panos-web/PXL_20261101_173005849.webp)
+[![Community teebox 2 panorama](https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_173005849.webp)](https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_173005849.webp)
 
 [![Hole 2 tee sign, 245 ft par 3](https://bryanchasko.com/cloudcroft-disc-golf/app/data/photos/PXL_20261101_172609455.webp)](https://bryanchasko.com/cloudcroft-disc-golf/app/data/photos/PXL_20261101_172609455.webp)
-
-After F deploys, replace its repo-relative embed with the canonical
-`https://bryanchasko.com/cloudcroft-disc-golf/app/data/panos/PXL_20261101_173005849.webp`
-form used by A–E and re-check for 200.
 
 ## AWS Open Data provenance
 
@@ -154,17 +146,14 @@ fetch in the shipped outputs is the NOAA Climate Normals station file behind
 
 ## Gaps for the owning workers (not fixed in this file)
 
-- F (`173005849`) is untracked and undeployed: canonical URL 404, live
-  `survey-assets.json` still counts 5 panos. Needs the dataset commit
-  plus a `deploy-web.sh` run, then a 200 re-check.
+- F (`173005849`) — resolved 2026-11-02: committed, deployed, canonical
+  URL 200, live `survey-assets.json` counts 6 panos.
 - D/E labels — resolved 2026-11-02: `web/src/config.ts` now labels D/E
   "Byron Ligon Hole 3 — tee box 3 / fairway 3, aspen grove", matching the
   photographer ground truth in this index. `pano_id`s `tiki-vista` /
   `tiki-aspen` stay as stable join keys.
-- `dataset/sources.md` still claims survey panos are synced at
-  `s3://bryanchasko.com/disc-golf/survey/panos/...` (the survey
-  `MANIFEST.md` was corrected 2026-11-02 to the probed state);
-  the 2026-11-02 probe found that prefix empty / 404 via the CDN path.
-  Data worker to re-list or correct the `sources.md` claim.
+- `dataset/sources.md` + survey `MANIFEST.md` S3 wording — corrected
+  2026-11-02 to the probed state (prefix empty / 404 via the CDN path;
+  re-list before claiming a sync).
 - F pixel content read is still pending (position is proven; what the
   lens sees is not yet described).

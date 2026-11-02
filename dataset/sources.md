@@ -35,9 +35,11 @@ raw phone/Camera handoff for the 2026-11-01 drop, too large for git
   dataset/survey/_incoming/swmz-{community,village}/; extracted GeoJSON
   at dataset/survey/2026-11-01-*/points.geojson via
   dataset/scripts/swm2_to_geojson.py.
-- Survey panos (walkthrough texture source):
+- Survey panos (walkthrough texture source): 6 PANO files committed under
+  dataset/survey/2026-11-01-community/panos/. The
   s3://bryanchasko.com/disc-golf/survey/panos/2026-11-01-community/
-  (5 PANO files, also committed under dataset/survey/2026-11-01-community/panos/).
+  prefix probed empty / 404 via the CDN path on 2026-11-02 — re-list
+  before claiming a survey-pano sync there.
 
 ## course layout facts (public, attributed)
 
