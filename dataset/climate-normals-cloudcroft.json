@@ -1,0 +1,116 @@
+{
+  "station": {
+    "id": "USC00291931",
+    "name": "CLOUDCROFT, NM US",
+    "lat": 32.9544,
+    "lon": -105.7353,
+    "elevation_m": 2645.4
+  },
+  "months": [
+    {
+      "month": "january",
+      "tavg_f": 30.7,
+      "tmax_f": 42.4,
+      "tmin_f": 19.0,
+      "prcp_in": 1.59,
+      "snow_in": 13.1
+    },
+    {
+      "month": "february",
+      "tavg_f": 33.2,
+      "tmax_f": 44.6,
+      "tmin_f": 21.7,
+      "prcp_in": 1.69,
+      "snow_in": 13.3
+    },
+    {
+      "month": "march",
+      "tavg_f": 38.2,
+      "tmax_f": 50.8,
+      "tmin_f": 25.6,
+      "prcp_in": 1.45,
+      "snow_in": 9.8
+    },
+    {
+      "month": "april",
+      "tavg_f": 44.6,
+      "tmax_f": 58.0,
+      "tmin_f": 31.2,
+      "prcp_in": 0.85,
+      "snow_in": 3.7
+    },
+    {
+      "month": "may",
+      "tavg_f": 52.0,
+      "tmax_f": 65.9,
+      "tmin_f": 38.1,
+      "prcp_in": 1.22,
+      "snow_in": 0.1
+    },
+    {
+      "month": "june",
+      "tavg_f": 59.6,
+      "tmax_f": 74.3,
+      "tmin_f": 44.8,
+      "prcp_in": 2.22,
+      "snow_in": 0.0
+    },
+    {
+      "month": "july",
+      "tavg_f": 60.1,
+      "tmax_f": 72.2,
+      "tmin_f": 48.0,
+      "prcp_in": 5.53,
+      "snow_in": 0.0
+    },
+    {
+      "month": "august",
+      "tavg_f": 59.1,
+      "tmax_f": 70.8,
+      "tmin_f": 47.4,
+      "prcp_in": 5.01,
+      "snow_in": 0.0
+    },
+    {
+      "month": "september",
+      "tavg_f": 54.8,
+      "tmax_f": 67.3,
+      "tmin_f": 42.2,
+      "prcp_in": 3.23,
+      "snow_in": 0.0
+    },
+    {
+      "month": "october",
+      "tavg_f": 47.1,
+      "tmax_f": 60.1,
+      "tmin_f": 34.0,
+      "prcp_in": 2.13,
+      "snow_in": 3.2
+    },
+    {
+      "month": "november",
+      "tavg_f": 38.0,
+      "tmax_f": 50.6,
+      "tmin_f": 25.5,
+      "prcp_in": 1.38,
+      "snow_in": 7.3
+    },
+    {
+      "month": "december",
+      "tavg_f": 31.1,
+      "tmax_f": 42.8,
+      "tmin_f": 19.4,
+      "prcp_in": 2.15,
+      "snow_in": 16.3
+    }
+  ],
+  "source": {
+    "dataset": "NOAA U.S. Climate Normals, 1991-2020 (monthly)",
+    "registry": "https://registry.opendata.aws/noaa-climate-normals/",
+    "bucket": "arn:aws:s3:::noaa-normals-pds (us-east-1)",
+    "url": "https://noaa-normals-pds.s3.amazonaws.com/normals-monthly/1991-2020/access/USC00291931.csv",
+    "units": "temperatures deg F; precipitation and snowfall inches",
+    "license": "NOAA NODD open data; attribution requested, no endorsement implied",
+    "attribution": "NOAA National Centers for Environmental Information, U.S. Climate Normals 1991-2020"
+  }
+}

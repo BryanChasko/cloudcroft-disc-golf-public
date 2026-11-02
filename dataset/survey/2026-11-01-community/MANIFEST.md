@@ -21,8 +21,8 @@ every pixel photo carries camera location tags (backup GPS: yes).
 | ----------------------------- | --------- | ----------- | ----------------------------------------------------------------- |
 | PXL_20261101_164259154.jpg    | 32.962761 | -105.742167 | kiosk close-up, course map posted                                 |
 | PXL_20261101_164414699.jpg    | 32.962911 | -105.741900 | basket 3 + tee-4 marker (80 ft)                                   |
-| PXL_20261101_164448812.jpg    | 32.962911 | -105.741900 | covered tee pad, fairway view                                     |
-| PXL_20261101_164454363.jpg    | 32.962911 | -105.741900 | covered tee pad, second angle                                     |
+| PXL_20261101_164448812.jpg    | 32.962911 | -105.741900 | Cloudcroft Community kiosk/tiki, fairway view                     |
+| PXL_20261101_164454363.jpg    | 32.962911 | -105.741900 | Cloudcroft Community kiosk/tiki, second angle                     |
 | PXL_20261101_164814470.jpg    | 32.962533 | -105.742331 | tee-1 sign on stump with arrow                                    |
 | PXL_20261101_170619902.jpg    | 32.962319 | -105.742417 | tee area, signage + rubber pad, uphill fairway                    |
 | PXL_20261101_170626805.jpg    | 32.962319 | -105.742417 | same tee, second angle                                            |
@@ -31,26 +31,36 @@ every pixel photo carries camera location tags (backup GPS: yes).
 | PXL_20261101_173546702.jpg    | 32.961703 | -105.741678 | wooded fairway with orange marker                                 |
 | PXL_20261101_173801288.jpg    | 32.962328 | -105.741778 | basket 2 wide, fairway behind                                     |
 | PXL_20261101_173824802.jpg    | 32.962328 | -105.741778 | basket close-up, yellow band                                      |
-| PXL_20261101_175522409.jpg    | 32.956964 | -105.738342 | rubber tee pad in woods                                           |
-| PXL_20261101_180320124.jpg    | 32.956922 | -105.738531 | aspen grove fairway view                                          |
+| PXL_20261101_175522409.jpg    | 32.956964 | -105.738342 | Byron Ligon teebox 3 rubber pad in woods                          |
+| PXL_20261101_180320124.jpg    | 32.956922 | -105.738531 | Byron Ligon fairway 3, aspen grove view                           |
 | PXL_20261101_180555239.jpg    | 32.956975 | -105.738617 | basket in trees, fairway behind                                   |
 
 key par source: hole-2 sign photo gives par 3, 245 ft, mando right,
 fence-line OB right — matches SW Maps remark below.
 
-## panos (5) — `panos/`
+## panos (6) — `panos/`
 
-| file                            | lat       | lon         | label                         |
-| ------------------------------- | --------- | ----------- | ----------------------------- |
-| PXL_20261101_170324214.PANO.jpg | 32.962347 | -105.742392 | hole area pano, north cluster |
-| PXL_20261101_171610748.PANO.jpg | 32.961281 | -105.742064 | basket-1 area pano            |
-| PXL_20261101_173918101.PANO.jpg | 32.962383 | -105.741778 | basket-2 area pano            |
-| PXL_20261101_175756282.PANO.jpg | 32.956939 | -105.738344 | south area vista pano         |
-| PXL_20261101_180216070.PANO.jpg | 32.956922 | -105.738531 | aspen grove pano              |
+| file                            | lat       | lon         | label                                   |
+| ------------------------------- | --------- | ----------- | --------------------------------------- |
+| PXL_20261101_170324214.PANO.jpg | 32.962347 | -105.742392 | Community teebox 1 pano (hole 1)        |
+| PXL_20261101_171610748.PANO.jpg | 32.961281 | -105.742064 | Community basket 1 pano (hole 1)        |
+| PXL_20261101_173005849.PANO.jpg | 32.961722 | -105.741683 | Community teebox 2 pano (mountaintop)   |
+| PXL_20261101_173918101.PANO.jpg | 32.962383 | -105.741786 | Community basket 2 area pano (hole 2)   |
+| PXL_20261101_175756282.PANO.jpg | 32.956939 | -105.738344 | Byron Ligon teebox 3 pano               |
+| PXL_20261101_180216070.PANO.jpg | 32.956922 | -105.738531 | Byron Ligon fairway 3 pano, aspen grove |
 
-per field guide panos ship to s3, not git. local copies remain AND the
-set is synced at s3://bryanchasko.com/disc-golf/survey/panos/2026-11-01-community/
-(5 files, uploaded 2026-11-01).
+per field guide panos ship to s3, not git. local copies remain; the s3
+copy at s3://bryanchasko.com/disc-golf/survey/panos/2026-11-01-community/
+is NOT verified synced — a 2026-11-02 probe found that prefix empty
+(404 via the CDN path, see dataset/PANO-INDEX.md). re-list before
+claiming sync.
+(6 files locally; tee-2 pano PXL_20261101_173005849 ingested 2026-11-02 from
+macmini ~/Downloads loose file, md5 d4d59c899c1e08cd3267cfc764a2c732,
+EXIF GPS 32.961722, -105.741683, 1.4 m from the community-tee-2 average;
+the same file is a member of macmini `Photos-1-001 (3).zip`, sha256
+b7aafee2e4e4e5331f3fe45c2d9ca8722f7329d58ee3ad675dc6101fd6865639 verified
+against the zip member over ssh 2026-11-02. that zip also holds 3
+screenshots not yet ingested here (045849, 145813, 145821).
 
 ## screenshots (20) — `screenshots/`
 
@@ -70,11 +80,15 @@ mando right, fence line OB right` — 32.961717387N 105.741697207W,
 
 ## gaps vs the 8-step field guide
 
-- no 360-at-every-hole: 5 panos across 2 clusters, not per-hole.
+- no 360-at-every-hole: 6 panos across 2 clusters, not per-hole (tee-2 mountaintop now covered 2026-11-02).
 - tee-step coverage partial: hole 2 is complete (tee point + sign photo
   with par + mando/OB note); holes 1/3/4 have photos but no confirmed
   SW Maps points yet — phone export still pending.
-- tiki course: nothing. community only, as bryan said.
+- south cluster is Byron Ligon hole 3 (teebox 3 + fairway 3 panos/photos),
+  not an unnamed second area (bryan ground truth, nov 2026). SW Maps raw
+  remarks there stay verbatim (`unknown-teebox*`, `pano-unknown-fairway`)
+  in points.geojson; the hole-3 identification lives in these labels and
+  PANO-INDEX.md, not in edited survey remarks.
 - track recording export: pending phone export.
 - on-site QA (loads/saves/glitches): not reported yet.
 
