@@ -6,27 +6,45 @@
     <title>Cloudcroft Disc Golf — AR map + scorecard</title>
     <meta
       name="description"
-      content="Weekend Challenge: Map it entry. Ground GPS survey to playable AR disc golf scorecard for two Cloudcroft NM courses — dataset, pipeline, live map."
+      content="Ground GPS survey to playable AR disc golf scorecard for two Cloudcroft NM courses — dataset, pipeline, live map."
     />
-    <link rel="canonical" href="https://bryanchasko.com/cloudcroft-disc-golf/" />
+    <link
+      rel="canonical"
+      href="https://bryanchasko.com/cloudcroft-disc-golf/"
+    />
     <meta name="theme-color" content="#143d2a" />
     <link rel="icon" type="image/svg+xml" href="/disc-golf/favicon.svg" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Bryan Chasko" />
-    <meta property="og:title" content="Cloudcroft Disc Golf — AR map + scorecard" />
+    <meta
+      property="og:title"
+      content="Cloudcroft Disc Golf — AR map + scorecard"
+    />
     <meta
       property="og:description"
       content="Ground GPS survey to playable scorecard, hole by hole. Live map, 3D walkthrough, open dataset, reusable pattern."
     />
-    <meta property="og:url" content="https://bryanchasko.com/cloudcroft-disc-golf/" />
-    <meta property="og:image" content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.webp" />
+    <meta
+      property="og:url"
+      content="https://bryanchasko.com/cloudcroft-disc-golf/"
+    />
+    <meta
+      property="og:image"
+      content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.webp"
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Cloudcroft Disc Golf — AR map + scorecard" />
+    <meta
+      name="twitter:title"
+      content="Cloudcroft Disc Golf — AR map + scorecard"
+    />
     <meta
       name="twitter:description"
       content="Ground GPS survey to playable scorecard, hole by hole. Live map, 3D walkthrough, open dataset."
     />
-    <meta name="twitter:image" content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.webp" />
+    <meta
+      name="twitter:image"
+      content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.webp"
+    />
     <script>
       // Pre-paint theme: stored preference, else OS preference (no flash).
       (function () {
@@ -50,8 +68,16 @@
         "description": "Ground GPS survey to playable AR disc golf scorecard for two Cloudcroft NM courses.",
         "author": { "@type": "Person", "name": "Bryan Chasko" },
         "about": [
-          { "@type": "SportsActivityLocation", "name": "Byron Ligon Memorial Tiki Disc Golf Course", "sport": "Disc Golf" },
-          { "@type": "SportsActivityLocation", "name": "Cloudcroft Community Disc Golf Course", "sport": "Disc Golf" }
+          {
+            "@type": "SportsActivityLocation",
+            "name": "Byron Ligon Memorial Tiki Disc Golf Course",
+            "sport": "Disc Golf"
+          },
+          {
+            "@type": "SportsActivityLocation",
+            "name": "Cloudcroft Community Disc Golf Course",
+            "sport": "Disc Golf"
+          }
         ]
       }
     </script>
@@ -100,36 +126,87 @@
           --shadow: 0 1px 6px rgb(0 0 0 / 0.5);
         }
       }
-      * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
         background: var(--paper);
         color: var(--ink);
-        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
         line-height: 1.7;
       }
       /* atmospheric ground: warm radial glows + grain, fixed behind content */
       .sky {
-        position: fixed; inset: 0; z-index: -2; pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
         background:
-          radial-gradient(60rem 30rem at 15% -10%, rgb(183 121 31 / 0.16), transparent 60%),
-          radial-gradient(50rem 26rem at 90% 10%, rgb(31 92 63 / 0.14), transparent 60%),
-          radial-gradient(40rem 24rem at 50% 110%, rgb(20 61 42 / 0.08), transparent 60%),
-          repeating-linear-gradient(0deg, rgb(127 127 127 / 0.015) 0 1px, transparent 1px 3px);
+          radial-gradient(
+            60rem 30rem at 15% -10%,
+            rgb(183 121 31 / 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            50rem 26rem at 90% 10%,
+            rgb(31 92 63 / 0.14),
+            transparent 60%
+          ),
+          radial-gradient(
+            40rem 24rem at 50% 110%,
+            rgb(20 61 42 / 0.08),
+            transparent 60%
+          ),
+          repeating-linear-gradient(
+            0deg,
+            rgb(127 127 127 / 0.015) 0 1px,
+            transparent 1px 3px
+          );
       }
       @media (prefers-color-scheme: dark) {
-        .sky { opacity: 0.6; }
+        .sky {
+          opacity: 0.6;
+        }
       }
-      html[data-theme="dark"] .sky { opacity: 0.6; }
+      html[data-theme="dark"] .sky {
+        opacity: 0.6;
+      }
       @media (prefers-reduced-motion: no-preference) {
-        .sky { animation: sky-drift 45s ease-in-out infinite alternate; }
+        .sky {
+          animation: sky-drift 45s ease-in-out infinite alternate;
+        }
       }
       @keyframes sky-drift {
-        from { background-position: 0 0, 0 0, 0 0, 0 0; }
-        to { background-position: 2% 1%, -2% 1%, 1% -1%, 0 0; }
+        from {
+          background-position:
+            0 0,
+            0 0,
+            0 0,
+            0 0;
+        }
+        to {
+          background-position:
+            2% 1%,
+            -2% 1%,
+            1% -1%,
+            0 0;
+        }
       }
-      :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-      .wrap { max-width: 880px; margin: 0 auto; padding: 0 1rem 3rem; }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 1rem 3rem;
+      }
       header.top {
         display: flex;
         align-items: baseline;
@@ -137,8 +214,16 @@
         flex-wrap: wrap;
         padding: 1.2rem 0 0.4rem;
       }
-      header.top h1 { margin: 0; font-size: clamp(1.875rem, 4.5vw, 2.5rem); color: var(--pine-dark); }
-      header.top p.sub { margin: 0.2rem 0 0; color: var(--muted); width: 100%; }
+      header.top h1 {
+        margin: 0;
+        font-size: clamp(1.875rem, 4.5vw, 2.5rem);
+        color: var(--pine-dark);
+      }
+      header.top p.sub {
+        margin: 0.2rem 0 0;
+        color: var(--muted);
+        width: 100%;
+      }
       #theme-toggle {
         margin-left: auto;
         font: inherit;
@@ -153,28 +238,71 @@
         color: var(--ink);
         cursor: pointer;
         box-shadow: var(--shadow1);
-        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        transition:
+          transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      #theme-toggle:hover { transform: scale(1.08); box-shadow: var(--shadow2); }
-      #theme-toggle:active { transform: scale(0.94); box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.18); }
-      #theme-toggle svg { width: 20px; height: 20px; }
-      #moon { display: none; }
-      html[data-theme="dark"] #moon { display: inline; color: #d7c7ee; }
-      html[data-theme="dark"] #sun { display: none; }
-      #sun { color: #ff9900; animation: sun-pulse 4s ease-in-out infinite; }
+      #theme-toggle:hover {
+        transform: scale(1.08);
+        box-shadow: var(--shadow2);
+      }
+      #theme-toggle:active {
+        transform: scale(0.94);
+        box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.18);
+      }
+      #theme-toggle svg {
+        width: 20px;
+        height: 20px;
+      }
+      #moon {
+        display: none;
+      }
+      html[data-theme="dark"] #moon {
+        display: inline;
+        color: #d7c7ee;
+      }
+      html[data-theme="dark"] #sun {
+        display: none;
+      }
+      #sun {
+        color: #ff9900;
+        animation: sun-pulse 4s ease-in-out infinite;
+      }
       @keyframes sun-pulse {
-        0%, 100% { filter: drop-shadow(0 0 3px rgb(255 153 0 / 0.5)) drop-shadow(0 0 6px rgb(255 200 50 / 0.3)); }
-        50% { filter: drop-shadow(0 0 4px rgb(255 153 0 / 0.5)) drop-shadow(0 0 8px rgb(255 200 50 / 0.3)); }
+        0%,
+        100% {
+          filter: drop-shadow(0 0 3px rgb(255 153 0 / 0.5))
+            drop-shadow(0 0 6px rgb(255 200 50 / 0.3));
+        }
+        50% {
+          filter: drop-shadow(0 0 4px rgb(255 153 0 / 0.5))
+            drop-shadow(0 0 8px rgb(255 200 50 / 0.3));
+        }
       }
-      html[data-theme="dark"] #moon { animation: moon-glow 5s ease-in-out infinite; }
+      html[data-theme="dark"] #moon {
+        animation: moon-glow 5s ease-in-out infinite;
+      }
       @keyframes moon-glow {
-        0%, 100% { filter: drop-shadow(0 0 3px rgb(215 199 238 / 0.45)); }
-        50% { filter: drop-shadow(0 0 7px rgb(215 199 238 / 0.6)); }
+        0%,
+        100% {
+          filter: drop-shadow(0 0 3px rgb(215 199 238 / 0.45));
+        }
+        50% {
+          filter: drop-shadow(0 0 7px rgb(215 199 238 / 0.6));
+        }
       }
       @media (prefers-reduced-motion: reduce) {
-        #sun, #moon { animation: none !important; }
+        #sun,
+        #moon {
+          animation: none !important;
+        }
       }
-      .cta-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0; }
+      .cta-row {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin: 1rem 0;
+      }
       .cta-row a {
         padding: 0.5rem 1rem;
         border-radius: 8px;
@@ -183,16 +311,22 @@
         text-decoration: none;
         font-weight: 600;
       }
-      html[data-theme="dark"] .cta-row a { color: #10140f; }
+      html[data-theme="dark"] .cta-row a {
+        color: #10140f;
+      }
       @media (prefers-color-scheme: dark) {
-        html[data-theme="auto"] .cta-row a { color: #10140f; }
+        html[data-theme="auto"] .cta-row a {
+          color: #10140f;
+        }
       }
       .cta-row a.ghost {
         background: var(--card);
         color: var(--pine-dark);
         border: 1px solid var(--line);
       }
-      html[data-theme="dark"] .cta-row a.ghost { color: var(--pine-dark); }
+      html[data-theme="dark"] .cta-row a.ghost {
+        color: var(--pine-dark);
+      }
       .card {
         position: relative;
         background: var(--card);
@@ -201,110 +335,454 @@
         padding: 1.1rem 1.2rem;
         margin: 1.1rem 0;
         box-shadow: var(--shadow1);
-        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        transition:
+          transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
           box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
           border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
       .card::before {
-        content: ""; position: absolute; top: 0; left: 1rem; right: 1rem; height: 3px;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 1rem;
+        right: 1rem;
+        height: 3px;
         border-radius: 0 0 3px 3px;
-        background: linear-gradient(90deg, transparent, var(--pine), var(--accent), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--pine),
+          var(--accent),
+          transparent
+        );
       }
       @media (hover: hover) {
-        .card:hover, .card:focus-within {
+        .card:hover,
+        .card:focus-within {
           transform: translateY(-2px);
           box-shadow: var(--shadow2);
           border-color: var(--accent);
         }
       }
       .radio-row {
-        display: grid; grid-template-columns: 1fr auto; gap: 0.4rem 1rem;
-        align-items: center; padding: 0.55rem 0.7rem; margin: 0.4rem 0;
-        background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.4rem 1rem;
+        align-items: center;
+        padding: 0.55rem 0.7rem;
+        margin: 0.4rem 0;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 10px;
         box-shadow: var(--shadow1);
-        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        transition:
+          transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
           box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
           border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
       @media (hover: hover) {
-        .radio-row:hover, .radio-row:focus-within {
-          transform: translateY(-2px); box-shadow: var(--shadow2); border-color: var(--accent);
+        .radio-row:hover,
+        .radio-row:focus-within {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow2);
+          border-color: var(--accent);
         }
       }
-      .radio-row audio { width: 100%; min-width: 220px; }
+      .radio-row audio {
+        width: 100%;
+        min-width: 220px;
+      }
       /* survey progress ribbon */
       #progress {
-        position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 60;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        z-index: 60;
         background: transparent;
       }
       #progress-bar {
-        height: 100%; width: 0%;
+        height: 100%;
+        width: 0%;
         background: linear-gradient(90deg, var(--pine), var(--accent));
         transition: width 0.15s ease-out;
       }
       /* reveal on scroll (JS adds .in; no-JS stays visible) */
-      html.js .reveal { opacity: 0; transform: translateY(14px); }
+      html.js .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+      }
       html.js .reveal.in {
-        opacity: 1; transform: translateY(0);
-        transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+          opacity 0.55s ease-out,
+          transform 0.55s ease-out;
       }
       /* throw a disc */
       .throw-stage {
-        position: relative; height: 7.5rem; margin: 1rem 0 0.2rem;
-        border: 1px dashed var(--line); border-radius: 12px; overflow: hidden;
-        background: linear-gradient(180deg, transparent 60%, rgb(31 92 63 / 0.08));
+        position: relative;
+        height: 7.5rem;
+        margin: 1rem 0 0.2rem;
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        background: linear-gradient(
+          180deg,
+          transparent 60%,
+          rgb(31 92 63 / 0.08)
+        );
       }
       #disc {
-        position: absolute; left: 4%; bottom: 46%; width: 44px; height: 44px;
-        border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff 0 18%, #ff9900 19% 62%, #b7791f 100%);
+        position: absolute;
+        left: 4%;
+        bottom: 46%;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #fff 0 18%,
+          #ff9900 19% 62%,
+          #b7791f 100%
+        );
         box-shadow: 0 3px 8px rgb(20 61 42 / 0.35);
-        offset-path: path("M 0 0 C 120 -58 300 -64 470 -30 C 560 -14 610 6 660 18");
+        offset-path: path(
+          "M 0 0 C 120 -58 300 -64 470 -30 C 560 -14 610 6 660 18"
+        );
         offset-rotate: auto;
       }
-      #disc.fly { animation: fly 1.35s cubic-bezier(0.25, 0.6, 0.35, 1) both; }
+      #disc.fly {
+        animation: fly 1.35s cubic-bezier(0.25, 0.6, 0.35, 1) both;
+      }
       @keyframes fly {
-        from { offset-distance: 0%; }
-        to { offset-distance: 100%; }
+        from {
+          offset-distance: 0%;
+        }
+        to {
+          offset-distance: 100%;
+        }
       }
       .basket {
-        position: absolute; right: 3.2rem; bottom: 18%; font-size: 2rem; line-height: 1;
+        position: absolute;
+        right: 3.2rem;
+        bottom: 18%;
+        font-size: 2rem;
+        line-height: 1;
       }
-      .basket.hit { animation: rattle 0.5s ease-in-out 2; }
+      .basket.hit {
+        animation: rattle 0.5s ease-in-out 2;
+      }
       @keyframes rattle {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(-5deg); }
-        75% { transform: rotate(5deg); }
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-5deg);
+        }
+        75% {
+          transform: rotate(5deg);
+        }
       }
-      #throw-note { min-height: 1.5em; }
+      #throw-note {
+        min-height: 1.5em;
+      }
       /* mini scorecard game */
       .play-row {
-        display: grid; grid-template-columns: 1fr auto auto; gap: 0.5rem 1rem;
-        align-items: center; padding: 0.55rem 0.7rem; margin: 0.4rem 0;
-        background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 0.5rem 1rem;
+        align-items: center;
+        padding: 0.55rem 0.7rem;
+        margin: 0.4rem 0;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 10px;
         box-shadow: var(--shadow1);
       }
-      .stepper { display: inline-flex; align-items: center; gap: 0.45rem; }
-      .stepper button {
-        width: 2.1rem; height: 2.1rem; font: inherit; font-size: 1.1rem; line-height: 1;
-        border: 1px solid var(--line); border-radius: 999px; cursor: pointer;
-        background: var(--card); color: var(--ink);
+      .stepper {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
       }
-      .stepper output { min-width: 1.4rem; text-align: center; font-weight: 700; font-size: 1.15rem; }
-      .vs { font-size: 0.82rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 999px; }
-      .vs-under { background: rgb(31 92 63 / 0.16); color: var(--pine-dark); }
-      .vs-even { background: rgb(92 102 92 / 0.16); color: var(--muted); }
-      .vs-over { background: rgb(183 121 31 / 0.18); color: var(--accent); }
-      #play-total { font-size: 1.05rem; }
-      .radio-links { font-size: 0.9rem; line-height: 1.9; }
-      .card h2 { margin: 0 0 0.5rem; font-size: 1.15rem; color: var(--pine-dark); }
-      .card h3 { margin: 1rem 0 0.3rem; font-size: 1rem; color: var(--pine-dark); }
-      .meta { color: var(--muted); font-size: 0.85rem; }
-      figure { margin: 0.8rem 0; }
-      figure img { max-width: 100%; height: auto; border-radius: 8px; display: block; }
-      figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 0.35rem; }
-      table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-      th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-      th { color: var(--pine-dark); }
+      .stepper button {
+        width: 2.1rem;
+        height: 2.1rem;
+        font: inherit;
+        font-size: 1.1rem;
+        line-height: 1;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        cursor: pointer;
+        background: var(--card);
+        color: var(--ink);
+      }
+      .stepper output {
+        min-width: 1.4rem;
+        text-align: center;
+        font-weight: 700;
+        font-size: 1.15rem;
+      }
+      .vs {
+        font-size: 0.82rem;
+        font-weight: 700;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+      }
+      .vs-under {
+        background: rgb(31 92 63 / 0.16);
+        color: var(--pine-dark);
+      }
+      .vs-even {
+        background: rgb(92 102 92 / 0.16);
+        color: var(--muted);
+      }
+      .vs-over {
+        background: rgb(183 121 31 / 0.18);
+        color: var(--accent);
+      }
+      #play-total {
+        font-size: 1.05rem;
+      }
+      .radio-links {
+        font-size: 0.9rem;
+        line-height: 1.9;
+      }
+      /* interactive pass: power throw, tabs, galleries, points, dots */
+      .cta-row button {
+        font: inherit;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        background: var(--card);
+        color: var(--pine-dark);
+        border: 1px solid var(--line);
+        cursor: pointer;
+      }
+      .throw-ui {
+        display: flex;
+        gap: 0.6rem 1.2rem;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: 0.5rem 0 0;
+        font-size: 0.9rem;
+      }
+      .throw-ui .wind {
+        color: var(--muted);
+      }
+      .power {
+        flex: 1 1 12rem;
+        height: 0.7rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        overflow: hidden;
+        background: var(--paper);
+        position: relative;
+      }
+      #power-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--pine), var(--accent));
+      }
+      .power .sweet {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        background: rgb(31 92 63 / 0.3);
+        border-left: 2px solid var(--pine);
+        border-right: 2px solid var(--pine);
+      }
+      .hole-pick button,
+      .svc-chips button,
+      .pipe-steps button {
+        font: inherit;
+        font-size: 0.85rem;
+        padding: 0.35rem 0.7rem;
+        margin: 0 0.25rem 0.3rem 0;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      .hole-pick button[aria-pressed="true"],
+      .svc-chips button[aria-pressed="true"],
+      .pipe-steps button[aria-pressed="true"] {
+        background: var(--pine-dark);
+        color: #fff;
+        border-color: var(--pine-dark);
+      }
+      html[data-theme="dark"] .hole-pick button[aria-pressed="true"],
+      html[data-theme="dark"] .svc-chips button[aria-pressed="true"],
+      html[data-theme="dark"] .pipe-steps button[aria-pressed="true"] {
+        color: #10140f;
+      }
+      .course-pane[hidden],
+      .pipe-pane[hidden] {
+        display: none;
+      }
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+        gap: 0.6rem;
+        margin: 0.6rem 0;
+      }
+      .stat {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 0.55rem 0.7rem;
+      }
+      .stat b {
+        display: block;
+        font-size: 1.25rem;
+        color: var(--pine-dark);
+        line-height: 1.2;
+      }
+      .stat span {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .gal {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 0.7rem;
+      }
+      .gal figure {
+        margin: 0;
+      }
+      .gal img {
+        width: 100%;
+        height: 145px;
+        object-fit: cover;
+        border-radius: 8px;
+        display: block;
+      }
+      .gal .pano-strip img {
+        height: 110px;
+      }
+      .gal figcaption {
+        font-size: 0.76rem;
+        color: var(--muted);
+        margin-top: 0.25rem;
+        line-height: 1.4;
+      }
+      .shots {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+        gap: 0.5rem;
+      }
+      .shots figure {
+        margin: 0;
+      }
+      .shots img {
+        width: 100%;
+        height: 170px;
+        object-fit: cover;
+        object-position: top;
+        border-radius: 6px;
+        display: block;
+      }
+      .shots figcaption {
+        font-size: 0.68rem;
+        color: var(--muted);
+        line-height: 1.35;
+        margin-top: 0.2rem;
+      }
+      .pts-wrap {
+        overflow-x: auto;
+      }
+      table.pts {
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+      table.pts td.coords {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 0.74rem;
+      }
+      tr.hl td {
+        background: rgb(183 121 31 / 0.14);
+      }
+      .dots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin: 0.6rem 0;
+      }
+      .dot {
+        width: 1.05rem;
+        height: 1.05rem;
+        border-radius: 999px;
+        border: 2px solid var(--card);
+        cursor: pointer;
+        padding: 0;
+      }
+      .dot.tee {
+        background: #1a5276;
+      }
+      .dot.basket {
+        background: #b7950b;
+      }
+      .dot.unidentified {
+        background: #9e9e9e;
+      }
+      .dot.sel {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      #dot-info {
+        min-height: 2.6em;
+        font-size: 0.88rem;
+      }
+      #dot-info .coords {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 0.8rem;
+      }
+      .card h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.15rem;
+        color: var(--pine-dark);
+      }
+      .card h3 {
+        margin: 1rem 0 0.3rem;
+        font-size: 1rem;
+        color: var(--pine-dark);
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      figure {
+        margin: 0.8rem 0;
+      }
+      figure img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+      }
+      figcaption {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-top: 0.35rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 0.4rem 0.5rem;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        color: var(--pine-dark);
+      }
       pre {
         background: var(--code-bg);
         color: var(--code-ink);
@@ -314,52 +792,123 @@
         font-size: 0.82rem;
         line-height: 1.5;
       }
-      code { font-family: ui-monospace, "Cascadia Mono", Menlo, monospace; }
-      p code, li code, td code {
+      code {
+        font-family: ui-monospace, "Cascadia Mono", Menlo, monospace;
+      }
+      p code,
+      li code,
+      td code {
         background: var(--code-bg);
         color: var(--code-ink);
         padding: 0.1rem 0.35rem;
         border-radius: 4px;
         font-size: 0.85em;
       }
-      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-      .deck { position: relative; min-height: 11rem; }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+      .deck {
+        position: relative;
+        min-height: 11rem;
+      }
       .deck-card {
-        position: absolute; inset: 0; opacity: 0; pointer-events: none;
-        transition: opacity 0.5s ease, transform 0.5s ease;
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
         transform: rotate(-0.6deg) translateY(4px) scale(0.99);
       }
-      .deck-card.on { opacity: 1; pointer-events: auto; transform: rotate(0deg) translateY(0) scale(1); }
-      .deck-card h3 { margin-top: 0.2rem; }
-      .deck-nav { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.6rem; }
-      .deck-nav button {
-        font: inherit; font-size: 0.85rem; padding: 0.35rem 0.7rem;
-        border: 1px solid var(--line); border-radius: 6px;
-        background: var(--card); color: var(--ink); cursor: pointer;
+      .deck-card.on {
+        opacity: 1;
+        pointer-events: auto;
+        transform: rotate(0deg) translateY(0) scale(1);
       }
-      main figure { position: relative; overflow: hidden; }
+      .deck-card h3 {
+        margin-top: 0.2rem;
+      }
+      .deck-nav {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-top: 0.6rem;
+      }
+      .deck-nav button {
+        font: inherit;
+        font-size: 0.85rem;
+        padding: 0.35rem 0.7rem;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--card);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      main figure {
+        position: relative;
+        overflow: hidden;
+      }
       main figure::after {
-        content: ""; position: absolute; inset: 0; pointer-events: none;
-        background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / 0.09) 48%, transparent 62%);
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          115deg,
+          transparent 35%,
+          rgb(255 255 255 / 0.09) 48%,
+          transparent 62%
+        );
         background-size: 260% 260%;
         animation: sheen 9s ease-in-out infinite;
       }
       @keyframes sheen {
-        0%, 100% { background-position: 120% 0; opacity: 0; }
-        50% { background-position: -20% 0; opacity: 1; }
+        0%,
+        100% {
+          background-position: 120% 0;
+          opacity: 0;
+        }
+        50% {
+          background-position: -20% 0;
+          opacity: 1;
+        }
       }
-      @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+      @media (max-width: 640px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
       .skip-link {
-        position: absolute; left: -9999px; top: 0;
-        background: var(--pine-dark); color: #fff;
-        padding: 0.5rem 1rem; z-index: 100;
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        background: var(--pine-dark);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        z-index: 100;
       }
-      .skip-link:focus { left: 0; }
+      .skip-link:focus {
+        left: 0;
+      }
       @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { transition: none !important; animation: none !important; }
-        main figure::after { display: none; }
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+          animation: none !important;
+        }
+        main figure::after {
+          display: none;
+        }
       }
-      footer { color: var(--muted); font-size: 0.85rem; padding-top: 1rem; }
+      footer {
+        color: var(--muted);
+        font-size: 0.85rem;
+        padding-top: 1rem;
+      }
     </style>
   </head>
   <body>
@@ -368,197 +917,636 @@
     <div class="wrap">
       <header class="top">
         <h1>Cloudcroft disc golf</h1>
-        <button id="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
-          <svg id="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/></svg>
-          <svg id="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a7 7 0 0 0 9.5 9.5z"/></svg>
+        <button
+          id="theme-toggle"
+          type="button"
+          aria-label="Toggle theme"
+          aria-pressed="false"
+        >
+          <svg
+            id="sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4.5" />
+            <line x1="12" y1="2" x2="12" y2="5" />
+            <line x1="12" y1="19" x2="12" y2="22" />
+            <line x1="2" y1="12" x2="5" y2="12" />
+            <line x1="19" y1="12" x2="22" y2="12" />
+            <line x1="4.2" y1="4.2" x2="6.3" y2="6.3" />
+            <line x1="17.7" y1="17.7" x2="19.8" y2="19.8" />
+            <line x1="4.2" y1="19.8" x2="6.3" y2="17.7" />
+            <line x1="17.7" y1="6.3" x2="19.8" y2="4.2" />
+          </svg>
+          <svg
+            id="moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a7 7 0 0 0 9.5 9.5z" />
+          </svg>
           <span id="theme-name">theme</span>
         </button>
-        <p class="sub">AR map + scorecard for Cloudcroft NM disc golf — Weekend Challenge: Map it entry. Updated November 1, 2026.</p>
+        <p class="sub">
+          AR map + scorecard for Cloudcroft, New Mexico disc golf.
+        </p>
       </header>
       <div id="progress" aria-hidden="true"><div id="progress-bar"></div></div>
       <main id="main">
         <p>
-          On November 1 I walked the Cloudcroft Community course with a phone,
-          a field guide, and eight steps per hole. I came home with 21 averaged
+          On November 1 I walked the Cloudcroft Community course with a phone, a
+          field guide, and eight steps per hole. I came home with 21 averaged
           GPS points, 15 photos, 5 panos, and the tee signs that carry the only
           par numbers this course publishes. This page is what that field day
-          turned into: a scorecard that fills in hole by hole, and the recipe
-          so anyone can map their own course the same way.
+          turned into: a scorecard that fills in hole by hole, and the recipe so
+          anyone can map their own course the same way.
         </p>
         <div class="cta-row">
           <a href="/disc-golf/">Open the live map</a>
           <a class="ghost" href="/disc-golf/walk.html">3D walkthrough</a>
           <a class="ghost" href="/disc-golf/how-this-works/">How this works</a>
-          <button id="throw-btn" type="button" class="ghost">Throw a disc</button>
+          <button id="throw-btn" type="button">
+            Hold to charge — release to throw
+          </button>
+          <a class="ghost" href="#h-radio">Mountain radio ↓</a>
         </div>
         <div class="throw-stage" aria-hidden="true">
           <div id="disc"></div>
-          <svg id="basket" class="basket" viewBox="0 0 40 52" width="38" height="50" aria-hidden="true"><line x1="20" y1="6" x2="20" y2="50" stroke="#143d2a" stroke-width="3"/><ellipse cx="20" cy="10" rx="13" ry="3.5" fill="none" stroke="#ff9900" stroke-width="3"/><path d="M9 12 L14 30 M16 13 L18 30 M24 13 L22 30 M31 12 L26 30" stroke="#888" stroke-width="1.5"/><ellipse cx="20" cy="31" rx="9" ry="2.6" fill="none" stroke="#888" stroke-width="2"/></svg>
+          <svg
+            id="basket"
+            class="basket"
+            viewBox="0 0 40 52"
+            width="38"
+            height="50"
+            aria-hidden="true"
+          >
+            <line
+              x1="20"
+              y1="6"
+              x2="20"
+              y2="50"
+              stroke="#143d2a"
+              stroke-width="3"
+            />
+            <ellipse
+              cx="20"
+              cy="10"
+              rx="13"
+              ry="3.5"
+              fill="none"
+              stroke="#ff9900"
+              stroke-width="3"
+            />
+            <path
+              d="M9 12 L14 30 M16 13 L18 30 M24 13 L22 30 M31 12 L26 30"
+              stroke="#888"
+              stroke-width="1.5"
+            />
+            <ellipse
+              cx="20"
+              cy="31"
+              rx="9"
+              ry="2.6"
+              fill="none"
+              stroke="#888"
+              stroke-width="2"
+            />
+          </svg>
         </div>
-        <p id="throw-note" class="meta" role="status" aria-live="polite">Hole 2 waits below: 245 feet of thin mountain air.</p>
+        <div class="throw-ui">
+          <span
+            class="hole-pick"
+            role="group"
+            aria-label="Pick a hole to throw"
+          >
+            <button type="button" data-throw-hole="1" aria-pressed="false">
+              Hole 1 · 411 ft
+            </button>
+            <button type="button" data-throw-hole="2" aria-pressed="true">
+              Hole 2 · 245 ft
+            </button>
+          </span>
+          <span class="power" aria-hidden="true"
+            ><span class="sweet" id="sweet"></span>
+            <div id="power-fill"></div
+          ></span>
+          <span class="wind" id="wind">wind: calm</span>
+          <span id="throw-score">chains: 0</span>
+        </div>
+        <p id="throw-note" class="meta" role="status" aria-live="polite">
+          Hole 2: 245 feet of thin mountain air. Land the power in the green —
+          the wind moves the basket.
+        </p>
         <figure>
-          <picture><source type="image/webp" srcset="assets/map-hero.webp" /><img src="assets/map-hero.png" alt="Live 2D map of the Cloudcroft disc golf courses with trails and hole pins" width="1440" height="900" loading="eager" fetchpriority="high" decoding="async" /></picture>
-          <figcaption>The live map — topo tiles, trails, hole table, cloud scorecard.</figcaption>
+          <picture
+            ><source type="image/webp" srcset="assets/map-hero.webp" />
+            <img
+              src="assets/map-hero.png"
+              alt="Live 2D map of the Cloudcroft disc golf courses with trails and hole pins"
+              width="1440"
+              height="900"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+          /></picture>
+          <figcaption>
+            The live map — topo tiles, trails, hole table, cloud scorecard.
+          </figcaption>
         </figure>
 
         <section class="card" aria-labelledby="h-story">
           <h2 id="h-story">Two courses hand-built by Ray Haller</h2>
           <p>
-            Byron Ligon Tiki — 9 holes, par 27, 901 feet of all-putter golf
-            under aspen and doug fir at the west end of Zenith Park, redesigned
-            May 2025. Cloudcroft Community — 18 holes, par 63, a wooded mountain
-            track near the old baseball field with 40 to 80+ feet of elevation
-            swing per hole, opened 2019, rated 4.6 stars from 500+ reviews. Haller
-            cut the Community course out of the hillside by hand over six and a
-            half months; it is now the second-ranked course in New Mexico.
+            Haller cut the Community course out of the hillside by hand over six
+            and a half months; it is now the second-ranked course in New Mexico.
+            Pick a course:
           </p>
+          <div class="hole-pick" role="group" aria-label="Pick a course">
+            <button type="button" data-course-tab="tiki" aria-pressed="true">
+              Byron Ligon Tiki
+            </button>
+            <button
+              type="button"
+              data-course-tab="community"
+              aria-pressed="false"
+            >
+              Cloudcroft Community
+            </button>
+          </div>
+          <div class="course-pane" data-course-pane="tiki">
+            <div class="stat-grid">
+              <div class="stat"><b>9</b><span>holes</span></div>
+              <div class="stat"><b>27</b><span>par</span></div>
+              <div class="stat"><b>901 ft</b><span>all-putter golf</span></div>
+              <div class="stat">
+                <b>6</b><span>GPS points located Nov 1</span>
+              </div>
+            </div>
+            <p>
+              Under aspen and doug fir at the west end of Zenith Park,
+              redesigned May 2025.
+              <a href="/disc-golf/?course=tiki">Open Tiki on the map →</a>
+            </p>
+          </div>
+          <div class="course-pane" data-course-pane="community" hidden>
+            <div class="stat-grid">
+              <div class="stat"><b>18</b><span>holes</span></div>
+              <div class="stat"><b>63</b><span>par</span></div>
+              <div class="stat">
+                <b>40–80+ ft</b><span>elevation swing per hole</span>
+              </div>
+              <div class="stat">
+                <b>21</b><span>GPS points located Nov 1</span>
+              </div>
+            </div>
+            <p>
+              A wooded mountain track near the old baseball field, opened 2019,
+              rated 4.6 stars from 500+ reviews.
+              <a href="/disc-golf/?course=community"
+                >Open Community on the map →</a
+              >
+            </p>
+          </div>
           <figure>
-            <img src="assets/strip-setting-1584x340.webp" alt="Pine forest trail, ponderosa, and backcountry shelter in Cloudcroft" width="1584" height="340" loading="lazy" />
-            <figcaption>The setting — Sacramento Mountains at 8,676 feet.</figcaption>
+            <img
+              src="assets/strip-setting-1584x340.webp"
+              alt="Pine forest trail, ponderosa, and backcountry shelter in Cloudcroft"
+              width="1584"
+              height="340"
+              loading="lazy"
+            />
+            <figcaption>
+              The setting — Sacramento Mountains at 8,676 feet.
+            </figcaption>
           </figure>
           <figure>
-            <img src="assets/strip-wildflowers-1584x340.webp" alt="Wildflower meadow, pink blooms, and penstemon close-up" width="1584" height="340" loading="lazy" />
+            <img
+              src="assets/strip-wildflowers-1584x340.webp"
+              alt="Wildflower meadow, pink blooms, and penstemon close-up"
+              width="1584"
+              height="340"
+              loading="lazy"
+            />
             <figcaption>Small things along the fairways.</figcaption>
           </figure>
           <figure>
-            <img src="assets/strip-neighbors-1584x340.webp" alt="Cattle herd, a close cow, and a perched bird" width="1584" height="340" loading="lazy" />
-            <figcaption>The neighbors — open range shares the rough.</figcaption>
+            <img
+              src="assets/strip-neighbors-1584x340.webp"
+              alt="Cattle herd, a close cow, and a perched bird"
+              width="1584"
+              height="340"
+              loading="lazy"
+            />
+            <figcaption>
+              The neighbors — open range shares the rough.
+            </figcaption>
           </figure>
         </section>
 
         <section class="card" aria-labelledby="h-data">
           <h2 id="h-data">The dataset</h2>
-          <p class="meta">Four open sources, each verified covering Cloudcroft before use. No personal or sensitive data anywhere.</p>
+          <p class="meta">
+            Four open sources, each verified covering Cloudcroft before use. No
+            personal or sensitive data anywhere.
+          </p>
           <table>
-            <thead><tr><th scope="col">Source</th><th scope="col">What it gives</th></tr></thead>
+            <thead>
+              <tr>
+                <th scope="col">Source</th>
+                <th scope="col">What it gives</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr><td>USGS 3DEP 1&nbsp;m DEM</td><td>One 248&nbsp;MB tile covers both courses. Anchor elevations match the National Map to 0.1&nbsp;ft — the elevation source of record for plays-like distances.</td></tr>
-              <tr><td>USGS NAIP 2022 60&nbsp;cm imagery</td><td>One tile, cropped to a course window for the satellite toggle and draped over the 3D terrain.</td></tr>
-              <tr><td>OpenStreetMap trails</td><td>Live bbox extract: 46 paths + 26 footways with real trail names. The S3-native Daylight parquet path was attempted and rejected on measurement — no spatial partitioning; same data, bbox API, 20 seconds.</td></tr>
-              <tr><td>Ground GPS (Nov&nbsp;1 survey)</td><td>Community holes 1–2 fully pinned (tee + basket averaged fixes, par/distance/mando notes, sign photos); hole-2 basket photographed; 6 unnamed Tiki points located. The rest is honest scaffolding until the next field day.</td></tr>
+              <tr>
+                <td>USGS 3DEP 1&nbsp;m DEM</td>
+                <td>
+                  One 248&nbsp;MB tile covers both courses. Anchor elevations
+                  match the National Map to 0.1&nbsp;ft — the elevation source
+                  of record for plays-like distances.
+                </td>
+              </tr>
+              <tr>
+                <td>USGS NAIP 2022 60&nbsp;cm imagery</td>
+                <td>
+                  One tile, cropped to a course window for the satellite toggle
+                  and draped over the 3D terrain.
+                </td>
+              </tr>
+              <tr>
+                <td>OpenStreetMap trails</td>
+                <td>
+                  Live bbox extract: 46 paths + 26 footways with real trail
+                  names. The S3-native Daylight parquet path was attempted and
+                  rejected on measurement — no spatial partitioning; same data,
+                  bbox API, 20 seconds.
+                </td>
+              </tr>
+              <tr>
+                <td>Ground GPS (Nov&nbsp;1 survey)</td>
+                <td>
+                  Community holes 1–2 fully pinned (tee + basket averaged fixes,
+                  par/distance/mando notes, sign photos); hole-2 basket
+                  photographed; 6 unnamed Tiki points located. The rest is
+                  honest scaffolding until the next field day.
+                </td>
+              </tr>
             </tbody>
           </table>
           <div class="grid-2">
             <figure>
-              <img src="assets/fig-swmaps-community-tee2.webp" alt="SW Maps recording community tee 2 with par, distance, and mando note" loading="lazy" />
-              <figcaption>Field capture: the averaged fix plus the remark that becomes the hole's row.</figcaption>
+              <img
+                src="assets/fig-swmaps-community-tee2.webp"
+                alt="SW Maps recording community tee 2 with par, distance, and mando note"
+                loading="lazy"
+              />
+              <figcaption>
+                Field capture: the averaged fix plus the remark that becomes the
+                hole's row.
+              </figcaption>
             </figure>
             <figure>
-              <picture><source type="image/webp" srcset="assets/hole2-tee-sign.webp" /><img src="assets/hole2-tee-sign.jpg" alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds" loading="lazy" decoding="async" /></picture>
+              <picture
+                ><source
+                  type="image/webp"
+                  srcset="assets/hole2-tee-sign.webp" />
+                <img
+                  src="assets/hole2-tee-sign.jpg"
+                  alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds"
+                  loading="lazy"
+                  decoding="async"
+              /></picture>
               <figcaption>Hole 2 tee sign — the par source.</figcaption>
             </figure>
+          </div>
+          <h3>Every photo from the field day</h3>
+          <p class="meta">
+            All 15 GPS-tagged photos with their coordinates, the 5 panoramas
+            (tap one to stand in it), and all 20 SW Maps screenshots — loaded
+            live from the same data files the
+            <a href="/disc-golf/">map</a> reads.
+          </p>
+          <div id="gal-photos" class="gal" aria-live="polite">
+            <p class="meta">loading photos…</p>
+          </div>
+          <h3>Panoramas — tap to stand there</h3>
+          <div id="gal-panos" class="gal" aria-live="polite">
+            <p class="meta">loading panoramas…</p>
+          </div>
+          <h3>The survey as it happened — SW Maps screenshots</h3>
+          <div id="gal-shots" class="shots" aria-live="polite">
+            <p class="meta">loading screenshots…</p>
           </div>
         </section>
 
         <section class="card" aria-labelledby="h-pipe">
           <h2 id="h-pipe">From phone to scorecard</h2>
-          <p>SW Maps project backups carry every point, note, and attached photo. A small extractor turns them into open GeoJSON — no app lock-in:</p>
-          <pre><code>python dataset/scripts/swm2_to_geojson.py community.swm2 Photos/ survey/2026-11-01-community
+          <p>Run the pipeline — three commands, real output:</p>
+          <div class="pipe-steps" role="group" aria-label="Pipeline steps">
+            <button type="button" data-pipe-step="1" aria-pressed="true">
+              1 · Extract
+            </button>
+            <button type="button" data-pipe-step="2" aria-pressed="false">
+              2 · Validate
+            </button>
+            <button type="button" data-pipe-step="3" aria-pressed="false">
+              3 · Adapt
+            </button>
+          </div>
+          <div class="pipe-pane" data-pipe-pane="1">
+            <p>
+              SW Maps project backups carry every point, note, and attached
+              photo. A small extractor turns them into open GeoJSON — no app
+              lock-in:
+            </p>
+            <pre><code>python dataset/scripts/swm2_to_geojson.py community.swm2 Photos/ survey/2026-11-01-community
 # wrote survey/2026-11-01-community/points.geojson: 21 points</code></pre>
-          <p>Validation treats partial as a supported state — bad geometry fails, gaps are reported, never silently filled:</p>
-          <pre><code>python dataset/scripts/validate_survey.py --partial
+          </div>
+          <div class="pipe-pane" data-pipe-pane="2" hidden>
+            <p>
+              Validation treats partial as a supported state — bad geometry
+              fails, gaps are reported, never silently filled:
+            </p>
+            <pre><code>python dataset/scripts/validate_survey.py --partial
 # 2026-11-01-community: 21 points — holes complete (tee+basket): [1];
 #   holes partial: [2]; unidentified points: 18
 # partial survey ok: 3 named points, gaps are scaffolding</code></pre>
-          <p>Then the adapter fills what the survey reached and scaffolds the rest, so the next field day lights up holes with no code change:</p>
-          <pre><code>python dataset/scripts/partial_holes.py
+          </div>
+          <div class="pipe-pane" data-pipe-pane="3" hidden>
+            <p>
+              Then the adapter fills what the survey reached, scaffolds the
+              rest, and enriches every point with its name, coordinates, and
+              photo — so the next field day lights up holes with no code change:
+            </p>
+            <pre><code>python dataset/scripts/partial_holes.py
 # community: cloudcroft-community.json (2 surveyed rows, 21 survey points)
 # tiki: byron-ligon-tiki.json (0 surveyed rows, 6 survey points)</code></pre>
+          </div>
+          <h3>All 27 survey points, live</h3>
+          <p class="meta">
+            Read straight from the files the map serves. Tap a point to open it
+            on the map; tap a photo to see what the phone saw there.
+          </p>
+          <div class="pts-wrap">
+            <table class="pts" id="pts-table">
+              <thead>
+                <tr>
+                  <th scope="col">Point</th>
+                  <th scope="col">Kind</th>
+                  <th scope="col">Coordinates</th>
+                  <th scope="col">Elev (m)</th>
+                  <th scope="col">Note</th>
+                  <th scope="col">Photo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="6">loading survey points…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
 
         <section class="card" aria-labelledby="h-play">
           <h2 id="h-play">Play the first two holes</h2>
-          <p class="meta">Real distances and pars off the tee signs. Tap your throws in — the full card takes it to DynamoDB.</p>
+          <p class="meta">
+            Real distances and pars off the tee signs. Tap your throws in — the
+            full card takes it to DynamoDB.
+          </p>
           <div class="play-row" data-hole="1" data-par="4">
             <span><strong>Hole 1</strong> — Par 4 (pro) · 411 ft</span>
             <span class="stepper">
-              <button type="button" class="dec" aria-label="Hole 1 fewer strokes">−</button>
+              <button
+                type="button"
+                class="dec"
+                aria-label="Hole 1 fewer strokes"
+              >
+                −
+              </button>
               <output aria-live="polite">4</output>
-              <button type="button" class="inc" aria-label="Hole 1 more strokes">+</button>
+              <button
+                type="button"
+                class="inc"
+                aria-label="Hole 1 more strokes"
+              >
+                +
+              </button>
             </span>
             <span class="vs vs-even">E</span>
           </div>
           <div class="play-row" data-hole="2" data-par="3">
-            <span><strong>Hole 2</strong> — Par 3 · 245 ft · mando right, fence OB right</span>
+            <span
+              ><strong>Hole 2</strong> — Par 3 · 245 ft · mando right, fence OB
+              right</span
+            >
             <span class="stepper">
-              <button type="button" class="dec" aria-label="Hole 2 fewer strokes">−</button>
+              <button
+                type="button"
+                class="dec"
+                aria-label="Hole 2 fewer strokes"
+              >
+                −
+              </button>
               <output aria-live="polite">3</output>
-              <button type="button" class="inc" aria-label="Hole 2 more strokes">+</button>
+              <button
+                type="button"
+                class="inc"
+                aria-label="Hole 2 more strokes"
+              >
+                +
+              </button>
             </span>
             <span class="vs vs-even">E</span>
           </div>
-          <p id="play-total" role="status" aria-live="polite">Even through 2. <a href="/disc-golf/">Open the full card →</a></p>
+          <p id="play-total" role="status" aria-live="polite">
+            Even through 2. <a href="/disc-golf/">Open the full card →</a>
+          </p>
+          <p class="meta">
+            Take it to the real card:
+            <a href="/disc-golf/?course=community&amp;hole=1"
+              >hole 1 on the map →</a
+            >
+            ·
+            <a href="/disc-golf/?course=community&amp;hole=2"
+              >hole 2 on the map →</a
+            >
+            <button type="button" id="play-reset" class="svc-chip-reset">
+              Reset
+            </button>
+          </p>
         </section>
 
         <section class="card" aria-labelledby="h-services">
           <h2 id="h-services">AWS services used and why</h2>
-          <table>
-            <thead><tr><th scope="col">Service</th><th scope="col">Role</th><th scope="col">Why this one</th></tr></thead>
+          <p class="meta">Tap a service to find its row:</p>
+          <div class="svc-chips" role="group" aria-label="Highlight a service">
+            <button type="button" data-svc="0" aria-pressed="false">
+              Location Service
+            </button>
+            <button type="button" data-svc="1" aria-pressed="false">S3</button>
+            <button type="button" data-svc="2" aria-pressed="false">
+              Lambda
+            </button>
+            <button type="button" data-svc="3" aria-pressed="false">
+              DynamoDB
+            </button>
+            <button type="button" data-svc="4" aria-pressed="false">
+              Cognito
+            </button>
+            <button type="button" data-svc="5" aria-pressed="false">CDK</button>
+          </div>
+          <table id="svc-table">
+            <thead>
+              <tr>
+                <th scope="col">Service</th>
+                <th scope="col">Role</th>
+                <th scope="col">Why this one</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr><td>Amazon Location Service</td><td>Topo + imagery maps, place index, geofences, tracker, routes</td><td>One managed home for every spatial primitive; geofences trigger hole arrival on-site.</td></tr>
-              <tr><td>Amazon S3</td><td>Dataset prefix + static hosting</td><td>Open-data tiles stage next to derived JSON; same bucket serves the bundle.</td></tr>
-              <tr><td>AWS Lambda (Rust, ARM64)</td><td>Plays-like distance + scorecard API</td><td>Sub-100&nbsp;ms math at pennies per round.</td></tr>
-              <tr><td>Amazon DynamoDB</td><td>Scorecard rounds, on-demand</td><td>Schemaless rounds, zero ops, survives the phone in a pocket.</td></tr>
-              <tr><td>Amazon Cognito</td><td>Guest identity pool, one scoped role</td><td>No logins on the course; same role serves web and Android.</td></tr>
-              <tr><td>AWS CDK (TypeScript)</td><td>Whole stack as code</td><td>One deploy recreates everything.</td></tr>
+              <tr>
+                <td>Amazon Location Service</td>
+                <td>
+                  Topo + imagery maps, place index, geofences, tracker, routes
+                </td>
+                <td>
+                  One managed home for every spatial primitive; geofences
+                  trigger hole arrival on-site.
+                </td>
+              </tr>
+              <tr>
+                <td>Amazon S3</td>
+                <td>Dataset prefix + static hosting</td>
+                <td>
+                  Open-data tiles stage next to derived JSON; same bucket serves
+                  the bundle.
+                </td>
+              </tr>
+              <tr>
+                <td>AWS Lambda (Rust, ARM64)</td>
+                <td>Plays-like distance + scorecard API</td>
+                <td>Sub-100&nbsp;ms math at pennies per round.</td>
+              </tr>
+              <tr>
+                <td>Amazon DynamoDB</td>
+                <td>Scorecard rounds, on-demand</td>
+                <td>
+                  Schemaless rounds, zero ops, survives the phone in a pocket.
+                </td>
+              </tr>
+              <tr>
+                <td>Amazon Cognito</td>
+                <td>Guest identity pool, one scoped role</td>
+                <td>
+                  No logins on the course; same role serves web and Android.
+                </td>
+              </tr>
+              <tr>
+                <td>AWS CDK (TypeScript)</td>
+                <td>Whole stack as code</td>
+                <td>One deploy recreates everything.</td>
+              </tr>
             </tbody>
           </table>
         </section>
 
         <section class="card" aria-labelledby="h-radio">
           <h2 id="h-radio">Mountain radio</h2>
-          <p class="meta">The drive up and the round at 8,676 feet, in streams. Press play — one plays at a time.</p>
-          <div class="radio-row">
-            <span><strong>KHII 88.9 / 100.5</strong> — Cloudcroft's own, from the Sacramento Mountains</span>
-            <audio controls preload="none" src="https://stream.aiir.com/nk0mvkzpgppuv"></audio>
-          </div>
-          <div class="radio-row">
-            <span><strong>KTMN Rock 97.9</strong> — classic rock, licensed to Cloudcroft</span>
-            <audio controls preload="none" src="https://stream.aiir.com/teg6piefk9qvv"></audio>
-          </div>
-          <div class="radio-row">
-            <span><strong>NV1 — Native Voice One</strong> — Mescalero regional + national Native programming</span>
-            <audio controls preload="none" src="https://playerservices.streamtheworld.com/api/livestream-redirect/NV1.mp3"></audio>
-          </div>
+          <p class="meta">
+            The drive up and the round at 8,676 feet, in streams. One tuner for
+            the story, the <a href="/disc-golf/">map</a>, and the
+            <a href="/disc-golf/walk.html">walk</a> — pick a station here and it
+            follows you there.
+          </p>
+          <div data-radio-tuner></div>
           <p class="radio-links">
             On their home platforms:
-            <a href="https://live365.com/" rel="noopener" target="_blank">K-CLOUD (“Music for the Mountain”) on Live365</a> ·
-            <a href="https://kalhradio.org" rel="noopener" target="_blank">KALH 95.1 Alamogordo</a> ·
-            <a href="https://www.khiiradio.com/podcasts/red-dirt-rising/" rel="noopener" target="_blank">Red Dirt Rising podcast</a>
+            <a href="https://live365.com/" rel="noopener" target="_blank"
+              >K-CLOUD (“Music for the Mountain”) on Live365</a
+            >
+            ·
+            <a href="https://kalhradio.org" rel="noopener" target="_blank"
+              >KALH 95.1 Alamogordo</a
+            >
+            ·
+            <a
+              href="https://www.khiiradio.com/podcasts/red-dirt-rising/"
+              rel="noopener"
+              target="_blank"
+              >Red Dirt Rising podcast</a
+            >
           </p>
           <p class="radio-links">
             Public-safety scanner feeds (open on Broadcastify):
-            <a href="https://www.broadcastify.com/listen/stid/35" rel="noopener" target="_blank">Cloudcroft Fire, Rescue &amp; EMS + Otero County feeds</a>
+            <a
+              href="https://www.broadcastify.com/listen/stid/35"
+              rel="noopener"
+              target="_blank"
+              >Cloudcroft Fire, Rescue &amp; EMS + Otero County feeds</a
+            >
           </p>
         </section>
 
         <section class="card" aria-labelledby="h-judges">
           <h2 id="h-judges">For the judges</h2>
-          <p class="meta">Weekend Challenge: Map it — Gate 1 AI scoring + human review, Gate 2 panel. Something built for each of you.</p>
+          <p class="meta">
+            Something built for each of you. Click a card to flip through.
+          </p>
           <div class="deck" id="judges-deck">
             <div class="deck-card on">
               <h3>Gate 1 — AI scoring</h3>
-              <p>For the bots: semantic HTML, JSON-LD for both courses, alt and ARIA on every image and control, honest status text. Crawl the <a href="/disc-golf/">map</a> and this page — nothing needs a screenshot to parse.</p>
+              <p>
+                For the bots: semantic HTML, JSON-LD for both courses, alt and
+                ARIA on every image and control, honest status text. Crawl the
+                <a href="/disc-golf/">map</a> and this page — nothing needs a
+                screenshot to parse.
+              </p>
             </div>
             <div class="deck-card">
               <h3>Manideep Reddy Gillela — Cloud Infra Architect</h3>
-              <p>For the infra eye: whole stack as CDK, Rust ARM lambdas, and a prefix guard I shipped mid-contest after catching that the root site's <code>--delete</code> syncs would have wiped this project.</p>
+              <p>
+                For the infra eye: whole stack as CDK, Rust ARM lambdas, and a
+                prefix guard I shipped mid-contest after catching that the root
+                site's <code>--delete</code> syncs would have wiped this
+                project.
+              </p>
             </div>
             <div class="deck-card">
               <h3>Ram Nethi — Gate 2 panel</h3>
-              <p>Craft and execution: the map opens fast, every hole row flies there, and the walkthrough runs first-person on any screen — headset optional.</p>
+              <p>
+                Craft and execution: the map opens fast, every hole row flies
+                there, and the walkthrough runs first-person on any screen —
+                headset optional.
+              </p>
             </div>
             <div class="deck-card">
               <h3>Yue Ning — Gate 2 panel</h3>
-              <p>Usefulness: a pocket scorecard for players, and a survey recipe any town can run with a phone and an afternoon.</p>
+              <p>
+                Usefulness: a pocket scorecard for players, and a survey recipe
+                any town can run with a phone and an afternoon.
+              </p>
             </div>
             <div class="deck-card">
               <h3>Hari — Gate 2 panel</h3>
-              <p>Technical innovation: plays-like distances from 1-meter elevation fused with ground GPS, geofences waiting on the next survey drop.</p>
+              <p>
+                Technical innovation: plays-like distances from 1-meter
+                elevation fused with ground GPS, geofences waiting on the next
+                survey drop.
+              </p>
             </div>
             <div class="deck-card">
               <h3>Restelli Matteo — Gate 2 panel</h3>
-              <p>Storytelling: Ray Haller cut this course from a hillside by hand. Stand on the mountaintop at tee box 2 and look at what he built.</p>
+              <p>
+                Storytelling: Ray Haller cut this course from a hillside by
+                hand. Stand on the mountaintop at tee box 2 and look at what he
+                built.
+              </p>
             </div>
           </div>
           <div class="deck-nav">
@@ -570,33 +1558,64 @@
 
         <section class="card" aria-labelledby="h-status">
           <h2 id="h-status">What is live, what is next</h2>
+          <p class="meta">
+            The survey so far — one dot per GPS point (blue tee, gold basket,
+            grey located-not-yet-labeled). Tap a dot:
+          </p>
+          <div id="survey-dots" class="dots" aria-live="polite"></div>
+          <p id="dot-info" role="status" aria-live="polite">
+            loading survey points…
+          </p>
           <p>
             The <a href="/disc-golf/">map and scorecard</a> are live, as is the
             <a href="/disc-golf/walk.html">3D walkthrough</a>. The repo stays
             private; the reusable pattern is the
             <a href="/disc-golf/how-this-works/">how-this-works writeup</a>.
-            Still to come: the under-3-minute demo video, then the Builder Center
-            project post.
+            Still to come: the under-3-minute demo video, then the Builder
+            Center project post.
           </p>
           <figure>
-            <picture><source type="image/webp" srcset="assets/walkthrough-hero.webp" /><img src="assets/walkthrough-hero.png" alt="3D walkthrough of the courses from orbit on 1-meter terrain" width="1440" height="900" loading="lazy" decoding="async" /></picture>
-            <figcaption>From orbit — pins, trail ribbons, 1-meter terrain under NAIP imagery.</figcaption>
+            <picture
+              ><source
+                type="image/webp"
+                srcset="assets/walkthrough-hero.webp" />
+              <img
+                src="assets/walkthrough-hero.png"
+                alt="3D walkthrough of the courses from orbit on 1-meter terrain"
+                width="1440"
+                height="900"
+                loading="lazy"
+                decoding="async"
+            /></picture>
+            <figcaption>
+              From orbit — pins, trail ribbons, 1-meter terrain under NAIP
+              imagery.
+            </figcaption>
           </figure>
           <figure>
-            <picture><source type="image/webp" srcset="assets/kiosk.webp" /><img src="assets/kiosk.jpg" alt="Course kiosk with posted layout" loading="lazy" decoding="async" /></picture>
-            <figcaption>Where every round starts — the course kiosk.</figcaption>
+            <picture
+              ><source type="image/webp" srcset="assets/kiosk.webp" />
+              <img
+                src="assets/kiosk.jpg"
+                alt="Course kiosk with posted layout"
+                loading="lazy"
+                decoding="async"
+            /></picture>
+            <figcaption>
+              Where every round starts — the course kiosk.
+            </figcaption>
           </figure>
           <p>
             Day-two build underneath: anchors are geocoded, elevation comes from
-            the USGS 3DEP 1-meter DEM, trails from OpenStreetMap, imagery from NAIP
-            2022. Community holes 1–2 carry ground pins; the rest land with the
-            next survey — then AR overlays, plays-like distances, and per-hole
-            geofences switch on.
+            the USGS 3DEP 1-meter DEM, trails from OpenStreetMap, imagery from
+            NAIP 2022. Community holes 1–2 carry ground pins; the rest land with
+            the next survey — then AR overlays, plays-like distances, and
+            per-hole geofences switch on.
           </p>
         </section>
       </main>
       <footer>
-        <p>Bryan Chasko · Cloudcroft disc golf · Weekend Challenge: Map it · November 2026</p>
+        <p>Bryan Chasko · Cloudcroft disc golf</p>
       </footer>
     </div>
     <script>
@@ -614,7 +1633,9 @@
           var next =
             root.getAttribute("data-theme") === "dark" ? "light" : "dark";
           root.setAttribute("data-theme", next);
-          try { localStorage.setItem("pref-theme", next); } catch (e) {}
+          try {
+            localStorage.setItem("pref-theme", next);
+          } catch (e) {}
           label();
         });
       })();
@@ -630,38 +1651,170 @@
         onScroll();
         // reveal on scroll
         var cardsEls = document.querySelectorAll("section.card");
-        cardsEls.forEach(function (c) { c.classList.add("reveal"); });
+        cardsEls.forEach(function (c) {
+          c.classList.add("reveal");
+        });
         if ("IntersectionObserver" in window) {
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-            });
-          }, { threshold: 0.12 });
-          cardsEls.forEach(function (c) { io.observe(c); });
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add("in");
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.12 },
+          );
+          cardsEls.forEach(function (c) {
+            io.observe(c);
+          });
         } else {
-          cardsEls.forEach(function (c) { c.classList.add("in"); });
+          cardsEls.forEach(function (c) {
+            c.classList.add("in");
+          });
         }
-        // throw a disc
+        // throw a disc: hold to charge, release to throw. The green band
+        // is the basket for the picked hole; wind shifts it every throw.
         var disc = document.getElementById("disc");
         var basket = document.getElementById("basket");
         var note = document.getElementById("throw-note");
-        var lines = [
-          "Chains! Parked for the birdie look.",
-          "Hyzer held all the way — circles edge.",
-          "Off the cage. The mountain wind gets a vote.",
-          "Pure. That's the 245-footer at tee 2.",
-        ];
-        var i = 0;
-        document.getElementById("throw-btn").addEventListener("click", function () {
-          disc.classList.remove("fly");
-          void disc.offsetWidth;
-          disc.classList.add("fly");
-          note.textContent = lines[i++ % lines.length];
-          window.setTimeout(function () { basket.classList.add("hit"); }, 1250);
-          window.setTimeout(function () { basket.classList.remove("hit"); }, 2300);
+        var throwBtn = document.getElementById("throw-btn");
+        var fill = document.getElementById("power-fill");
+        var sweet = document.getElementById("sweet");
+        var windEl = document.getElementById("wind");
+        var scoreEl = document.getElementById("throw-score");
+        var HOLES = {
+          1: { lo: 86, hi: 96, name: "Hole 1 (411 ft)" },
+          2: { lo: 68, hi: 80, name: "Hole 2 (245 ft)" },
+        };
+        var throwHole = "2",
+          wind = 0,
+          chains = 0,
+          throws = 0;
+        var charging = false,
+          power = 0,
+          chargeT = 0,
+          raf = 0,
+          flight = null;
+        var reducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        function newWind() {
+          wind = Math.round((Math.random() * 16 - 8) * 10) / 10;
+          windEl.textContent =
+            wind === 0
+              ? "wind: calm"
+              : "wind: " +
+                (wind > 0 ? "+" : "") +
+                wind.toFixed(0) +
+                (wind > 0 ? " (pushes long)" : " (knocks it down)");
+          var h = HOLES[throwHole];
+          sweet.style.left = h.lo + wind + "%";
+          sweet.style.width = h.hi - h.lo + "%";
+        }
+        function setHole(id) {
+          throwHole = id;
+          document.querySelectorAll("[data-throw-hole]").forEach(function (b) {
+            b.setAttribute(
+              "aria-pressed",
+              b.getAttribute("data-throw-hole") === id ? "true" : "false",
+            );
+          });
+          newWind();
+          note.textContent = HOLES[id].name + " — land the power in the green.";
+        }
+        document.querySelectorAll("[data-throw-hole]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            setHole(b.getAttribute("data-throw-hole"));
+          });
         });
+        function chargeStep(t) {
+          if (!charging) return;
+          if (!chargeT) chargeT = t;
+          power = Math.min(100, ((t - chargeT) / 1100) * 100);
+          fill.style.width = power + "%";
+          if (power < 100) raf = window.requestAnimationFrame(chargeStep);
+        }
+        function startCharge(e) {
+          if (e && e.type === "keydown" && e.repeat) return;
+          if (charging) return;
+          charging = true;
+          chargeT = 0;
+          power = 0;
+          raf = window.requestAnimationFrame(chargeStep);
+        }
+        function release() {
+          if (!charging) return;
+          charging = false;
+          window.cancelAnimationFrame(raf);
+          throws++;
+          var h = HOLES[throwHole];
+          var lo = h.lo + wind,
+            hi = h.hi + wind;
+          var inSweet = power >= lo && power <= hi;
+          var near = power >= lo - 7 && power <= hi + 7;
+          var msg;
+          if (inSweet) {
+            chains++;
+            msg = "Chains! " + h.name + " parked.";
+          } else if (near && power < lo)
+            msg = "Cage low — a touch short on " + h.name + ".";
+          else if (near)
+            msg = "Off the top band — just long on " + h.name + ".";
+          else if (power < lo)
+            msg = "Way short. The mountain air is thin but not that thin.";
+          else msg = "Saired past into the pines. Easy does it.";
+          note.textContent = msg;
+          scoreEl.textContent = "chains: " + chains + " / " + throws;
+          if (flight) flight.cancel();
+          disc.classList.remove("fly");
+          if (reducedMotion) {
+            fill.style.width = "0%";
+          } else {
+            var dist = Math.max(4, Math.min(100, power));
+            flight = disc.animate(
+              [{ offsetDistance: "0%" }, { offsetDistance: dist + "%" }],
+              {
+                duration: 500 + dist * 9,
+                easing: "cubic-bezier(0.25,0.6,0.35,1)",
+                fill: "forwards",
+              },
+            );
+            window.setTimeout(
+              function () {
+                if (inSweet || near) basket.classList.add("hit");
+                fill.style.width = "0%";
+              },
+              500 + dist * 9,
+            );
+            window.setTimeout(
+              function () {
+                basket.classList.remove("hit");
+              },
+              500 + dist * 9 + 1100,
+            );
+          }
+          power = 0;
+          newWind();
+        }
+        throwBtn.addEventListener("pointerdown", startCharge);
+        throwBtn.addEventListener("pointerup", release);
+        throwBtn.addEventListener("pointerleave", release);
+        throwBtn.addEventListener("keydown", function (e) {
+          if (e.code === "Space" || e.code === "Enter") {
+            e.preventDefault();
+            startCharge(e);
+          }
+        });
+        throwBtn.addEventListener("keyup", function (e) {
+          if (e.code === "Space" || e.code === "Enter") release();
+        });
+        newWind();
         // mini scorecard
-        var rows = Array.prototype.slice.call(document.querySelectorAll(".play-row"));
+        var rows = Array.prototype.slice.call(
+          document.querySelectorAll(".play-row"),
+        );
         var totalEl = document.getElementById("play-total");
         function update() {
           var total = 0;
@@ -672,31 +1825,276 @@
             total += d;
             var vs = row.querySelector(".vs");
             vs.textContent = d === 0 ? "E" : d > 0 ? "+" + d : "" + d;
-            vs.className = "vs " + (d < 0 ? "vs-under" : d > 0 ? "vs-over" : "vs-even");
+            vs.className =
+              "vs " + (d < 0 ? "vs-under" : d > 0 ? "vs-over" : "vs-even");
           });
-          var t = total === 0 ? "Even through 2." : total > 0 ? "+" + total + " through 2." : total + " through 2 — nice.";
-          totalEl.innerHTML = t + ' <a href="/disc-golf/">Open the full card →</a>';
+          var t =
+            total === 0
+              ? "Even through 2."
+              : total > 0
+                ? "+" + total + " through 2."
+                : total + " through 2 — nice.";
+          totalEl.innerHTML =
+            t + ' <a href="/disc-golf/">Open the full card →</a>';
         }
         rows.forEach(function (row) {
           var out = row.querySelector("output");
           row.querySelector(".dec").addEventListener("click", function () {
-            out.textContent = Math.max(1, parseInt(out.textContent, 10) - 1); update();
+            out.textContent = Math.max(1, parseInt(out.textContent, 10) - 1);
+            update();
           });
           row.querySelector(".inc").addEventListener("click", function () {
-            out.textContent = Math.min(12, parseInt(out.textContent, 10) + 1); update();
+            out.textContent = Math.min(12, parseInt(out.textContent, 10) + 1);
+            update();
           });
         });
+        var savedCard = null;
+        try {
+          savedCard = JSON.parse(
+            localStorage.getItem("dg-story-card") || "null",
+          );
+        } catch (e) {}
+        if (savedCard) {
+          rows.forEach(function (row) {
+            var v = savedCard[row.getAttribute("data-hole")];
+            if (v) row.querySelector("output").textContent = v;
+          });
+        }
+        var baseUpdate = update;
+        update = function () {
+          baseUpdate();
+          var card = {};
+          rows.forEach(function (row) {
+            card[row.getAttribute("data-hole")] =
+              row.querySelector("output").textContent;
+          });
+          try {
+            localStorage.setItem("dg-story-card", JSON.stringify(card));
+          } catch (e) {}
+        };
+        document
+          .getElementById("play-reset")
+          .addEventListener("click", function () {
+            rows.forEach(function (row) {
+              row.querySelector("output").textContent =
+                row.getAttribute("data-par");
+            });
+            update();
+          });
         update();
       })();
       (function () {
-        var players = Array.prototype.slice.call(
-          document.querySelectorAll(".radio-row audio"),
-        );
-        players.forEach(function (a) {
-          a.addEventListener("play", function () {
-            players.forEach(function (o) { if (o !== a) o.pause(); });
+        // tabs + stepper + service highlight (progressive: no-JS shows all)
+        function pressGroup(sel, attr, fn) {
+          document.querySelectorAll(sel).forEach(function (b) {
+            b.addEventListener("click", function () {
+              document.querySelectorAll(sel).forEach(function (o) {
+                o.setAttribute("aria-pressed", "false");
+              });
+              b.setAttribute("aria-pressed", "true");
+              fn(b.getAttribute(attr));
+            });
+          });
+        }
+        pressGroup("[data-course-tab]", "data-course-tab", function (id) {
+          document.querySelectorAll("[data-course-pane]").forEach(function (p) {
+            p.hidden = p.getAttribute("data-course-pane") !== id;
           });
         });
+        pressGroup("[data-pipe-step]", "data-pipe-step", function (id) {
+          document.querySelectorAll("[data-pipe-pane]").forEach(function (p) {
+            p.hidden = p.getAttribute("data-pipe-pane") !== id;
+          });
+        });
+        var svcRows = document.querySelectorAll("#svc-table tbody tr");
+        pressGroup("[data-svc]", "data-svc", function (id) {
+          svcRows.forEach(function (r, i) {
+            r.classList.toggle("hl", String(i) === id);
+          });
+          var row = svcRows[parseInt(id, 10)];
+          if (row) row.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        });
+      })();
+      (function () {
+        // live data, same files the map serves: galleries, points, dots
+        var BASE = "/disc-golf/";
+        function esc(s) {
+          return String(s == null ? "" : s)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;");
+        }
+        function coords(a) {
+          return a.lat != null && a.lon != null
+            ? " — " + a.lat.toFixed(6) + ", " + a.lon.toFixed(6)
+            : "";
+        }
+        fetch(BASE + "data/survey-assets.json")
+          .then(function (r) {
+            return r.json();
+          })
+          .then(function (data) {
+            var by = { photo: [], pano: [], screenshot: [] };
+            data.assets.forEach(function (a) {
+              by[a.kind].push(a);
+            });
+            document.getElementById("gal-photos").innerHTML = by.photo
+              .map(function (a) {
+                return (
+                  '<figure><img src="' +
+                  BASE +
+                  esc(a.web_url) +
+                  '" alt="' +
+                  esc(a.label) +
+                  '" loading="lazy"><figcaption>' +
+                  esc(a.label) +
+                  coords(a) +
+                  "</figcaption></figure>"
+                );
+              })
+              .join("");
+            document.getElementById("gal-panos").innerHTML = by.pano
+              .map(function (a) {
+                return (
+                  '<figure class="pano-strip"><a href="' +
+                  BASE +
+                  "walk.html?pano=" +
+                  encodeURIComponent(a.pano_id) +
+                  '"><img src="' +
+                  BASE +
+                  esc(a.web_url) +
+                  '" alt="' +
+                  esc(a.label) +
+                  ' — open in the 3D walk" loading="lazy"></a><figcaption>' +
+                  esc(a.label) +
+                  coords(a) +
+                  " — tap to stand there</figcaption></figure>"
+                );
+              })
+              .join("");
+            document.getElementById("gal-shots").innerHTML = by.screenshot
+              .map(function (a) {
+                return (
+                  '<figure><a href="' +
+                  BASE +
+                  esc(a.web_url) +
+                  '"><img src="' +
+                  BASE +
+                  esc(a.web_url) +
+                  '" alt="' +
+                  esc(a.label) +
+                  '" loading="lazy"></a><figcaption>' +
+                  esc(a.label) +
+                  coords(a) +
+                  "</figcaption></figure>"
+                );
+              })
+              .join("");
+          })
+          .catch(function () {
+            document.getElementById("gal-photos").innerHTML =
+              '<p class="meta">gallery failed to load — see the <a href="/disc-golf/">map</a>.</p>';
+          });
+        Promise.all([
+          fetch(BASE + "data/holes/cloudcroft-community.json").then(
+            function (r) {
+              return r.json();
+            },
+          ),
+          fetch(BASE + "data/holes/byron-ligon-tiki.json").then(function (r) {
+            return r.json();
+          }),
+        ])
+          .then(function (files) {
+            var pts = [];
+            files.forEach(function (d) {
+              (d.features || []).forEach(function (f) {
+                if (f.geometry && f.geometry.type === "Point")
+                  pts.push(f.properties);
+              });
+            });
+            var tbody = document.querySelector("#pts-table tbody");
+            tbody.innerHTML = pts
+              .map(function (p) {
+                var mapHref =
+                  BASE +
+                  "?course=" +
+                  encodeURIComponent(p.course || "community") +
+                  (p.hole ? "&hole=" + p.hole : "");
+                var photo = p.photo
+                  ? '<a href="' + BASE + esc(p.photo) + '">photo</a>'
+                  : "—";
+                return (
+                  '<tr><td><a href="' +
+                  mapHref +
+                  '">' +
+                  esc(p.name) +
+                  "</a></td><td>" +
+                  esc(p.kind) +
+                  '</td><td class="coords">' +
+                  p.lat.toFixed(6) +
+                  ", " +
+                  p.lon.toFixed(6) +
+                  "</td><td>" +
+                  (p.elevation_m != null ? p.elevation_m.toFixed(1) : "—") +
+                  "</td><td>" +
+                  esc(p.note || "") +
+                  "</td><td>" +
+                  photo +
+                  "</td></tr>"
+                );
+              })
+              .join("");
+            var dots = document.getElementById("survey-dots");
+            var info = document.getElementById("dot-info");
+            dots.innerHTML = "";
+            pts.forEach(function (p) {
+              var b = document.createElement("button");
+              b.type = "button";
+              b.className = "dot " + (p.kind || "unidentified");
+              b.title = p.name;
+              b.setAttribute("aria-label", "Survey point " + p.name);
+              b.addEventListener("click", function () {
+                dots.querySelectorAll(".dot").forEach(function (d) {
+                  d.classList.remove("sel");
+                });
+                b.classList.add("sel");
+                var mapHref =
+                  BASE +
+                  "?course=" +
+                  encodeURIComponent(p.course || "community") +
+                  (p.hole ? "&hole=" + p.hole : "");
+                info.innerHTML =
+                  "<strong>" +
+                  esc(p.name) +
+                  "</strong> (" +
+                  esc(p.kind) +
+                  ") — " +
+                  esc(p.note || "located, label pending") +
+                  '<br><span class="coords">' +
+                  p.lat.toFixed(6) +
+                  ", " +
+                  p.lon.toFixed(6) +
+                  "</span> · " +
+                  '<a href="' +
+                  mapHref +
+                  '">open on the map →</a>' +
+                  (p.photo
+                    ? ' · <a href="' + BASE + esc(p.photo) + '">field photo</a>'
+                    : "");
+              });
+              dots.appendChild(b);
+            });
+            info.textContent =
+              pts.length + " points located November 1 — tap a dot.";
+          })
+          .catch(function () {
+            var t = document.querySelector("#pts-table tbody");
+            if (t)
+              t.innerHTML =
+                '<tr><td colspan="6">survey points failed to load — see the <a href="/disc-golf/">map</a>.</td></tr>';
+          });
       })();
       (function () {
         var cards = Array.prototype.slice.call(
@@ -706,25 +2104,55 @@
         var pos = document.getElementById("deck-pos");
         var idx = 0;
         var timer = null;
-        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var reduced = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
         function show(n) {
           idx = ((n % cards.length) + cards.length) % cards.length;
-          cards.forEach(function (c, i) { c.classList.toggle("on", i === idx); });
-          if (pos) pos.textContent = (idx + 1) + " of " + cards.length;
+          cards.forEach(function (c, i) {
+            c.classList.toggle("on", i === idx);
+          });
+          if (pos) pos.textContent = idx + 1 + " of " + cards.length;
         }
-        function tick() { show(idx + 1); }
+        function tick() {
+          show(idx + 1);
+        }
         function arm() {
           if (reduced) return;
           if (timer) window.clearInterval(timer);
           timer = window.setInterval(tick, 5000);
         }
-        document.getElementById("deck-prev").addEventListener("click", function () { show(idx - 1); arm(); });
-        document.getElementById("deck-next").addEventListener("click", function () { show(idx + 1); arm(); });
-        document.getElementById("judges-deck").addEventListener("mouseenter", function () { if (timer) window.clearInterval(timer); });
-        document.getElementById("judges-deck").addEventListener("mouseleave", arm);
+        document
+          .getElementById("deck-prev")
+          .addEventListener("click", function () {
+            show(idx - 1);
+            arm();
+          });
+        document
+          .getElementById("deck-next")
+          .addEventListener("click", function () {
+            show(idx + 1);
+            arm();
+          });
+        document
+          .getElementById("judges-deck")
+          .addEventListener("click", function (e) {
+            if (e.target.closest("a")) return;
+            show(idx + 1);
+            arm();
+          });
+        document
+          .getElementById("judges-deck")
+          .addEventListener("mouseenter", function () {
+            if (timer) window.clearInterval(timer);
+          });
+        document
+          .getElementById("judges-deck")
+          .addEventListener("mouseleave", arm);
         show(0);
         arm();
       })();
     </script>
+    <script src="/disc-golf/shared/radio-tuner.js" defer></script>
   </body>
 </html>
