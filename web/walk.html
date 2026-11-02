@@ -3,41 +3,43 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Walk the courses — Cloudcroft Disc Golf</title>
+    <title>Walk the mountain — Cloudcroft Disc Golf</title>
     <meta
       name="description"
-      content="Virtual walkthrough of Cloudcroft NM disc golf courses: 1m terrain, NAIP imagery, trails, and viewpoints."
+      content="Stand on the mountaintop: 3D walkthrough of the Cloudcroft disc golf courses on 1 m terrain with real 360° panos from the ground survey."
     />
     <link rel="canonical" href="https://bryanchasko.com/disc-golf/walk.html" />
     <meta name="theme-color" content="#143d2a" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Cloudcroft Disc Golf" />
-    <meta property="og:title" content="Walk the courses — Cloudcroft Disc Golf" />
+    <meta property="og:title" content="Walk the mountain — Cloudcroft Disc Golf" />
     <meta
       property="og:description"
-      content="3D walkthrough of the Cloudcroft disc golf courses on 1m terrain: trails, forest, pano viewpoints."
+      content="3D walkthrough on 1 m terrain + real 360° panos from the November 1 ground survey. Stand on the mountaintop at Community tee box 2."
     />
     <meta property="og:url" content="https://bryanchasko.com/disc-golf/walk.html" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Walk the courses — Cloudcroft Disc Golf" />
+    <meta name="twitter:title" content="Walk the mountain — Cloudcroft Disc Golf" />
     <meta
       name="twitter:description"
-      content="3D walkthrough of the Cloudcroft disc golf courses on 1m terrain."
+      content="3D walkthrough on 1 m terrain + real 360° panos from the ground survey."
     />
   </head>
   <body>
+    <a class="skip-link" href="#scene">Skip to the walkthrough</a>
     <header id="topbar">
-      <h1><a href="./">Cloudcroft disc golf</a> / walkthrough</h1>
+      <h1><a href="./">Cloudcroft disc golf</a> / walk the mountain</h1>
       <div id="toolbar" role="toolbar" aria-label="walkthrough controls">
-        <button id="fly-tiki">Tiki course</button>
+        <button id="fly-tiki">Tiki putting course</button>
         <button id="fly-community">Community course</button>
         <button id="mode-orbit" class="active">Orbit</button>
         <button id="mode-walk">Walk (WASD)</button>
         <button id="toggle-trails-walk" class="active">Trails</button>
         <button id="toggle-trees" class="active">Forest</button>
-        <button id="pano-tiki">Stand at Tiki (360)</button>
-        <button id="vr-enter">Enter VR</button>
+        <button id="pano-tiki">Stand on the mountaintop (360°)</button>
+        <button id="enter-fp">Enter first person / VR</button>
+        <button id="judges-toggle" aria-expanded="false">For the judges</button>
       </div>
     </header>
     <main>
@@ -47,18 +49,39 @@
           <a href="./">main page</a> work without it.
         </p>
       </canvas>
+      <div id="fade-veil" aria-hidden="true"></div>
+      <button id="fullscreen-exit" hidden>Esc — back to orbit</button>
       <div id="pano-card" hidden>
-        <strong>360° pano viewpoint</strong>
-        <p>
-          You are standing where the Tiki tee pano will play. The 360° photos
-          arrive with the ground survey — then this card becomes the viewer.
+        <strong id="pano-title">Stand on the mountaintop</strong>
+        <p id="pano-text">
+          You are standing at Community tee box 2, 8,676 feet up, in a real
+          360° shot from the November 1 ground survey. Par 3, 245 ft — mando
+          right, fence-line out of bounds right. Drag to look around the
+          Sacramento Mountains.
         </p>
-        <button id="pano-dismiss">Keep walking</button>
+        <button id="pano-prev">← Prev pano</button>
+        <button id="pano-next">Next pano →</button>
+        <button id="pano-dismiss">Back to the walkthrough</button>
+        <p id="pano-caption" class="pano-cap"></p>
       </div>
+      <aside id="judges-card" hidden aria-label="For the judges">
+        <h2>For the judges</h2>
+        <dl>
+          <dt>Dataset</dt>
+          <dd>USGS 3DEP 1 m DEM + NAIP 2022 + OpenStreetMap trails + a Nov 1 ground GPS survey (21 community points, 6 tiki points, 5 panos). Every pin is an averaged fix, nothing fabricated.</dd>
+          <dt>Map + services</dt>
+          <dd>Amazon Location Service tiles, Rust ARM lambdas, DynamoDB scorecard, this 1 m-terrain Babylon walkthrough.</dd>
+          <dt>Pattern to reuse</dt>
+          <dd>Walk → averaged points with remarks → GeoJSON → validator → playable card. The next survey drop lights new holes with zero code changes.</dd>
+          <dt>Try it</dt>
+          <dd>Stand on the mountaintop → tee box 2 pano → next/prev through the baskets → first person → walk the fairway.</dd>
+        </dl>
+        <button id="judges-close">Close</button>
+      </aside>
       <div id="error-overlay" hidden></div>
       <div id="help">
         drag to orbit · scroll to zoom · WASD/arrows to walk in walk mode ·
-        forest is illustrative until the canopy survey lands
+        stand on the mountaintop for the real 360° photos from the survey
       </div>
     </main>
     <footer><span id="walk-status" role="status" aria-live="polite">loading terrain…</span></footer>

@@ -166,6 +166,75 @@ footer {
   }
 }
 
+#fade-veil {
+  position: absolute;
+  inset: 0;
+  background: #10140f;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+  z-index: 30;
+}
+
+#fade-veil.on {
+  opacity: 1;
+}
+
+#fullscreen-exit {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2147483646;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgb(255 255 255 / 0.4);
+  border-radius: 8px;
+  background: rgb(16 20 15 / 0.85);
+  color: #f7f5ef;
+  cursor: pointer;
+}
+
+#judges-card {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: min(22rem, calc(100vw - 2rem));
+  max-height: calc(100% - 2rem);
+  overflow-y: auto;
+  background: rgb(247 245 239 / 0.96);
+  color: #22271f;
+  border: 1px solid #d8d4c6;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgb(20 40 25 / 0.25);
+  padding: 1rem 1.1rem;
+  z-index: 40;
+}
+
+#judges-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #143d2a;
+}
+
+#judges-card dt {
+  font-weight: 600;
+  margin-top: 0.6rem;
+}
+
+#judges-card dd {
+  margin: 0.2rem 0 0;
+}
+
+#judges-card button {
+  margin-top: 0.8rem;
+}
+
+.pano-cap {
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;

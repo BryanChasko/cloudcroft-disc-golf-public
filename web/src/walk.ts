@@ -18,8 +18,9 @@ import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTextur
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color.js";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration.js";
-import { COURSES } from "./config";
-import type { CourseId } from "./config";
+import { COURSES, MOUNTAINTOP_PANO, PANOS } from "./config";
+import type { CourseId, PanoView } from "./config";
+import { PhotoDome } from "@babylonjs/core/Helpers/photoDome.js";
 import "./walk.css";
 
 // ---------- helpers ----------
@@ -352,11 +353,20 @@ async function main(): Promise<void> {
     trunk.scaling.setAll(t.s);
     trunk.rotation.y = t.r;
     trunk.parent = forest;
-    const crown = crownBases[i % 3].createInstance(`crown${i}`);
-    crown.position.set(t.x, t.y + 2.8 * t.s, t.z);
-    crown.scaling.setAll(t.s);
-    crown.rotation.y = t.r;
-    crown.parent = forest;
+    // Layered canopy: three stacked cones read as a pine, one cone reads
+    // as a traffic pylon. Same instanced base, decreasing scale.
+    const tiers: [number, number][] = [
+      [2.2, 1.0],
+      [3.3, 0.7],
+      [4.2, 0.45],
+    ];
+    tiers.forEach(([dy, sc], ti) => {
+      const crown = crownBases[i % 3].createInstance(`crown${i}-${ti}`);
+      crown.position.set(t.x, t.y + dy * t.s, t.z);
+      crown.scaling.setAll(t.s * sc);
+      crown.rotation.y = t.r + ti * 0.3;
+      crown.parent = forest;
+    });
     const blob = blobBase.createInstance(`blob${i}`);
     blob.position.set(t.x, t.y + 0.12, t.z);
     // NOTE: rotate the instance, not the base: a rotated base bakes its
@@ -477,6 +487,66 @@ async function main(): Promise<void> {
     clickables.push(basket);
   }
 
+  // ---------- surveyed hole pins (Nov 1 ground truth) ----------
+  interface HoleFeature {
+    geometry: { type: string; coordinates: number[] | number[][] };
+    properties: { kind: string; hole?: number };
+  }
+  interface HolesFile2 {
+    features?: HoleFeature[];
+  }
+  async function holePins(): Promise<void> {
+    const data = (await (
+      await fetch(COURSES.community.holesUrl)
+    ).json()) as HolesFile2;
+    const feats = data.features ?? [];
+    const pts: Record<string, [number, number, number]> = {};
+    for (const f of feats) {
+      const k = f.properties.kind;
+      if (f.geometry.type === "Point" && (k === "tee" || k === "basket")) {
+        const [lon, lat] = f.geometry.coordinates as number[];
+        const [x, z] = toWorld(lon, lat);
+        pts[`${k}${f.properties.hole ?? ""}`] = [x, heightAt(lon, lat), z];
+      }
+    }
+    const teeMat = new StandardMaterial("teeMat", scene);
+    teeMat.diffuseColor = new Color3(0.1, 0.32, 0.46);
+    const basketMat2 = new StandardMaterial("basketMat2", scene);
+    basketMat2.diffuseColor = new Color3(0.72, 0.57, 0.04);
+    for (const [key, [x, y, z]] of Object.entries(pts)) {
+      const isTee = key.startsWith("tee");
+      const m = isTee
+        ? MeshBuilder.CreateSphere(key, { diameter: 1.2 }, scene)
+        : MeshBuilder.CreateCylinder(
+            key,
+            { diameterTop: 1.2, diameterBottom: 0.84, height: 0.4 },
+            scene,
+          );
+      m.position.set(x, y + 1, z);
+      m.material = isTee ? teeMat : basketMat2;
+    }
+    const lineMat = new StandardMaterial("fairwayLineMat", scene);
+    lineMat.emissiveColor = new Color3(0.18, 0.49, 0.2);
+    lineMat.disableLighting = true;
+    for (const f of feats) {
+      if (f.geometry.type === "LineString" && f.properties.kind === "fairway") {
+        const coords = (f.geometry.coordinates as number[][]).map(
+          ([lon, lat]) => {
+            const [x, z] = toWorld(lon, lat);
+            return new Vector3(x, heightAt(lon, lat) + 0.6, z);
+          },
+        );
+        const line = MeshBuilder.CreateLines(
+          "fairway",
+          { points: coords },
+          scene,
+        );
+        line.isVisible = true;
+      }
+    }
+  }
+  void holePins();
+
   // ---------- cameras ----------
   const tikiWorld = toWorld(COURSES.tiki.lon, COURSES.tiki.lat);
   const tikiY = heightAt(COURSES.tiki.lon, COURSES.tiki.lat);
@@ -549,11 +619,49 @@ async function main(): Promise<void> {
   }
 
   const panoCard = document.getElementById("pano-card") as HTMLElement;
+  const panoCaption = document.getElementById("pano-caption") as HTMLElement;
+  const veil = document.getElementById("fade-veil") as HTMLElement;
+  let panoDome: PhotoDome | null = null;
+  let panoIdx = PANOS.indexOf(MOUNTAINTOP_PANO);
+  // Stand on the mountaintop: real 360° survey photo at the tee, walk camera
+  // at disc-flight height so drag looks around from the pad.
+  function showPanoAt(idx: number): void {
+    panoIdx = ((idx % PANOS.length) + PANOS.length) % PANOS.length;
+    const p: PanoView = PANOS[panoIdx];
+    const apply = () => {
+      enterWalk("community");
+      walkCam.position.y += 1.2;
+      if (!panoDome) {
+        panoDome = new PhotoDome("pano", p.file, { size: 400 }, scene);
+      } else {
+        const lat = (panoDome as { texture?: { url: string } }).texture;
+        if (lat) lat.url = p.file;
+        panoDome.isVisible = true;
+      }
+      panoCard.hidden = false;
+      panoCaption.textContent = `${p.label} (${panoIdx + 1} of ${PANOS.length} panos — ground survey, Nov 1)`;
+      setStatus(
+        `mountaintop pano — ${p.label.toLowerCase()} — drag to look around`,
+      );
+      veil.classList.remove("on");
+    };
+    if (REDUCED) {
+      apply();
+    } else {
+      veil.classList.add("on");
+      window.setTimeout(apply, 220);
+    }
+  }
+  function hidePano(): void {
+    if (panoDome) panoDome.isVisible = false;
+    panoCard.hidden = true;
+  }
+
   function enterOrbit(): void {
     mode = "orbit";
     scene.activeCamera = orbitCam;
     orbitCam.attachControl(canvas, true);
-    panoCard.hidden = true;
+    hidePano();
     setStatus("orbit mode — drag to orbit, scroll to zoom");
   }
 
@@ -566,7 +674,7 @@ async function main(): Promise<void> {
     t: number;
   } | null = null;
   function flyTo(courseId: CourseId): void {
-    panoCard.hidden = true;
+    hidePano();
     const c = COURSES[courseId];
     const [x, z] = toWorld(c.lon, c.lat);
     const y = heightAt(c.lon, c.lat);
@@ -658,48 +766,75 @@ async function main(): Promise<void> {
   });
   (document.getElementById("pano-tiki") as HTMLButtonElement).addEventListener(
     "click",
-    (e) => {
-      enterWalk("tiki");
+    () => {
+      showPanoAt(PANOS.indexOf(MOUNTAINTOP_PANO));
       (document.getElementById("mode-walk") as HTMLElement).classList.add(
         "active",
       );
       (document.getElementById("mode-orbit") as HTMLElement).classList.remove(
         "active",
       );
-      panoCard.hidden = false;
-      setStatus(
-        "standing at the Tiki 360 viewpoint — pano arrives with the ground survey",
-      );
     },
+  );
+  (document.getElementById("pano-prev") as HTMLButtonElement).addEventListener(
+    "click",
+    () => showPanoAt(panoIdx - 1),
+  );
+  (document.getElementById("pano-next") as HTMLButtonElement).addEventListener(
+    "click",
+    () => showPanoAt(panoIdx + 1),
   );
   (
     document.getElementById("pano-dismiss") as HTMLButtonElement
   ).addEventListener("click", () => {
-    panoCard.hidden = true;
+    hidePano();
+    setStatus("walk mode — drag to look, WASD/arrows to move, shift to hurry");
+  });
+  // First person on any screen: walk camera + fullscreen + exit chip.
+  // Headsets switch to immersive-vr when one is present.
+  const exitChip = document.getElementById(
+    "fullscreen-exit",
+  ) as HTMLButtonElement;
+  function exitFirstPerson(): void {
+    if (document.fullscreenElement)
+      void document.exitFullscreen().catch(() => undefined);
+    exitChip.hidden = true;
+    enterOrbit();
+  }
+  exitChip.addEventListener("click", exitFirstPerson);
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Escape" && !exitChip.hidden) exitFirstPerson();
+  });
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) exitChip.hidden = true;
   });
   let xrHelper: {
     baseExperience: { enterXRAsync: (m: string, f: string) => Promise<void> };
   } | null = null;
-  (document.getElementById("vr-enter") as HTMLButtonElement).addEventListener(
-    "click",
-    async () => {
-      panoCard.hidden = true;
-      const nav = navigator as Navigator & {
-        xr?: { isSessionSupported: (m: string) => Promise<boolean> };
-      };
-      if (!nav.xr) {
-        setStatus("WebXR is not available on this device or browser");
-        return;
-      }
+  async function enterFirstPerson(): Promise<void> {
+    hidePano();
+    enterWalk("community");
+    (document.getElementById("mode-walk") as HTMLElement).classList.add(
+      "active",
+    );
+    (document.getElementById("mode-orbit") as HTMLElement).classList.remove(
+      "active",
+    );
+    try {
+      await canvas.requestFullscreen?.();
+      exitChip.hidden = false;
+      setStatus(
+        "first person — WASD to walk the Community course, Esc to exit",
+      );
+    } catch {
+      setStatus("first person active (fullscreen unavailable) — WASD to walk");
+    }
+    const nav = navigator as Navigator & {
+      xr?: { isSessionSupported: (m: string) => Promise<boolean> };
+    };
+    if (nav.xr && (await nav.xr.isSessionSupported("immersive-vr"))) {
       try {
-        if (!(await nav.xr.isSessionSupported("immersive-vr"))) {
-          setStatus(
-            "no immersive-vr headset found — orbit and walk modes work now",
-          );
-          return;
-        }
         if (!xrHelper) {
-          setStatus("starting VR…");
           xrHelper = (await scene.createDefaultXRExperienceAsync({
             floorMeshes: [terrain],
           })) as unknown as typeof xrHelper;
@@ -709,13 +844,30 @@ async function main(): Promise<void> {
           "local-floor",
         );
         setStatus("VR session active — teleport with the controllers");
-      } catch (err) {
-        setStatus(
-          `VR unavailable here: ${(err as Error).message ?? err} — orbit and walk modes work now`,
-        );
+      } catch {
+        /* desktop first-person already active — not an error */
       }
-    },
+    }
+  }
+  (document.getElementById("enter-fp") as HTMLButtonElement).addEventListener(
+    "click",
+    () => void enterFirstPerson(),
   );
+
+  const judgesCard = document.getElementById("judges-card") as HTMLElement;
+  const judgesToggle = document.getElementById(
+    "judges-toggle",
+  ) as HTMLButtonElement;
+  judgesToggle.addEventListener("click", () => {
+    judgesCard.hidden = !judgesCard.hidden;
+    judgesToggle.setAttribute("aria-expanded", String(!judgesCard.hidden));
+  });
+  (
+    document.getElementById("judges-close") as HTMLButtonElement
+  ).addEventListener("click", () => {
+    judgesCard.hidden = true;
+    judgesToggle.setAttribute("aria-expanded", "false");
+  });
 
   window.addEventListener("resize", () => engine.resize());
 
@@ -730,6 +882,8 @@ async function main(): Promise<void> {
     for (const sock of windsocks) {
       sock.rotation.y = Math.sin(elapsed * 0.7) * 0.5;
     }
+    // The pano dome rides the camera so walking never exits the photo.
+    if (panoDome?.isVisible) panoDome.position.copyFrom(walkCam.position);
     // Keep labels legible at any range: roughly constant screen size.
     const camPos = mode === "walk" ? walkCam.position : orbitCam.position;
     const activeCam = mode === "walk" ? walkCam : orbitCam;

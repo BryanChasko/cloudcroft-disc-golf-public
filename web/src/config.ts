@@ -31,6 +31,46 @@ export const COURSES = {
 } as const;
 export type CourseId = keyof typeof COURSES;
 
+export interface PanoView {
+  id: string;
+  lot: "kiosk" | "tee" | "basket" | "vista";
+  label: string;
+  file: string;
+}
+export const PANOS: PanoView[] = [
+  {
+    id: "basket1",
+    lot: "basket",
+    label: "Community basket 1",
+    file: "data/panos/PXL_20261101_171610748.webp",
+  },
+  {
+    id: "tee2",
+    lot: "tee",
+    label: "Community tee box 2 — par 3, 245 ft",
+    file: "data/panos/PXL_20261101_170324214.webp",
+  },
+  {
+    id: "basket2",
+    lot: "basket",
+    label: "Community basket 2",
+    file: "data/panos/PXL_20261101_173918101.webp",
+  },
+  {
+    id: "tiki-aspen",
+    lot: "vista",
+    label: "Tiki south area — aspen grove",
+    file: "data/panos/PXL_20261101_180216070.webp",
+  },
+  {
+    id: "tiki-vista",
+    lot: "vista",
+    label: "Tiki south area vista",
+    file: "data/panos/PXL_20261101_175756282.webp",
+  },
+];
+export const MOUNTAINTOP_PANO: PanoView = PANOS[1];
+
 export const DATA = {
   trails: "data/osm/trails.geojson",
   naip: "data/naip/course-area-naip.jpg",

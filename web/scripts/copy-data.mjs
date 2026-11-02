@@ -29,6 +29,13 @@ const files = [
     "../dataset/naip-course-window.jpg.json",
     "public/data/naip/course-area-naip.jpg.json",
   ],
+  ...[
+    "PXL_20261101_170324214.webp",
+    "PXL_20261101_171610748.webp",
+    "PXL_20261101_173918101.webp",
+    "PXL_20261101_175756282.webp",
+    "PXL_20261101_180216070.webp",
+  ].map((f) => [`../dataset/panos-web/${f}`, `public/data/panos/${f}`]),
 ];
 for (const [src, dst] of files) {
   const from = join(root, src);
