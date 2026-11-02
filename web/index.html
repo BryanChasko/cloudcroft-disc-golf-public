@@ -8,7 +8,10 @@
       name="description"
       content="A live demo of building an AR disc golf scorecard: ground GPS survey to playable card, hole by hole. Cloudcroft NM: Byron Ligon Tiki + Community courses."
     />
-    <link rel="canonical" href="https://bryanchasko.com/disc-golf/" />
+    <link
+      rel="canonical"
+      href="https://bryanchasko.com/cloudcroft-disc-golf/app/"
+    />
     <meta name="theme-color" content="#143d2a" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta property="og:type" content="website" />
@@ -21,10 +24,13 @@
       property="og:description"
       content="Ground GPS survey to playable scorecard, hole by hole: Byron Ligon Tiki (9) + Cloudcroft Community (18). Live map, walkthrough, open survey data."
     />
-    <meta property="og:url" content="https://bryanchasko.com/disc-golf/" />
+    <meta
+      property="og:url"
+      content="https://bryanchasko.com/cloudcroft-disc-golf/app/"
+    />
     <meta
       property="og:image"
-      content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg"
+      content="https://bryanchasko.com/cloudcroft-disc-golf/app/evidence/hole2-tee-sign.jpg"
     />
     <meta
       property="og:image:alt"
@@ -41,7 +47,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg"
+      content="https://bryanchasko.com/cloudcroft-disc-golf/app/evidence/hole2-tee-sign.jpg"
     />
     <script type="application/ld+json">
       {
@@ -94,8 +100,8 @@
         <button data-course="tiki" class="active">Byron Ligon Tiki · 9</button>
         <button data-course="community">Community · 18</button>
         <a id="walk-link" href="./walk.html">Walkthrough →</a>
-        <a id="story-link" href="/cloudcroft-disc-golf/">The story →</a>
       </nav>
+      <nav data-site-nav></nav>
     </header>
     <main>
       <div id="map" role="application" aria-label="course map"></div>
@@ -259,6 +265,7 @@
       <button id="locate">Find me</button>
     </footer>
     <script src="shared/radio-tuner.js" defer></script>
+    <script src="shared/site-nav.js" defer></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -10,6 +10,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ORIGIN = "https://bryanchasko.com";
+const APP = `${ORIGIN}/cloudcroft-disc-golf/app`;
 const OUT = join(
   dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -168,6 +169,21 @@ check(
   tuned.name,
 );
 
+// shared nav on the story page
+const nav = await page.evaluate(() => ({
+  links: [...document.querySelectorAll("[data-site-nav] a")].map(
+    (a) => a.textContent,
+  ),
+  current:
+    document.querySelector('[data-site-nav] a[aria-current="page"]')
+      ?.textContent ?? "",
+}));
+check(
+  "nav: story shows 3 links, Story current",
+  nav.links.join(",") === "Story,Map,Walk" && nav.current === "Story",
+  nav.links.join(","),
+);
+
 // scorecard steppers still work + reset
 const row = (n) => `.play-row[data-hole="${n}"]`;
 await page.click(`${row(1)} .dec`);
@@ -181,7 +197,7 @@ check(
 );
 
 // ---------- map app ----------
-await page.goto(`${ORIGIN}/disc-golf/?course=community&hole=2`, {
+await page.goto(`${APP}/?course=community&hole=2`, {
   waitUntil: "load",
   timeout: 60000,
 });
@@ -201,6 +217,10 @@ const app = await page.evaluate(() => ({
   tunerName:
     document.querySelector("[data-radio-tuner] .rt-name")?.textContent ?? "",
   readout: !!document.getElementById("coord-readout"),
+  navLinks: document.querySelectorAll("[data-site-nav] a").length,
+  navCurrent:
+    document.querySelector('[data-site-nav] a[aria-current="page"]')
+      ?.textContent ?? "",
   scoreHole: document.getElementById("score-hole")?.value ?? "",
   status: document.getElementById("status")?.textContent ?? "",
   activeTab:
@@ -218,6 +238,11 @@ check(
 );
 check("app: coord readout present", app.readout);
 check(
+  "nav: app shows 3 links, Map current",
+  app.navLinks === 3 && app.navCurrent === "Map",
+  `${app.navLinks} ${app.navCurrent}`,
+);
+check(
   "app: deep link set hole 2 + community tab",
   app.scoreHole === "2" && /Community/.test(app.activeTab),
   `hole=${app.scoreHole} tab=${app.activeTab} status=${app.status}`,
@@ -225,7 +250,7 @@ check(
 await shot("app-gallery-tuner.png");
 
 // ---------- walk ----------
-await page.goto(`${ORIGIN}/disc-golf/walk.html`, {
+await page.goto(`${APP}/walk.html`, {
   waitUntil: "load",
   timeout: 60000,
 });
@@ -241,6 +266,10 @@ await page
   .catch(() => {});
 const walk = await page.evaluate(() => ({
   status: document.getElementById("walk-status")?.textContent ?? "",
+  navLinks: document.querySelectorAll("[data-site-nav] a").length,
+  navCurrent:
+    document.querySelector('[data-site-nav] a[aria-current="page"]')
+      ?.textContent ?? "",
   pinCard: !!document.getElementById("pin-card"),
   tuner: !!document.querySelector("[data-radio-tuner] .rt-play"),
 }));
@@ -250,11 +279,16 @@ check(
   walk.status.slice(0, 90),
 );
 check("walk: pin card + tuner present", walk.pinCard && walk.tuner);
+check(
+  "nav: walk shows 3 links, Walk current",
+  walk.navLinks === 3 && walk.navCurrent === "Walk",
+  `${walk.navLinks} ${walk.navCurrent}`,
+);
 await page.waitForTimeout(2500);
 await shot("walk-pins.png");
 
 // pano deep link lands on the right pano with per-pano text
-await page.goto(`${ORIGIN}/disc-golf/walk.html?pano=tiki-aspen`, {
+await page.goto(`${APP}/walk.html?pano=tiki-aspen`, {
   waitUntil: "load",
   timeout: 60000,
 });
@@ -274,6 +308,48 @@ check(
   `${pano.title} · ${pano.caption}`,
 );
 await shot("walk-pano-tiki.png");
+
+// old slug redirects (query preserved)
+await page.goto(`${ORIGIN}/disc-golf/?course=community&hole=2`, {
+  waitUntil: "load",
+  timeout: 60000,
+});
+await page
+  .waitForFunction(
+    () => location.pathname.startsWith("/cloudcroft-disc-golf/app"),
+    null,
+    { timeout: 20000 },
+  )
+  .catch(() => {});
+const here = () => page.evaluate(() => location.href);
+await page
+  .waitForFunction(
+    () => location.pathname.startsWith("/cloudcroft-disc-golf/app"),
+    null,
+    { timeout: 20000 },
+  )
+  .catch(() => {});
+const r1 = await here();
+check(
+  "redirect: /disc-golf/ -> /app/ with query",
+  /\/cloudcroft-disc-golf\/app\/.*course=community/.test(r1),
+  r1,
+);
+await page.goto(`${ORIGIN}/disc-golf/walk.html?pano=tee2`, {
+  waitUntil: "load",
+  timeout: 60000,
+});
+await page
+  .waitForFunction(() => location.pathname.endsWith("/app/walk.html"), null, {
+    timeout: 20000,
+  })
+  .catch(() => {});
+const r2 = await here();
+check(
+  "redirect: old walk -> new walk with query",
+  /\/cloudcroft-disc-golf\/app\/walk\.html.*pano=tee2/.test(r2),
+  r2,
+);
 
 await browser.close();
 console.log(

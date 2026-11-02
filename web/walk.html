@@ -8,7 +8,10 @@
       name="description"
       content="Stand on the mountaintop: 3D walkthrough of the Cloudcroft disc golf courses on 1 m terrain with real 360° panos from the ground survey."
     />
-    <link rel="canonical" href="https://bryanchasko.com/disc-golf/walk.html" />
+    <link
+      rel="canonical"
+      href="https://bryanchasko.com/cloudcroft-disc-golf/app/walk.html"
+    />
     <meta name="theme-color" content="#143d2a" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta property="og:type" content="website" />
@@ -23,7 +26,7 @@
     />
     <meta
       property="og:url"
-      content="https://bryanchasko.com/disc-golf/walk.html"
+      content="https://bryanchasko.com/cloudcroft-disc-golf/app/walk.html"
     />
     <meta name="twitter:card" content="summary" />
     <meta
@@ -49,6 +52,7 @@
         <button id="pano-tiki">Stand on the mountaintop (360°)</button>
         <button id="enter-fp">Enter first person / VR</button>
         <button id="judges-toggle" aria-expanded="false">For the judges</button>
+        <nav data-site-nav></nav>
       </div>
     </header>
     <main>
@@ -126,6 +130,7 @@
       <a href="./">map + scorecard</a>
     </footer>
     <script src="shared/radio-tuner.js" defer></script>
+    <script src="shared/site-nav.js" defer></script>
     <script type="module" src="/src/walk.ts"></script>
   </body>
 </html>

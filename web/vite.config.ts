@@ -1,9 +1,10 @@
 import path from "node:path";
 import { defineConfig } from "vite";
 
-// Served from https://bryanchasko.com/disc-golf/ (sibling prefix).
+// One slug: the map app lives under the story at
+// https://bryanchasko.com/cloudcroft-disc-golf/app/
 export default defineConfig({
-  base: "/disc-golf/",
+  base: "/cloudcroft-disc-golf/app/",
   resolve: {
     alias: {
       // See src/shims/credential-providers.ts: keep Node-only credential
