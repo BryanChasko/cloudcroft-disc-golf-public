@@ -1,0 +1,29 @@
+{
+  "generated_by": "dataset/scripts/build_youtube.py",
+  "brand": "~/writing/BRAND.md",
+  "navy": "#0F141C",
+  "accent": "#ff9900 (keyline only)",
+  "font": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+  "sources": {
+    "pano_tee2": "web/public/data/panos/PXL_20261101_173005849.webp",
+    "basket1": "web/public/data/photos/PXL_20261101_171528886.MP.webp"
+  },
+  "assets": [
+    {
+      "file": "yt-banner-2560x1440.webp",
+      "size": [2560, 1440]
+    },
+    {
+      "file": "yt-thumb-mountaintop-1280x720.webp",
+      "size": [1280, 720]
+    },
+    {
+      "file": "yt-thumb-basket-1280x720.webp",
+      "size": [1280, 720]
+    },
+    {
+      "file": "yt-profile-800x800.webp",
+      "size": [800, 800]
+    }
+  ]
+}
