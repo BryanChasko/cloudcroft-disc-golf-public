@@ -19,14 +19,28 @@
       content="Ground GPS survey to playable scorecard, hole by hole. Live map, 3D walkthrough, open dataset, reusable pattern."
     />
     <meta property="og:url" content="https://bryanchasko.com/cloudcroft-disc-golf/" />
-    <meta property="og:image" content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.png" />
+    <meta property="og:image" content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Cloudcroft Disc Golf — AR map + scorecard" />
     <meta
       name="twitter:description"
       content="Ground GPS survey to playable scorecard, hole by hole. Live map, 3D walkthrough, open dataset."
     />
-    <meta name="twitter:image" content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.png" />
+    <meta name="twitter:image" content="https://bryanchasko.com/cloudcroft-disc-golf/assets/map-hero.webp" />
+    <script>
+      // Pre-paint theme: stored preference, else OS preference (no flash).
+      (function () {
+        try {
+          var t = localStorage.getItem("pref-theme");
+          if (t !== "light" && t !== "dark") {
+            t = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          }
+          document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -52,7 +66,10 @@
         --accent: #b7791f;
         --code-bg: #1e2420;
         --code-ink: #e8e6df;
-        --shadow: 0 1px 4px rgb(20 40 25 / 0.12);
+        --shadow1: 0 1px 4px rgb(20 61 42 / 0.08);
+        --shadow2: 0 4px 14px rgb(20 61 42 / 0.13);
+        --shadow3: 0 10px 30px rgb(20 61 42 / 0.2);
+        --shadow: var(--shadow1);
       }
       html[data-theme="dark"] {
         --paper: #10140f;
@@ -88,8 +105,29 @@
         background: var(--paper);
         color: var(--ink);
         font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-        line-height: 1.6;
+        line-height: 1.7;
       }
+      /* atmospheric ground: warm radial glows + grain, fixed behind content */
+      .sky {
+        position: fixed; inset: 0; z-index: -2; pointer-events: none;
+        background:
+          radial-gradient(60rem 30rem at 15% -10%, rgb(183 121 31 / 0.16), transparent 60%),
+          radial-gradient(50rem 26rem at 90% 10%, rgb(31 92 63 / 0.14), transparent 60%),
+          radial-gradient(40rem 24rem at 50% 110%, rgb(20 61 42 / 0.08), transparent 60%),
+          repeating-linear-gradient(0deg, rgb(127 127 127 / 0.015) 0 1px, transparent 1px 3px);
+      }
+      @media (prefers-color-scheme: dark) {
+        .sky { opacity: 0.6; }
+      }
+      html[data-theme="dark"] .sky { opacity: 0.6; }
+      @media (prefers-reduced-motion: no-preference) {
+        .sky { animation: sky-drift 45s ease-in-out infinite alternate; }
+      }
+      @keyframes sky-drift {
+        from { background-position: 0 0, 0 0, 0 0, 0 0; }
+        to { background-position: 2% 1%, -2% 1%, 1% -1%, 0 0; }
+      }
+      :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
       .wrap { max-width: 880px; margin: 0 auto; padding: 0 1rem 3rem; }
       header.top {
         display: flex;
@@ -98,18 +136,42 @@
         flex-wrap: wrap;
         padding: 1.2rem 0 0.4rem;
       }
-      header.top h1 { margin: 0; font-size: 1.5rem; color: var(--pine-dark); }
+      header.top h1 { margin: 0; font-size: clamp(1.875rem, 4.5vw, 2.5rem); color: var(--pine-dark); }
       header.top p.sub { margin: 0.2rem 0 0; color: var(--muted); width: 100%; }
       #theme-toggle {
         margin-left: auto;
         font: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
         font-size: 0.85rem;
-        padding: 0.35rem 0.7rem;
+        padding: 0.4rem 0.7rem;
         border: 1px solid var(--line);
-        border-radius: 6px;
+        border-radius: 999px;
         background: var(--card);
         color: var(--ink);
         cursor: pointer;
+        box-shadow: var(--shadow1);
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      #theme-toggle:hover { transform: scale(1.08); box-shadow: var(--shadow2); }
+      #theme-toggle:active { transform: scale(0.94); box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.18); }
+      #theme-toggle svg { width: 20px; height: 20px; }
+      #moon { display: none; }
+      html[data-theme="dark"] #moon { display: inline; color: #d7c7ee; }
+      html[data-theme="dark"] #sun { display: none; }
+      #sun { color: #ff9900; animation: sun-pulse 4s ease-in-out infinite; }
+      @keyframes sun-pulse {
+        0%, 100% { filter: drop-shadow(0 0 3px rgb(255 153 0 / 0.5)) drop-shadow(0 0 6px rgb(255 200 50 / 0.3)); }
+        50% { filter: drop-shadow(0 0 4px rgb(255 153 0 / 0.5)) drop-shadow(0 0 8px rgb(255 200 50 / 0.3)); }
+      }
+      html[data-theme="dark"] #moon { animation: moon-glow 5s ease-in-out infinite; }
+      @keyframes moon-glow {
+        0%, 100% { filter: drop-shadow(0 0 3px rgb(215 199 238 / 0.45)); }
+        50% { filter: drop-shadow(0 0 7px rgb(215 199 238 / 0.6)); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #sun, #moon { animation: none !important; }
       }
       .cta-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0; }
       .cta-row a {
@@ -131,13 +193,45 @@
       }
       html[data-theme="dark"] .cta-row a.ghost { color: var(--pine-dark); }
       .card {
+        position: relative;
         background: var(--card);
         border: 1px solid var(--line);
         border-radius: 12px;
         padding: 1.1rem 1.2rem;
         margin: 1.1rem 0;
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow1);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
+      .card::before {
+        content: ""; position: absolute; top: 0; left: 1rem; right: 1rem; height: 3px;
+        border-radius: 0 0 3px 3px;
+        background: linear-gradient(90deg, transparent, var(--pine), var(--accent), transparent);
+      }
+      @media (hover: hover) {
+        .card:hover, .card:focus-within {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow2);
+          border-color: var(--accent);
+        }
+      }
+      .radio-row {
+        display: grid; grid-template-columns: 1fr auto; gap: 0.4rem 1rem;
+        align-items: center; padding: 0.55rem 0.7rem; margin: 0.4rem 0;
+        background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+        box-shadow: var(--shadow1);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @media (hover: hover) {
+        .radio-row:hover, .radio-row:focus-within {
+          transform: translateY(-2px); box-shadow: var(--shadow2); border-color: var(--accent);
+        }
+      }
+      .radio-row audio { width: 100%; min-width: 220px; }
+      .radio-links { font-size: 0.9rem; line-height: 1.9; }
       .card h2 { margin: 0 0 0.5rem; font-size: 1.15rem; color: var(--pine-dark); }
       .card h3 { margin: 1rem 0 0.3rem; font-size: 1rem; color: var(--pine-dark); }
       .meta { color: var(--muted); font-size: 0.85rem; }
@@ -206,10 +300,15 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    <div class="sky" aria-hidden="true"></div>
     <div class="wrap">
       <header class="top">
         <h1>Cloudcroft disc golf</h1>
-        <button id="theme-toggle" type="button" aria-label="Toggle light and dark mode">◐ theme</button>
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <svg id="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/></svg>
+          <svg id="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a7 7 0 0 0 9.5 9.5z"/></svg>
+          <span id="theme-name">theme</span>
+        </button>
         <p class="sub">AR map + scorecard for Cloudcroft NM disc golf — Weekend Challenge: Map it entry. Updated November 1, 2026.</p>
       </header>
       <main id="main">
@@ -227,7 +326,7 @@
           <a class="ghost" href="/disc-golf/how-this-works/">How this works</a>
         </div>
         <figure>
-          <img src="assets/map-hero.png" alt="Live 2D map of the Cloudcroft disc golf courses with trails and hole pins" width="1200" height="630" />
+          <picture><source type="image/webp" srcset="assets/map-hero.webp" /><img src="assets/map-hero.png" alt="Live 2D map of the Cloudcroft disc golf courses with trails and hole pins" width="1440" height="900" loading="eager" fetchpriority="high" decoding="async" /></picture>
           <figcaption>The live map — topo tiles, trails, hole table, cloud scorecard.</figcaption>
         </figure>
 
@@ -274,7 +373,7 @@
               <figcaption>Field capture: the averaged fix plus the remark that becomes the hole's row.</figcaption>
             </figure>
             <figure>
-              <img src="assets/hole2-tee-sign.webp" alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds" loading="lazy" />
+              <picture><source type="image/webp" srcset="assets/hole2-tee-sign.webp" /><img src="assets/hole2-tee-sign.jpg" alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds" loading="lazy" decoding="async" /></picture>
               <figcaption>Hole 2 tee sign — the par source.</figcaption>
             </figure>
           </div>
@@ -309,6 +408,33 @@
               <tr><td>AWS CDK (TypeScript)</td><td>Whole stack as code</td><td>One deploy recreates everything.</td></tr>
             </tbody>
           </table>
+        </section>
+
+        <section class="card" aria-labelledby="h-radio">
+          <h2 id="h-radio">Mountain radio</h2>
+          <p class="meta">The drive up and the round at 8,676 feet, in streams. Press play — one plays at a time.</p>
+          <div class="radio-row">
+            <span><strong>KHII 88.9 / 100.5</strong> — Cloudcroft's own, from the Sacramento Mountains</span>
+            <audio controls preload="none" src="https://stream.aiir.com/nk0mvkzpgppuv"></audio>
+          </div>
+          <div class="radio-row">
+            <span><strong>KTMN Rock 97.9</strong> — classic rock, licensed to Cloudcroft</span>
+            <audio controls preload="none" src="https://stream.aiir.com/teg6piefk9qvv"></audio>
+          </div>
+          <div class="radio-row">
+            <span><strong>NV1 — Native Voice One</strong> — Mescalero regional + national Native programming</span>
+            <audio controls preload="none" src="https://playerservices.streamtheworld.com/api/livestream-redirect/NV1.mp3"></audio>
+          </div>
+          <p class="radio-links">
+            On their home platforms:
+            <a href="https://live365.com/" rel="noopener" target="_blank">K-CLOUD (“Music for the Mountain”) on Live365</a> ·
+            <a href="https://kalhradio.org" rel="noopener" target="_blank">KALH 95.1 Alamogordo</a> ·
+            <a href="https://www.khiiradio.com/podcasts/red-dirt-rising/" rel="noopener" target="_blank">Red Dirt Rising podcast</a>
+          </p>
+          <p class="radio-links">
+            Public-safety scanner feeds (open on Broadcastify):
+            <a href="https://www.broadcastify.com/listen/stid/35" rel="noopener" target="_blank">Cloudcroft Fire, Rescue &amp; EMS + Otero County feeds</a>
+          </p>
         </section>
 
         <section class="card" aria-labelledby="h-judges">
@@ -358,11 +484,11 @@
             project post.
           </p>
           <figure>
-            <img src="assets/walkthrough-hero.png" alt="3D walkthrough of the courses from orbit on 1-meter terrain" loading="lazy" />
+            <picture><source type="image/webp" srcset="assets/walkthrough-hero.webp" /><img src="assets/walkthrough-hero.png" alt="3D walkthrough of the courses from orbit on 1-meter terrain" width="1440" height="900" loading="lazy" decoding="async" /></picture>
             <figcaption>From orbit — pins, trail ribbons, 1-meter terrain under NAIP imagery.</figcaption>
           </figure>
           <figure>
-            <img src="assets/kiosk.webp" alt="Course kiosk with posted layout" loading="lazy" />
+            <picture><source type="image/webp" srcset="assets/kiosk.webp" /><img src="assets/kiosk.jpg" alt="Course kiosk with posted layout" loading="lazy" decoding="async" /></picture>
             <figcaption>Where every round starts — the course kiosk.</figcaption>
           </figure>
           <p>
@@ -382,21 +508,29 @@
       (function () {
         var root = document.documentElement;
         var btn = document.getElementById("theme-toggle");
+        var name = document.getElementById("theme-name");
         function label() {
-          var t = root.getAttribute("data-theme") || "auto";
-          btn.textContent = "◐ theme: " + t;
+          var dark = root.getAttribute("data-theme") === "dark";
+          btn.setAttribute("aria-pressed", dark ? "true" : "false");
+          if (name) name.textContent = dark ? "dark" : "light";
         }
-        try {
-          var saved = localStorage.getItem("ccdg-theme");
-          if (saved) root.setAttribute("data-theme", saved);
-        } catch (e) {}
         label();
         btn.addEventListener("click", function () {
-          var cur = root.getAttribute("data-theme") || "auto";
-          var next = cur === "auto" ? "light" : cur === "light" ? "dark" : "auto";
+          var next =
+            root.getAttribute("data-theme") === "dark" ? "light" : "dark";
           root.setAttribute("data-theme", next);
-          try { localStorage.setItem("ccdg-theme", next); } catch (e) {}
+          try { localStorage.setItem("pref-theme", next); } catch (e) {}
           label();
+        });
+      })();
+      (function () {
+        var players = Array.prototype.slice.call(
+          document.querySelectorAll(".radio-row audio"),
+        );
+        players.forEach(function (a) {
+          a.addEventListener("play", function () {
+            players.forEach(function (o) { if (o !== a) o.pause(); });
+          });
         });
       })();
       (function () {
