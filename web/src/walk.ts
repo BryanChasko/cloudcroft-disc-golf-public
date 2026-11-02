@@ -18,7 +18,7 @@ import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTextur
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color.js";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration.js";
-import { COURSES, PANOS } from "./config";
+import { COURSES, PANOS, dataUrl } from "./config";
 import type { CourseId, PanoView } from "./config";
 import { mountPanoViewer } from "./pano-viewer";
 import "./pano-viewer.css";
@@ -74,10 +74,10 @@ const M_PER_DEG_LAT = 111320;
 async function main(): Promise<void> {
   setStatus("loading terrain…");
   const [grid, trailsData] = await Promise.all([
-    fetch("data/dem/course-area-grid.json").then(
+    fetch(dataUrl("data/dem/course-area-grid.json")).then(
       (r) => r.json() as Promise<GridFile>,
     ),
-    fetch("data/osm/trails.geojson").then(
+    fetch(dataUrl("data/osm/trails.geojson")).then(
       (r) => r.json() as Promise<TrailsFile>,
     ),
   ]);
@@ -170,7 +170,7 @@ async function main(): Promise<void> {
   skirt.material = skirtMat;
 
   // ---------- terrain ----------
-  const naipTex = new Texture("data/naip/course-area-naip.jpg", scene);
+  const naipTex = new Texture(dataUrl("data/naip/course-area-naip.jpg"), scene);
   naipTex.gammaSpace = true;
   naipTex.anisotropicFilteringLevel = engine.getCaps().maxAnisotropy;
   const positions: number[] = [];

@@ -11,6 +11,12 @@ export const MAPS = {
 } as const;
 export type Basemap = keyof typeof MAPS;
 
+// Absolute-from-root data URLs: the app is served under
+// /cloudcroft-disc-golf/app/ (vite base), so bare "data/..." breaks when
+// the page opens at /app without the trailing slash.
+const APP_BASE = import.meta.env.BASE_URL;
+export const dataUrl = (p: string) => `${APP_BASE}${p}`;
+
 export const COURSES = {
   tiki: {
     name: "Byron Ligon Memorial Tiki DGC",
@@ -18,7 +24,7 @@ export const COURSES = {
     lat: 32.95787,
     eleFt: 8664.5,
     blurb: "9 holes · par 27 · 901 ft · all putters under aspen and doug fir",
-    holesUrl: "data/holes/byron-ligon-tiki.json",
+    holesUrl: dataUrl("data/holes/byron-ligon-tiki.json"),
   },
   community: {
     name: "Cloudcroft Community DGC",
@@ -26,7 +32,7 @@ export const COURSES = {
     lat: 32.9632,
     eleFt: 8781.4,
     blurb: "18 holes · par 63 · wooded mountain course, opened 2019",
-    holesUrl: "data/holes/cloudcroft-community.json",
+    holesUrl: dataUrl("data/holes/cloudcroft-community.json"),
   },
 } as const;
 export type CourseId = keyof typeof COURSES;
@@ -48,7 +54,7 @@ export const PANOS: PanoView[] = [
     id: "basket1",
     lot: "basket",
     label: "Community Hole 1 — basket 1",
-    file: "data/panos/PXL_20261101_171610748.webp",
+    file: dataUrl("data/panos/PXL_20261101_171610748.webp"),
     lon: -105.742064,
     lat: 32.961281,
     course: "community",
@@ -60,7 +66,7 @@ export const PANOS: PanoView[] = [
     id: "tee1-area",
     lot: "tee",
     label: "Community Hole 1 — tee box 1, par 4, 411 ft",
-    file: "data/panos/PXL_20261101_170324214.webp",
+    file: dataUrl("data/panos/PXL_20261101_170324214.webp"),
     lon: -105.742392,
     lat: 32.962347,
     course: "community",
@@ -71,7 +77,7 @@ export const PANOS: PanoView[] = [
     id: "basket2",
     lot: "basket",
     label: "Community Hole 2 — basket 2",
-    file: "data/panos/PXL_20261101_173918101.webp",
+    file: dataUrl("data/panos/PXL_20261101_173918101.webp"),
     lon: -105.741778,
     lat: 32.962383,
     course: "community",
@@ -81,7 +87,7 @@ export const PANOS: PanoView[] = [
     id: "tee2-area",
     lot: "tee",
     label: "Community tee box 2 — Hole 2, par 3, 245 ft",
-    file: "data/panos/PXL_20261101_173005849.webp",
+    file: dataUrl("data/panos/PXL_20261101_173005849.webp"),
     lon: -105.741683,
     lat: 32.961722,
     course: "community",
@@ -93,7 +99,7 @@ export const PANOS: PanoView[] = [
     id: "tiki-aspen",
     lot: "vista",
     label: "Byron Ligon Hole 3 — fairway 3, aspen grove",
-    file: "data/panos/PXL_20261101_180216070.webp",
+    file: dataUrl("data/panos/PXL_20261101_180216070.webp"),
     lon: -105.738531,
     lat: 32.956922,
     course: "tiki",
@@ -103,7 +109,7 @@ export const PANOS: PanoView[] = [
     id: "tiki-vista",
     lot: "vista",
     label: "Byron Ligon Hole 3 — tee box 3",
-    file: "data/panos/PXL_20261101_175756282.webp",
+    file: dataUrl("data/panos/PXL_20261101_175756282.webp"),
     lon: -105.738344,
     lat: 32.956939,
     course: "tiki",
@@ -133,8 +139,8 @@ export const MOUNTAINTOP: Mountaintop = {
 };
 
 export const DATA = {
-  trails: "data/osm/trails.geojson",
-  naip: "data/naip/course-area-naip.jpg",
-  naipMeta: "data/naip/course-area-naip.jpg.json",
-  surveyAssets: "data/survey-assets.json",
+  trails: dataUrl("data/osm/trails.geojson"),
+  naip: dataUrl("data/naip/course-area-naip.jpg"),
+  naipMeta: dataUrl("data/naip/course-area-naip.jpg.json"),
+  surveyAssets: dataUrl("data/survey-assets.json"),
 };
