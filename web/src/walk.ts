@@ -906,7 +906,27 @@ async function main(): Promise<void> {
     };
   }
 
-  // pin click -> fly there (click without drag)
+  // Nearest 360 to a ground point, in meters. Panos are wide strips shot
+  // at the pads, so a pin within one pad-length opens its pano directly.
+  function nearestPanoIdx(lon: number, lat: number, maxM: number): number {
+    let nearest = -1;
+    let nearestM = maxM;
+    PANOS.forEach((p, i) => {
+      const d = Math.hypot(
+        (p.lon - lon) * mPerDegLon,
+        (p.lat - lat) * M_PER_DEG_LAT,
+      );
+      if (d < nearestM) {
+        nearestM = d;
+        nearest = i;
+      }
+    });
+    return nearest;
+  }
+
+  // Pin click -> load the asset: step into the 360 when the pin stands at
+  // a pano, otherwise open the pin card with its photos and coordinates.
+  // Course anchors still fly the camera there (click without drag).
   let downAt: [number, number] | null = null;
   canvas.addEventListener(
     "pointerdown",
@@ -925,7 +945,13 @@ async function main(): Promise<void> {
       clickables.includes(hit as Mesh) &&
       hit.metadata?.survey
     ) {
-      showPinCard(hit.metadata.survey as HoleFeature["properties"]);
+      const props = hit.metadata.survey as HoleFeature["properties"];
+      const panoIdx =
+        typeof props.lon === "number" && typeof props.lat === "number"
+          ? nearestPanoIdx(props.lon, props.lat, 30)
+          : -1;
+      if (panoIdx >= 0) showPanoAt(panoIdx);
+      else showPinCard(props);
     }
   });
 
