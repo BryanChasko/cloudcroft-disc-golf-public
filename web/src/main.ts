@@ -93,6 +93,54 @@ let naipVisible = false;
 const courseMarkers = {} as Record<CourseId, maplibregl.Marker>;
 const holesCache = {} as Record<CourseId, HolesFile | undefined>;
 
+// One navigable place index over every verified, geolocated thing the
+// field day produced: SW Maps points (both courses) plus Pixel photos,
+// panoramas, and the geolocated SW Maps screenshots in survey-assets.json.
+// Assets without coordinates cannot be placed on the map and are counted,
+// never given invented positions.
+interface Place {
+  id: string;
+  group: string;
+  kindLabel: string;
+  label: string;
+  lat: number;
+  lon: number;
+  course?: CourseId;
+  hole?: number;
+  image?: string;
+  note?: string;
+  meta?: string;
+  panoId?: string;
+  storyHash: string;
+  survey?: SurveyFeature["properties"];
+}
+const places: Place[] = [];
+const placesById = new Map<string, Place>();
+let unlocatedAssets = 0;
+let selectedPlaceId: string | null = null;
+let activePopup: maplibregl.Popup | null = null;
+let meMarker: maplibregl.Marker | null = null;
+
+function coordText(lat: number, lon: number): string {
+  return `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+}
+function distText(ft: number): string {
+  return ft > 5280 ? `${(ft / 5280).toFixed(1)} mi` : `${Math.round(ft)} ft`;
+}
+function nearestPano(lat: number, lon: number, maxFt: number): Place | null {
+  let best: Place | null = null;
+  let bestFt = maxFt;
+  for (const p of places) {
+    if (!p.panoId) continue;
+    const ft = haversineFt(lat, lon, p.lat, p.lon);
+    if (ft < bestFt) {
+      best = p;
+      bestFt = ft;
+    }
+  }
+  return best;
+}
+
 async function holesFor(courseId: CourseId): Promise<HolesFile> {
   const cached = holesCache[courseId];
   if (cached) return cached;
@@ -146,6 +194,19 @@ function surveyPopupHtml(p: SurveyFeature["properties"]): string {
   if (typeof p.averaging === "number") meta.push(`${p.averaging}-fix avg`);
   if (meta.length)
     bits.push(`<span class="pop-meta">${esc(meta.join(" · "))}</span>`);
+  const links: string[] = [];
+  if (typeof p.lat === "number" && typeof p.lon === "number") {
+    const pano = nearestPano(p.lat, p.lon, 250);
+    if (pano?.panoId) {
+      links.push(
+        `<a href="./walk.html?pano=${encodeURIComponent(pano.panoId)}">stand near here in the 3D walk</a>`,
+      );
+    }
+  }
+  links.push(
+    `<a href="/cloudcroft-disc-golf/#pts-table">this point in the story</a>`,
+  );
+  bits.push(`<span class="pop-links">${links.join(" · ")}</span>`);
   return bits.join("<br>");
 }
 
@@ -157,6 +218,284 @@ interface SurveyAsset {
   lon: number | null;
   web_url: string;
   pano_id?: string;
+}
+
+async function loadPlaces(): Promise<void> {
+  const select = document.getElementById(
+    "place-select",
+  ) as HTMLSelectElement | null;
+  try {
+    const [tiki, community, assetsData] = await Promise.all([
+      holesFor("tiki"),
+      holesFor("community"),
+      (await fetch(DATA.surveyAssets)).json() as Promise<{
+        assets: SurveyAsset[];
+      }>,
+    ]);
+    places.length = 0;
+    placesById.clear();
+    for (const file of [community, tiki]) {
+      for (const f of file.features ?? []) {
+        if (f.geometry.type !== "Point") continue;
+        const p = f.properties;
+        const coords = f.geometry.coordinates as [number, number];
+        const lon = typeof p.lon === "number" ? p.lon : coords?.[0];
+        const lat = typeof p.lat === "number" ? p.lat : coords?.[1];
+        if (typeof lat !== "number" || typeof lon !== "number") continue;
+        if (!p.survey_id) continue;
+        const meta: string[] = [];
+        if (typeof p.elevation_m === "number")
+          meta.push(`elev ${p.elevation_m.toFixed(1)} m`);
+        if (typeof p.accuracy_h_m === "number")
+          meta.push(`±${p.accuracy_h_m} m`);
+        if (typeof p.averaging === "number")
+          meta.push(`${p.averaging}-fix avg`);
+        places.push({
+          id: `survey:${p.survey_id}`,
+          group: `Survey points — ${p.course === "tiki" ? "Tiki" : "Community"}`,
+          kindLabel: `SW Maps ${p.kind ?? "point"}${p.hole ? ` · hole ${p.hole}` : ""}`,
+          label: p.name ?? p.survey_id,
+          lat,
+          lon,
+          course: (p.course as CourseId | undefined) ?? undefined,
+          hole: p.hole,
+          image: p.photos_web?.[0] ?? p.field_photos?.[0]?.web_url,
+          note: p.note || undefined,
+          meta: meta.join(" · ") || undefined,
+          storyHash: "#pts-table",
+          survey: p,
+        });
+      }
+    }
+    unlocatedAssets = 0;
+    for (const a of assetsData.assets) {
+      if (a.lat === null || a.lon === null) {
+        unlocatedAssets += 1;
+        continue;
+      }
+      places.push({
+        id: `asset:${a.asset_id}`,
+        group:
+          a.kind === "pano"
+            ? "Panoramas"
+            : a.kind === "photo"
+              ? "Pixel photos"
+              : "SW Maps screenshots (geolocated)",
+        kindLabel:
+          a.kind === "pano"
+            ? "360° panorama"
+            : a.kind === "photo"
+              ? "Pixel photo"
+              : "SW Maps screenshot",
+        label: a.label,
+        lat: a.lat,
+        lon: a.lon,
+        image: a.web_url,
+        panoId: a.pano_id,
+        storyHash:
+          a.kind === "pano"
+            ? "#gal-panos"
+            : a.kind === "photo"
+              ? "#gal-photos"
+              : "#pts-table",
+      });
+    }
+    for (const p of places) placesById.set(p.id, p);
+    if (select) {
+      const groups = new Map<string, Place[]>();
+      for (const p of places) {
+        const list = groups.get(p.group) ?? [];
+        list.push(p);
+        groups.set(p.group, list);
+      }
+      select.innerHTML = `<option value="">Choose a point, photo, or panorama (${places.length} mapped)</option>`;
+      for (const [group, list] of groups) {
+        const optgroup = document.createElement("optgroup");
+        optgroup.label = `${group} (${list.length})`;
+        for (const p of list) {
+          const option = document.createElement("option");
+          option.value = p.id;
+          option.textContent = `${p.label} — ${coordText(p.lat, p.lon)}`;
+          optgroup.appendChild(option);
+        }
+        select.appendChild(optgroup);
+      }
+      if (selectedPlaceId) select.value = selectedPlaceId;
+    }
+    const detail = document.getElementById("place-detail");
+    if (detail && !selectedPlaceId && unlocatedAssets > 0) {
+      detail.innerHTML = `<p class="note">Every geolocated survey point, Pixel photo, and panorama from the field day, by its recorded coordinates. ${unlocatedAssets} SW Maps setup screenshots carry no coordinates, so they stay off the map rather than get invented positions.</p>`;
+    }
+  } catch {
+    if (select) {
+      select.innerHTML = `<option value="">Mapped points failed to load</option>`;
+    }
+  }
+}
+
+function placePopupHtml(p: Place): string {
+  if (p.survey) return surveyPopupHtml(p.survey);
+  const bits: string[] = [
+    `<strong>${esc(p.label)}</strong>`,
+    `<span class="pop-kind">${esc(p.kindLabel)}</span>`,
+  ];
+  if (p.image) {
+    bits.push(
+      `<img class="pop-photo" src="${esc(p.image)}" alt="${esc(p.label)}" loading="lazy">`,
+    );
+  }
+  bits.push(`<span class="pop-coords">${coordText(p.lat, p.lon)}</span>`);
+  const links: string[] = [];
+  if (p.panoId) {
+    links.push(
+      `<a href="./walk.html?pano=${encodeURIComponent(p.panoId)}">stand here in the 3D walk</a>`,
+    );
+  }
+  if (p.image) {
+    links.push(`<a href="${esc(p.image)}">open full image</a>`);
+  }
+  links.push(
+    `<a href="/cloudcroft-disc-golf/${p.storyHash}">see it in the story</a>`,
+  );
+  bits.push(`<span class="pop-links">${links.join(" · ")}</span>`);
+  return bits.join("<br>");
+}
+
+function renderPlaceDetail(p: Place): void {
+  const host = document.getElementById("place-detail");
+  if (!host) return;
+  const walk = p.panoId
+    ? `<a href="./walk.html?pano=${encodeURIComponent(p.panoId)}">Stand here in the 3D walk</a>`
+    : (() => {
+        const pano = nearestPano(p.lat, p.lon, 250);
+        return pano?.panoId
+          ? `<a href="./walk.html?pano=${encodeURIComponent(pano.panoId)}">Nearest panorama in the 3D walk</a>`
+          : "";
+      })();
+  host.innerHTML =
+    `<p class="place-title"><strong>${esc(p.label)}</strong></p>` +
+    `<p class="note">${esc(p.kindLabel)}${p.course ? ` · ${esc(COURSES[p.course].name)}` : ""}</p>` +
+    `<p class="pop-coords">${coordText(p.lat, p.lon)}</p>` +
+    (p.note ? `<p>${esc(p.note)}</p>` : "") +
+    (p.meta ? `<p class="note">${esc(p.meta)}</p>` : "") +
+    (p.image
+      ? `<a href="${esc(p.image)}"><img class="place-thumb" src="${esc(p.image)}" alt="${esc(p.label)}" loading="lazy"></a>`
+      : "") +
+    `<p class="place-links">${[walk, `<a href="/cloudcroft-disc-golf/${p.storyHash}">In the story</a>`].filter(Boolean).join(" · ")}</p>`;
+}
+
+function syncCourseTabs(): void {
+  document.querySelectorAll("#course-tabs button").forEach((b) => {
+    const active = (b as HTMLElement).dataset["course"] === currentCourse;
+    b.classList.toggle("active", active);
+    b.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function markSelectedHoleRow(): void {
+  const selected = selectedPlaceId
+    ? placesById.get(selectedPlaceId)
+    : undefined;
+  document.querySelectorAll<HTMLElement>("#holes tbody tr").forEach((tr) => {
+    const isCurrent =
+      selected?.course === currentCourse &&
+      selected.hole !== undefined &&
+      Number(tr.dataset["hole"]) === selected.hole;
+    tr.classList.toggle("selected", isCurrent);
+    if (isCurrent) tr.setAttribute("aria-current", "true");
+    else tr.removeAttribute("aria-current");
+  });
+}
+
+interface SelectOptions {
+  fly?: boolean;
+  popup?: boolean;
+  updateUrl?: boolean;
+  holeBounds?: boolean;
+}
+
+function selectPlace(id: string, opts: SelectOptions = {}): void {
+  const p = placesById.get(id);
+  if (!p) return;
+  selectedPlaceId = id;
+  if (p.course && p.course !== currentCourse) {
+    currentCourse = p.course;
+    syncCourseTabs();
+    void renderHoles(currentCourse);
+    void refreshSurveyLayer();
+  }
+  const select = document.getElementById(
+    "place-select",
+  ) as HTMLSelectElement | null;
+  if (select && select.value !== id) select.value = id;
+  renderPlaceDetail(p);
+  markSelectedHoleRow();
+
+  const src = map?.getSource("selected-place") as
+    maplibregl.GeoJSONSource | undefined;
+  src?.setData({
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [p.lon, p.lat] },
+        properties: { label: p.label },
+      },
+    ],
+  } as never);
+
+  if (opts.fly !== false && map) {
+    const holePlaces =
+      opts.holeBounds && p.hole !== undefined && p.course
+        ? places.filter((q) => q.course === p.course && q.hole === p.hole)
+        : [];
+    if (holePlaces.length > 1) {
+      const bounds = new maplibregl.LngLatBounds();
+      for (const q of holePlaces) bounds.extend([q.lon, q.lat]);
+      map.fitBounds(bounds, { padding: 90, maxZoom: 17, essential: true });
+    } else {
+      map.flyTo({ center: [p.lon, p.lat], zoom: 17, essential: true });
+    }
+  }
+  if (opts.popup !== false && map) {
+    activePopup?.remove();
+    activePopup = new maplibregl.Popup({ offset: 14, maxWidth: "320px" })
+      .setLngLat([p.lon, p.lat])
+      .setHTML(placePopupHtml(p))
+      .addTo(map);
+  }
+  if (opts.updateUrl !== false) {
+    const url = new URL(location.href);
+    url.searchParams.set("place", id);
+    if (p.course) url.searchParams.set("course", p.course);
+    if (p.hole) url.searchParams.set("hole", String(p.hole));
+    else url.searchParams.delete("hole");
+    history.replaceState(null, "", url);
+  }
+  setStatus(`${p.kindLabel}: ${p.label} — ${coordText(p.lat, p.lon)}`);
+}
+
+function selectHole(courseId: CourseId, hole: number): void {
+  const candidates = places.filter(
+    (p) => p.course === courseId && p.hole === hole,
+  );
+  const target =
+    candidates.find((p) => p.survey?.kind === "tee") ?? candidates[0];
+  if (target) {
+    selectPlace(target.id, { holeBounds: true });
+    return;
+  }
+  if (courseId !== currentCourse) {
+    currentCourse = courseId;
+    syncCourseTabs();
+    void renderHoles(currentCourse);
+    void refreshSurveyLayer();
+  }
+  selectedPlaceId = null;
+  flyToCourse(courseId);
+  setStatus(
+    `hole ${hole} has no verified GPS point yet — showing the course area`,
+  );
 }
 
 async function renderFieldGallery(): Promise<void> {
@@ -174,7 +513,11 @@ async function renderFieldGallery(): Promise<void> {
           ? ` — ${a.lat.toFixed(6)}, ${a.lon.toFixed(6)}`
           : "";
       const img = `<img src="${esc(a.web_url)}" alt="${esc(a.label)}" loading="lazy">`;
-      return `<figure>${href ? `<a href="${href}">${img}</a>` : img}<figcaption>${esc(a.label)}${coords}</figcaption></figure>`;
+      const showOnMap =
+        a.lat !== null && a.lon !== null
+          ? ` <button type="button" class="show-on-map" data-place="asset:${esc(a.asset_id)}">Show on map</button>`
+          : "";
+      return `<figure>${href ? `<a href="${href}">${img}</a>` : img}<figcaption>${esc(a.label)}${coords}${showOnMap}</figcaption></figure>`;
     };
     host.innerHTML =
       `<h3>Every photo from the November 1 field day (${photos.length})</h3>` +
@@ -250,7 +593,7 @@ function addOverlays(): void {
   void refreshSurveyLayer();
 
   // Field-day imagery as its own markers: every Pixel photo + pano from
-  // survey-assets.json, so the map shows all 15 photos and 5 panos where
+  // survey-assets.json, so the map shows all 15 photos and 6 panos where
   // the phone actually took them — not just the point they annotate.
   if (!map.getSource("field-shots")) {
     map.addSource("field-shots", {
@@ -281,8 +624,95 @@ function addOverlays(): void {
         "circle-stroke-width": 2,
       },
     });
+    map.addLayer({
+      id: "field-screens",
+      type: "circle",
+      source: "field-shots",
+      filter: ["==", ["get", "kind"], "screenshot"],
+      paint: {
+        "circle-radius": 5,
+        "circle-color": "#616161",
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 1.5,
+      },
+    });
   }
   void refreshFieldShots();
+
+  // Selected-place halo: one clear ring, whatever way the place was
+  // chosen (map click, Map points list, hole row, gallery, deep link).
+  if (!map.getSource("selected-place")) {
+    map.addSource("selected-place", {
+      type: "geojson",
+      data: { type: "FeatureCollection", features: [] },
+    });
+    map.addLayer({
+      id: "selected-place-halo",
+      type: "circle",
+      source: "selected-place",
+      paint: {
+        "circle-radius": 15,
+        "circle-color": "#ff6d00",
+        "circle-opacity": 0.18,
+        "circle-stroke-color": "#ff6d00",
+        "circle-stroke-width": 2.5,
+      },
+    });
+    if (selectedPlaceId) {
+      const p = placesById.get(selectedPlaceId);
+      if (p) selectPlace(p.id, { fly: false, popup: false, updateUrl: false });
+    }
+  }
+
+  // Point labels at close zoom, reusing whatever font the basemap style
+  // itself ships so no font is invented. Skipped if the style has none.
+  const styleFont = (() => {
+    for (const layer of map.getStyle().layers ?? []) {
+      if (layer.type !== "symbol") continue;
+      const font = (layer.layout as Record<string, unknown> | undefined)?.[
+        "text-font"
+      ];
+      if (Array.isArray(font) && font.length) return font as string[];
+    }
+    return null;
+  })();
+  if (styleFont) {
+    const labelLayer = (
+      id: string,
+      source: string,
+      color: string,
+      filter?: unknown[],
+    ) => {
+      if (map.getLayer(id)) return;
+      map.addLayer({
+        id,
+        type: "symbol",
+        source,
+        ...(filter ? { filter: filter as never } : {}),
+        minzoom: 16,
+        layout: {
+          "text-field": ["get", "nav_label"],
+          "text-font": styleFont,
+          "text-size": 11,
+          "text-offset": [0.7, 0],
+          "text-anchor": "left",
+          "text-max-width": 14,
+          "text-optional": true,
+        },
+        paint: {
+          "text-color": color,
+          "text-halo-color": "#ffffff",
+          "text-halo-width": 1.2,
+        },
+      } as never);
+    };
+    labelLayer("survey-labels", "survey", "#143d2a", [
+      "==",
+      ["geometry-type"],
+      "Point",
+    ]);
+    labelLayer("field-shot-labels", "field-shots", "#7a2e00");
+  }
 
   // Course anchors.
   for (const [id, c] of Object.entries(COURSES)) {
@@ -342,7 +772,16 @@ async function refreshSurveyLayer(): Promise<void> {
     const data = await holesFor(currentCourse);
     src.setData({
       type: "FeatureCollection",
-      features: (data.features ?? []) as never[],
+      features: (data.features ?? []).map((f) => ({
+        ...f,
+        properties: {
+          ...f.properties,
+          nav_label:
+            f.geometry.type === "Point"
+              ? (f.properties.name ?? f.properties.survey_id ?? "")
+              : "",
+        },
+      })) as never[],
     });
   } catch {
     // leave prior features in place; table render reports failures
@@ -360,20 +799,20 @@ async function refreshFieldShots(): Promise<void> {
     src.setData({
       type: "FeatureCollection",
       features: data.assets
-        .filter(
-          (a) =>
-            (a.kind === "photo" || a.kind === "pano") &&
-            a.lat !== null &&
-            a.lon !== null,
-        )
+        .filter((a) => a.lat !== null && a.lon !== null)
         .map((a) => ({
           type: "Feature",
           geometry: { type: "Point", coordinates: [a.lon, a.lat] },
           properties: {
             kind: a.kind,
+            asset_id: a.asset_id,
             label: a.label,
+            nav_label:
+              a.label.length > 30 ? `${a.label.slice(0, 29)}…` : a.label,
             web_url: a.web_url,
             pano_id: a.pano_id ?? null,
+            lat: a.lat,
+            lon: a.lon,
           },
         })) as never[],
     });
@@ -417,17 +856,18 @@ async function renderHoles(courseId: CourseId): Promise<void> {
           : status === "scaffold"
             ? "scaffold"
             : "remote";
-      tr.innerHTML = `<td>${h.hole}</td><td>${par}</td><td>${dist}${h.note ? ` (${h.note})` : ""}</td><td><span class="status-chip">${label}</span></td>`;
+      tr.dataset["hole"] = String(h.hole);
+      tr.innerHTML = `<td><button type="button" class="hole-go" aria-label="Show hole ${h.hole} on the map">${h.hole}</button></td><td>${par}</td><td>${dist}${h.note ? ` (${esc(h.note)})` : ""}</td><td><span class="status-chip">${label}</span></td>`;
       tr.title = h.par_source
         ? `par source: ${h.par_source}`
-        : "click to fly here";
+        : "show this hole on the map";
       tr.style.cursor = "pointer";
       tr.addEventListener("click", () => {
-        flyToCourse(courseId);
-        courseMarkers[courseId]?.togglePopup();
+        selectHole(courseId, h.hole);
       });
       tbody.appendChild(tr);
     }
+    markSelectedHoleRow();
   } catch {
     tbody.innerHTML = '<tr><td colspan="4">hole data failed to load</td></tr>';
   }
@@ -605,12 +1045,7 @@ async function main(): Promise<void> {
   const wantCourse = params.get("course");
   if (wantCourse === "tiki" || wantCourse === "community") {
     currentCourse = wantCourse;
-    document.querySelectorAll("#course-tabs button").forEach((b) => {
-      b.classList.toggle(
-        "active",
-        (b as HTMLElement).dataset["course"] === wantCourse,
-      );
-    });
+    syncCourseTabs();
   }
   setStatus("authenticating…");
   const authHelper = await withIdentityPoolId(IDENTITY_POOL_ID, {
@@ -633,49 +1068,41 @@ async function main(): Promise<void> {
     addOverlays();
     setStatus("map live — topo + trails");
   });
-  // Per-point popups: name, note, coordinates, field photo (registered
-  // once; addOverlays re-runs on style swap and must not duplicate).
+  // Map clicks select through the same place index as the Map points
+  // list, so coords, halo, detail card, and URL always agree. GeoJSON
+  // query results stringify nested properties, so look the intact place
+  // up by id instead of trusting feature.properties. Registered once;
+  // addOverlays re-runs on style swap and must not duplicate.
   map.on("click", "survey-points", (e) => {
-    const f = e.features?.[0] as unknown as SurveyFeature | undefined;
-    if (!f) return;
-    new maplibregl.Popup({ offset: 12, maxWidth: "320px" })
-      .setLngLat(e.lngLat)
-      .setHTML(surveyPopupHtml(f.properties ?? {}))
-      .addTo(map);
+    const surveyId = (
+      e.features?.[0]?.properties as { survey_id?: string } | undefined
+    )?.survey_id;
+    if (surveyId) selectPlace(`survey:${surveyId}`, { fly: false });
   });
-  map.on("mouseenter", "survey-points", () => {
-    map.getCanvas().style.cursor = "pointer";
-  });
-  map.on("mouseleave", "survey-points", () => {
-    map.getCanvas().style.cursor = "";
-  });
-  // Field-shot popups: the Pixel photo, or the pano with a walk link.
-  const shotPopup = (
+  const shotClick = (
     e: maplibregl.MapMouseEvent & { features?: maplibregl.GeoJSONFeature[] },
   ) => {
-    const props = (e.features?.[0]?.properties ?? {}) as {
-      kind?: string;
-      label?: string;
-      web_url?: string;
-      pano_id?: string | null;
-    };
-    const walkLink =
-      props.kind === "pano" && props.pano_id
-        ? `<br><a href="./walk.html?pano=${encodeURIComponent(props.pano_id)}">stand here in the 3D walk →</a>`
-        : "";
-    new maplibregl.Popup({ offset: 12, maxWidth: "320px" })
-      .setLngLat(e.lngLat)
-      .setHTML(
-        `<strong>${esc(props.label ?? "field photo")}</strong><br>` +
-          (props.web_url
-            ? `<img class="pop-photo" src="${esc(props.web_url)}" alt="${esc(props.label ?? "field photo")}" loading="lazy"><br>`
-            : "") +
-          `<span class="pop-coords">${e.lngLat.lat.toFixed(6)}, ${e.lngLat.lng.toFixed(6)}</span>${walkLink}`,
-      )
-      .addTo(map);
+    const assetId = (
+      e.features?.[0]?.properties as { asset_id?: string } | undefined
+    )?.asset_id;
+    if (assetId) selectPlace(`asset:${assetId}`, { fly: false });
   };
-  map.on("click", "field-photos", shotPopup);
-  map.on("click", "field-panos", shotPopup);
+  map.on("click", "field-photos", shotClick);
+  map.on("click", "field-panos", shotClick);
+  map.on("click", "field-screens", shotClick);
+  for (const layer of [
+    "survey-points",
+    "field-photos",
+    "field-panos",
+    "field-screens",
+  ]) {
+    map.on("mouseenter", layer, () => {
+      map.getCanvas().style.cursor = "pointer";
+    });
+    map.on("mouseleave", layer, () => {
+      map.getCanvas().style.cursor = "";
+    });
+  }
   const readout = document.getElementById("coord-readout");
   if (readout) {
     map.on("mousemove", (e) => {
@@ -714,7 +1141,12 @@ async function main(): Promise<void> {
     document.getElementById("toggle-shots") as HTMLInputElement
   ).addEventListener("change", (e) => {
     const vis = (e.target as HTMLInputElement).checked ? "visible" : "none";
-    for (const layer of ["field-photos", "field-panos"]) {
+    for (const layer of [
+      "field-photos",
+      "field-panos",
+      "field-screens",
+      "field-shot-labels",
+    ]) {
       if (map.getLayer(layer)) map.setLayoutProperty(layer, "visibility", vis);
     }
   });
@@ -728,15 +1160,35 @@ async function main(): Promise<void> {
 
   document.querySelectorAll("#course-tabs button").forEach((btn) => {
     btn.addEventListener("click", () => {
-      document
-        .querySelectorAll("#course-tabs button")
-        .forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
       currentCourse = (btn as HTMLElement).dataset["course"] as CourseId;
+      syncCourseTabs();
       flyToCourse(currentCourse);
       void renderHoles(currentCourse);
       void refreshSurveyLayer();
     });
+  });
+
+  // Map points navigator: the keyboard-accessible path to every mapped
+  // place, including points that share a coordinate on the map.
+  document.getElementById("place-select")?.addEventListener("change", (e) => {
+    const id = (e.target as HTMLSelectElement).value;
+    if (id) selectPlace(id);
+  });
+  document.getElementById("mountaintop-go")?.addEventListener("click", () => {
+    const target =
+      placesById.get("survey:community-18") ??
+      places.find((p) => p.panoId === "tee2-area");
+    if (target) selectPlace(target.id);
+  });
+  document.getElementById("field-gallery")?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>(
+      "button[data-place]",
+    );
+    if (!btn?.dataset["place"]) return;
+    selectPlace(btn.dataset["place"]);
+    document
+      .getElementById("map")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   (document.getElementById("locate") as HTMLButtonElement).addEventListener(
@@ -749,19 +1201,35 @@ async function main(): Promise<void> {
       setStatus("locating…");
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const { latitude, longitude } = pos.coords;
-          new maplibregl.Marker({ color: "#1f5c3f" })
+          const { latitude, longitude, accuracy } = pos.coords;
+          if (!meMarker) {
+            meMarker = new maplibregl.Marker({ color: "#1f5c3f" });
+          }
+          meMarker
             .setLngLat([longitude, latitude])
-            .setPopup(new maplibregl.Popup().setText("you are here"))
+            .setPopup(
+              new maplibregl.Popup().setText(
+                `you are here — ${coordText(latitude, longitude)}`,
+              ),
+            )
             .addTo(map);
-          const tiki = COURSES.tiki;
-          const ft = haversineFt(latitude, longitude, tiki.lat, tiki.lon);
-          const dist =
-            ft > 5280 ? `${(ft / 5280).toFixed(1)} mi` : `${Math.round(ft)} ft`;
-          setStatus(`you are ${dist} from the Tiki course`);
+          let nearest: Place | null = null;
+          let nearestFt = Infinity;
+          for (const p of places) {
+            const ft = haversineFt(latitude, longitude, p.lat, p.lon);
+            if (ft < nearestFt) {
+              nearest = p;
+              nearestFt = ft;
+            }
+          }
+          setStatus(
+            nearest
+              ? `you are ${distText(nearestFt)} from ${nearest.label} (nearest mapped point${accuracy ? `; fix ±${Math.round(accuracy)} m` : ""}) — pick it under Map points`
+              : `you are at ${coordText(latitude, longitude)}`,
+          );
           map.flyTo({
             center: [longitude, latitude],
-            zoom: 14,
+            zoom: 15,
             essential: true,
           });
         },
@@ -771,20 +1239,39 @@ async function main(): Promise<void> {
     },
   );
 
-  await renderHoles(currentCourse);
+  await Promise.all([renderHoles(currentCourse), loadPlaces()]);
   wireScorecard();
   void renderFieldGallery();
-  const wantHole = Number(params.get("hole"));
-  if (Number.isInteger(wantHole) && wantHole >= 1) {
-    const holeInput = document.getElementById(
-      "score-hole",
-    ) as HTMLInputElement | null;
-    if (holeInput) holeInput.value = String(wantHole);
-    flyToCourse(currentCourse);
-    setStatus(
-      `from the story page — ${currentCourse} hole ${wantHole} on the card`,
-    );
-  }
+  markSelectedHoleRow();
+  // Deep links, in priority order: ?place=survey:…|asset:… (written by
+  // this page on every selection), ?pano=<pano id>, then the story
+  // page's ?course=…&hole=… — which now lands on the hole's verified
+  // tee/basket points instead of the coarse course anchor.
+  const applyDeepLink = () => {
+    const wantPlace = params.get("place");
+    if (wantPlace && placesById.has(wantPlace)) {
+      selectPlace(wantPlace);
+      return;
+    }
+    const wantPano = params.get("pano");
+    const panoPlace = wantPano
+      ? places.find((p) => p.panoId === wantPano)
+      : undefined;
+    if (panoPlace) {
+      selectPlace(panoPlace.id);
+      return;
+    }
+    const wantHole = Number(params.get("hole"));
+    if (Number.isInteger(wantHole) && wantHole >= 1) {
+      const holeInput = document.getElementById(
+        "score-hole",
+      ) as HTMLInputElement | null;
+      if (holeInput) holeInput.value = String(wantHole);
+      selectHole(currentCourse, wantHole);
+    }
+  };
+  if (map.loaded()) applyDeepLink();
+  else map.once("load", applyDeepLink);
 }
 
 void main().catch((e: unknown) =>

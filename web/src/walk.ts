@@ -18,9 +18,10 @@ import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTextur
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color.js";
 import { Matrix, Vector3 } from "@babylonjs/core/Maths/math.vector.js";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration.js";
-import { COURSES, MOUNTAINTOP, PANOS } from "./config";
+import { COURSES, PANOS } from "./config";
 import type { CourseId, PanoView } from "./config";
-import { PhotoDome } from "@babylonjs/core/Helpers/photoDome.js";
+import { mountPanoViewer } from "./pano-viewer";
+import "./pano-viewer.css";
 import "./walk.css";
 
 // ---------- helpers ----------
@@ -448,9 +449,16 @@ async function main(): Promise<void> {
     ctx.roundRect(6, 6, 500, 116, 18);
     ctx.fill();
     ctx.fillStyle = "#f7f5ef";
-    ctx.font = "600 44px system-ui, sans-serif";
+    ctx.font =
+      id === "tiki"
+        ? "600 44px system-ui, sans-serif"
+        : "600 36px system-ui, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(id === "tiki" ? "Byron Ligon Tiki" : "Community", 256, 58);
+    ctx.fillText(
+      id === "tiki" ? "Byron Ligon" : "Cloudcroft Community",
+      256,
+      58,
+    );
     ctx.font = "400 32px system-ui, sans-serif";
     ctx.fillStyle = "#cfd6c9";
     ctx.fillText(
@@ -662,7 +670,7 @@ async function main(): Promise<void> {
     );
     // holePins resolves after fetch: if a pano opened first, its pins
     // arrived late and visible — re-apply pano hiding to them.
-    if (!panoCard.hidden) setPanoMode(true);
+    if (panoOpen) setPanoMode(true);
   }
   void holePins();
 
@@ -694,6 +702,7 @@ async function main(): Promise<void> {
   walkCam.inputs.clear();
 
   let mode: "orbit" | "walk" = "orbit";
+  let panoOpen = false;
   let yaw = Math.PI;
   let pitch = 0.08;
   const keys = new Set<string>();
@@ -734,7 +743,9 @@ async function main(): Promise<void> {
     yaw = Math.PI;
     pitch = 0.08;
     applyWalkRotation();
-    setStatus("walk mode — drag to look, WASD/arrows to move, shift to hurry");
+    setStatus(
+      "First Person — drag to look, WASD/arrows to move, shift to hurry",
+    );
   }
 
   // Meshes that block the 360° photo (forest + survey pins): hidden in
@@ -765,7 +776,7 @@ async function main(): Promise<void> {
     for (const { mat, base } of forestMats) mat.alpha = v ? base : 0;
   }
   function setPanoMode(on: boolean): void {
-    setForestVisible(on ? treesWanted() : false);
+    setForestVisible(on ? false : treesWanted());
     panoOccluders.forEach((m) => m.setEnabled(!on));
     // In a 360° photo the ground, trails, and course art are already in
     // the picture — the 3D versions only mismatch it. All regular meshes,
@@ -781,45 +792,56 @@ async function main(): Promise<void> {
       )?.classList.contains("active") ?? true
     );
   }
-  const panoCard = document.getElementById("pano-card") as HTMLElement;
-  const panoCaption = document.getElementById("pano-caption") as HTMLElement;
   const veil = document.getElementById("fade-veil") as HTMLElement;
-  let panoDome: PhotoDome | null = null;
   let panoIdx = 0;
-  // Stand on the mountaintop: walk camera on the highest surveyed pad
-  // (Community tee box 2) with its real pad-side field photos. No 360°
-  // exists at tee 2 yet, so this opens the pin card — not a wrong pano.
-  function showPanoAt(idx: number): void {
+  // The Pixel sweeps are wide cylindrical strips, not spherical 360s, so a
+  // full-viewport horizontal viewer is used instead of a Babylon PhotoDome.
+  const flatPano = mountPanoViewer(document.body, {
+    returnLabel: "Back to walk",
+    mapHref: "./",
+    onClose: () => hidePano(),
+    onChange: (pano) => {
+      const next = PANOS.findIndex((p) => p.id === pano.id);
+      if (next >= 0) panoIdx = next;
+    },
+  });
+  // Horizontal scroll sweeps the pano left-right (trackpad swipe).
+  // Vertical scroll keeps its usual meaning outside pano mode.
+  canvas.addEventListener(
+    "wheel",
+    (e) => {
+      if (!panoOpen) return;
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      yaw -= e.deltaX * 0.003;
+    },
+    { passive: true },
+  );
+  // Panos open in the full-viewport horizontal viewer. Callers may pass
+  // a status to keep (e.g. the mountaintop card); otherwise a generic
+  // pano status is shown.
+  function showPanoAt(idx: number, status?: string): void {
     panoIdx = ((idx % PANOS.length) + PANOS.length) % PANOS.length;
     const p: PanoView = PANOS[panoIdx];
     const apply = () => {
       enterWalk(p.course);
+      (document.getElementById("mode-walk") as HTMLElement).classList.add(
+        "active",
+      );
+      (document.getElementById("mode-orbit") as HTMLElement).classList.remove(
+        "active",
+      );
       const [px, pz] = toWorld(p.lon, p.lat);
       walkCam.position.set(px, heightAt(p.lon, p.lat) + 2, pz);
       // Face the photographed clearing, not the treeline behind the pad.
       // yaw is verified per pano in config (default = walk heading).
       yaw = p.yaw ?? Math.PI;
       applyWalkRotation();
-      if (!panoDome) {
-        panoDome = new PhotoDome("pano", p.file, { size: 400 }, scene);
-      } else {
-        const lat = (panoDome as { texture?: { url: string } }).texture;
-        if (lat) lat.url = p.file;
-        panoDome.isVisible = true;
-      }
-      const domeMesh = (panoDome as unknown as { mesh?: { position: Vector3 } })
-        .mesh;
-      if (domeMesh) domeMesh.position.copyFrom(walkCam.position);
       setPanoMode(true);
-      panoCard.hidden = false;
-      const panoText = document.getElementById("pano-text");
-      if (panoText)
-        panoText.textContent = `${p.note} (${p.lat.toFixed(6)}, ${p.lon.toFixed(6)})`;
-      const panoTitle = document.getElementById("pano-title");
-      if (panoTitle) panoTitle.textContent = p.label;
-      panoCaption.textContent = `${p.label} (${panoIdx + 1} of ${PANOS.length} panos — ground survey, Nov 1)`;
+      panoOpen = true;
+      flatPano.open(p.id);
       setStatus(
-        `mountaintop pano — ${p.label.toLowerCase()} — drag to look around`,
+        status ??
+          `mountaintop pano — ${p.label.toLowerCase()} — drag to look around`,
       );
       veil.classList.remove("on");
     };
@@ -831,8 +853,8 @@ async function main(): Promise<void> {
     }
   }
   function hidePano(): void {
-    if (panoDome) panoDome.isVisible = false;
-    panoCard.hidden = true;
+    panoOpen = false;
+    if (flatPano.isOpen) flatPano.close();
     setPanoMode(false);
   }
 
@@ -841,7 +863,7 @@ async function main(): Promise<void> {
     scene.activeCamera = orbitCam;
     orbitCam.attachControl(canvas, true);
     hidePano();
-    setStatus("orbit mode — drag to orbit, scroll to zoom");
+    setStatus("Sky-Cam — drag to orbit, scroll to zoom");
   }
 
   // fly-to tween (orbit camera target + radius)
@@ -853,10 +875,13 @@ async function main(): Promise<void> {
     t: number;
   } | null = null;
   function flyTo(courseId: CourseId): void {
-    hidePano();
     const c = COURSES[courseId];
-    const [x, z] = toWorld(c.lon, c.lat);
-    const y = heightAt(c.lon, c.lat);
+    flyToPoint(c.lon, c.lat);
+  }
+  function flyToPoint(lon: number, lat: number): void {
+    hidePano();
+    const [x, z] = toWorld(lon, lat);
+    const y = heightAt(lon, lat);
     if (mode !== "orbit") {
       enterOrbit();
       (document.getElementById("mode-orbit") as HTMLElement).classList.add(
@@ -904,10 +929,57 @@ async function main(): Promise<void> {
     }
   });
 
+  // Byron Ligon start: the hole 3 tee, opening its pano when a verified
+  // 360 exists at that pad. The current tiki survey carries no hole
+  // numbers (all six points are unidentified), so until a survey drop
+  // labels hole 3 this falls back to the course anchor — never a guess
+  // from survey order (tiki-03 is a fix number, not a hole number).
+  function tikiHole3Tee(): [number, number] | null {
+    const f = pinFeats.find((feat) => {
+      const p = feat.properties;
+      const tag = `${p.name ?? ""} ${p.survey_id ?? ""}`.toLowerCase();
+      return (
+        p.kind === "tee" &&
+        p.hole === 3 &&
+        (tag.includes("tiki") || tag.includes("ligon"))
+      );
+    });
+    if (!f || f.geometry.type !== "Point") return null;
+    const [lon, lat] = f.geometry.coordinates as number[];
+    return [lon, lat];
+  }
+  function flyTikiStart(): void {
+    const tee3 = tikiHole3Tee();
+    if (!tee3) {
+      flyTo("tiki");
+      return;
+    }
+    const [lon, lat] = tee3;
+    let nearest = -1;
+    let nearestM = Infinity;
+    PANOS.forEach((p, i) => {
+      if (p.course !== "tiki") return;
+      const d = Math.hypot(
+        (p.lon - lon) * mPerDegLon,
+        (p.lat - lat) * M_PER_DEG_LAT,
+      );
+      if (d < nearestM) {
+        nearestM = d;
+        nearest = i;
+      }
+    });
+    if (nearest >= 0 && nearestM <= 25) {
+      showPanoAt(nearest);
+      return;
+    }
+    flyToPoint(lon, lat);
+    setStatus("Byron Ligon — hole 3 tee");
+  }
+
   // ---------- UI ----------
   (document.getElementById("fly-tiki") as HTMLButtonElement).addEventListener(
     "click",
-    () => flyTo("tiki"),
+    () => flyTikiStart(),
   );
   (
     document.getElementById("fly-community") as HTMLButtonElement
@@ -926,7 +998,15 @@ async function main(): Promise<void> {
     "click",
     (e) => {
       enterWalk("tiki");
-      panoCard.hidden = true;
+      // Start at the hole 3 tee when the survey labels one (see
+      // tikiHole3Tee — not in the current data).
+      const tee3 = tikiHole3Tee();
+      if (tee3) {
+        const [x, z] = toWorld(tee3[0], tee3[1]);
+        walkCam.position.set(x + 3, heightAt(tee3[0], tee3[1]) + 0.8, z + 12);
+        setStatus("First Person — Byron Ligon hole 3 tee. WASD to move");
+      }
+      hidePano();
       (e.target as HTMLElement).classList.add("active");
       (document.getElementById("mode-orbit") as HTMLElement).classList.remove(
         "active",
@@ -951,70 +1031,31 @@ async function main(): Promise<void> {
     (e.target as HTMLElement).classList.toggle("active", forestOn);
   });
   // Mountaintop: fly the walk camera to Community tee box 2 and open its
-  // pin card with the real pad-side field photos (sign + fairway).
+  // ingested 360 directly, with no intermediate pin card.
   function goMountaintop(): void {
-    hidePano();
-    enterWalk(MOUNTAINTOP.course);
-    (document.getElementById("mode-walk") as HTMLElement).classList.add(
-      "active",
-    );
-    (document.getElementById("mode-orbit") as HTMLElement).classList.remove(
-      "active",
-    );
-    const [px, pz] = toWorld(MOUNTAINTOP.lon, MOUNTAINTOP.lat);
-    walkCam.position.set(
-      px,
-      heightAt(MOUNTAINTOP.lon, MOUNTAINTOP.lat) + 2,
-      pz,
-    );
-    yaw = MOUNTAINTOP.yaw;
-    // Tip the view down to the pad: the default walk pitch aims at sky.
-    pitch = -0.05;
-    applyWalkRotation();
-    const tee2 = pinFeats.find(
-      (f) => f.properties.name === "community-tee-2",
-    )?.properties;
-    if (tee2) {
-      showPinCard(tee2);
-    } else {
-      showPinCard({
-        kind: "tee",
-        hole: 2,
-        name: MOUNTAINTOP.name,
-        note: MOUNTAINTOP.note,
-        lat: MOUNTAINTOP.lat,
-        lon: MOUNTAINTOP.lon,
-      });
+    const idx = PANOS.findIndex((p) => p.id === "tee2-area");
+    if (idx < 0) {
+      setStatus("Mountaintop pano is not available in this build");
+      return;
     }
-    setStatus("mountaintop — Community tee box 2, par 3, 245 ft");
+    // The specific status rides inside showPanoAt: apply() runs after a
+    // fade delay, so a status set here would be overwritten by the
+    // generic pano status.
+    showPanoAt(idx, "Mountaintop — Community tee box 2, Hole 2, par 3, 245 ft");
   }
   (document.getElementById("pano-tiki") as HTMLButtonElement).addEventListener(
     "click",
     () => goMountaintop(),
   );
-  (document.getElementById("pano-prev") as HTMLButtonElement).addEventListener(
-    "click",
-    () => showPanoAt(panoIdx - 1),
-  );
-  (document.getElementById("pano-next") as HTMLButtonElement).addEventListener(
-    "click",
-    () => showPanoAt(panoIdx + 1),
-  );
-  (
-    document.getElementById("pano-dismiss") as HTMLButtonElement
-  ).addEventListener("click", () => {
-    hidePano();
-    setStatus("walk mode — drag to look, WASD/arrows to move, shift to hurry");
-  });
   (
     document.getElementById("pin-close") as HTMLButtonElement | null
   )?.addEventListener("click", () => {
     if (pinCard) pinCard.hidden = true;
   });
-  // Deep link from the map/story galleries: walk.html?pano=tee1-area.
-  // tee2 aliases the relabeled Hole 1 pano for links minted before the fix.
+  // Deep link from the map/story galleries: walk.html?pano=tee2-area.
+  // tee2 preserves the pre-rename address for the same tee-box-2 view.
   const rawPano = new URLSearchParams(location.search).get("pano");
-  const wantPano = rawPano === "tee2" ? "tee1-area" : rawPano;
+  const wantPano = rawPano === "tee2" ? "tee2-area" : rawPano;
   if (wantPano) {
     const idx = PANOS.findIndex((p) => p.id === wantPano);
     if (idx >= 0) showPanoAt(idx);
@@ -1111,8 +1152,8 @@ async function main(): Promise<void> {
     for (const sock of windsocks) {
       sock.rotation.y = Math.sin(elapsed * 0.7) * 0.5;
     }
-    // The pano dome rides the camera so walking never exits the photo.
-    if (panoDome?.isVisible) panoDome.position.copyFrom(walkCam.position);
+    // The flat pano viewer is DOM-based and independent of the walk camera,
+    // so walking can continue under the open pano overlay.
     // Keep labels legible at any range: roughly constant screen size.
     const camPos = mode === "walk" ? walkCam.position : orbitCam.position;
     const activeCam = mode === "walk" ? walkCam : orbitCam;
@@ -1216,10 +1257,213 @@ async function main(): Promise<void> {
     scene.render();
   });
 
-  setStatus("walkthrough ready — orbit to explore, or switch to walk mode");
+  setStatus("ready — Sky-Cam to explore, or First Person to walk");
 }
 
 void main().catch((e: unknown) => {
   showError(`startup failed: ${(e as Error)?.message ?? e}`);
   setStatus("walkthrough failed to start — see error above");
 });
+
+// ---------- radio equalizer (Babylon, decorative) ----------
+// Small frequency-bar scene on its own tiny Engine inside the shared
+// radio player's footer dock — never on the walk canvas. Fully
+// decoupled from main(): any failure here removes the bars and leaves
+// radio playback untouched. Real FFT data via WebAudio when the
+// stream proves CORS-readable (all three stations send
+// Access-Control-Allow-Origin through their redirects, probed at
+// runtime before the element is switched to CORS mode); otherwise
+// gentle simulated bars while playing. Skipped entirely under
+// prefers-reduced-motion.
+interface DgRadioMount {
+  mount: HTMLElement;
+  audio: HTMLAudioElement;
+}
+
+// Returns true when settled (mounted, or permanently skipped);
+// false means the radio script has not mounted yet — retry. The
+// walk module can execute before the deferred radio-tuner.js.
+function setupRadioEq(): boolean {
+  if (REDUCED) return true;
+  const reg = (window as unknown as { __dgRadioMounts?: DgRadioMount[] })
+    .__dgRadioMounts;
+  const mount =
+    reg?.[0]?.mount ??
+    (document.querySelector("[data-radio-tuner]") as HTMLElement | null);
+  const audio =
+    reg?.[0]?.audio ??
+    (mount?.querySelector("audio") as HTMLAudioElement | null);
+  if (!mount || !audio) return false;
+
+  const canvas = document.createElement("canvas");
+  canvas.className = "rt-eq";
+  canvas.setAttribute("aria-hidden", "true");
+  mount.appendChild(canvas);
+
+  let engine: Engine;
+  try {
+    engine = new Engine(canvas, false);
+  } catch {
+    canvas.remove();
+    return true;
+  }
+  const scene = new Scene(engine);
+  scene.clearColor = new Color4(0, 0, 0, 0);
+  const cam = new ArcRotateCamera(
+    "eq-cam",
+    -Math.PI / 2,
+    Math.PI / 2,
+    10,
+    new Vector3(0, 0.55, 0),
+    scene,
+  );
+  cam.mode = ArcRotateCamera.ORTHOGRAPHIC_CAMERA;
+  const fitOrtho = (): void => {
+    const aspect = Math.max(
+      2,
+      canvas.clientWidth / Math.max(1, canvas.clientHeight),
+    );
+    cam.orthoTop = 1.15;
+    cam.orthoBottom = -0.05;
+    cam.orthoLeft = -0.6 * aspect;
+    cam.orthoRight = 0.6 * aspect;
+  };
+  fitOrtho();
+  new HemisphericLight("eq-light", new Vector3(0, 1, -0.4), scene);
+  const barMat = new StandardMaterial("eq-mat", scene);
+  barMat.diffuseColor = new Color3(0.08, 0.24, 0.16);
+  barMat.emissiveColor = new Color3(0.04, 0.14, 0.09);
+  barMat.disableLighting = true;
+
+  const N = 24;
+  const bars: Mesh[] = [];
+  for (let i = 0; i < N; i++) {
+    const bar = MeshBuilder.CreateBox(
+      `eq-bar-${i}`,
+      { width: 0.36, height: 1, depth: 0.1 },
+      scene,
+    );
+    bar.material = barMat;
+    bar.position.x = (i - (N - 1) / 2) * 0.52;
+    bars.push(bar);
+  }
+  const levels = new Array<number>(N).fill(0.06);
+  const drawBars = (): void => {
+    for (let i = 0; i < N; i++) {
+      const h = Math.max(0.04, Math.min(1, levels[i]));
+      bars[i].scaling.y = h;
+      bars[i].position.y = h / 2;
+    }
+    scene.render();
+  };
+
+  // --- audio analysis, opt-in only after a live CORS probe ---
+  let analyser: AnalyserNode | null = null;
+  let freq: Uint8Array | null = null;
+  let audioCtx: AudioContext | null = null;
+  let corsOk = false;
+  let simulated = false;
+  let zeroFrames = 0;
+  const probeSrc = audio.currentSrc || audio.getAttribute("src") || "";
+  if (probeSrc) {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 4000);
+    fetch(probeSrc, { method: "HEAD", mode: "cors", signal: ctl.signal })
+      .then(() => {
+        corsOk = true;
+        // preload="none": nothing fetched yet, so switching the
+        // element to CORS mode now cannot disturb playback.
+        if (audio.readyState === 0) audio.crossOrigin = "anonymous";
+      })
+      .catch(() => {
+        corsOk = false;
+      })
+      .finally(() => clearTimeout(timer));
+  }
+  const attachAnalyser = (): void => {
+    if (analyser || !corsOk || audio.crossOrigin !== "anonymous") return;
+    try {
+      audioCtx = new AudioContext();
+      const src = audioCtx.createMediaElementSource(audio);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128;
+      analyser.smoothingTimeConstant = 0.75;
+      freq = new Uint8Array(analyser.frequencyBinCount);
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination);
+    } catch {
+      analyser = null;
+      freq = null;
+      audioCtx = null;
+    }
+  };
+
+  let running = false;
+  engine.runRenderLoop(() => {
+    if (!running || document.hidden || canvas.getClientRects().length === 0)
+      return;
+    const t = performance.now() / 1000;
+    let heard = false;
+    if (analyser && freq && !simulated) {
+      analyser.getByteFrequencyData(freq as Uint8Array<ArrayBuffer>);
+      for (let i = 0; i < N; i++) {
+        const bin = 1 + Math.floor(Math.pow(i / N, 1.6) * (freq.length - 2));
+        // sqrt lifts quiet speech so bars read at dock size
+        const target = 0.05 + Math.sqrt(freq[bin] / 255) * 0.95;
+        if (freq[bin] > 4) heard = true;
+        levels[i] += (target - levels[i]) * 0.4;
+      }
+      // tainted/silent data: keep the picture honest but alive
+      if (!heard && ++zeroFrames > 120) simulated = true;
+      if (heard) zeroFrames = 0;
+    } else {
+      for (let i = 0; i < N; i++) {
+        const target =
+          0.3 +
+          0.22 * Math.sin(t * 2.1 + i * 0.7) +
+          0.14 * Math.sin(t * 5.3 + i * 1.7);
+        levels[i] += (Math.max(0.06, target) - levels[i]) * 0.25;
+      }
+    }
+    drawBars();
+  });
+
+  audio.addEventListener("playing", () => {
+    attachAnalyser();
+    void audioCtx?.resume().catch(() => undefined);
+    running = true;
+  });
+  const stop = (): void => {
+    running = false;
+    for (let i = 0; i < N; i++) levels[i] = 0.06;
+    if (canvas.getClientRects().length > 0) drawBars();
+  };
+  audio.addEventListener("pause", stop);
+  audio.addEventListener("error", stop);
+  mount.closest("details")?.addEventListener("toggle", () => {
+    engine.resize();
+    fitOrtho();
+    if (!running && canvas.getClientRects().length > 0) drawBars();
+  });
+  window.addEventListener("resize", () => {
+    engine.resize();
+    fitOrtho();
+  });
+  return true;
+}
+
+try {
+  if (!setupRadioEq()) {
+    let tries = 0;
+    const timer = setInterval(() => {
+      tries++;
+      try {
+        if (setupRadioEq() || tries >= 40) clearInterval(timer);
+      } catch {
+        clearInterval(timer);
+      }
+    }, 150);
+  }
+} catch {
+  // decorative only — never surface an error or touch playback
+}
