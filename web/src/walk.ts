@@ -585,6 +585,7 @@ async function main(): Promise<void> {
             : unknownMat;
       m.metadata = { survey: p };
       clickables.push(m as Mesh);
+      panoOccluders.push(m as Mesh);
       pins++;
     }
     const lineMat = new StandardMaterial("fairwayLineMat", scene);
@@ -683,6 +684,20 @@ async function main(): Promise<void> {
     setStatus("walk mode — drag to look, WASD/arrows to move, shift to hurry");
   }
 
+  // Meshes that block the 360° photo (forest + survey pins): hidden in
+  // pano mode so the photo, not the illustrative geometry, is the view.
+  const panoOccluders: Mesh[] = [];
+  function treesWanted(): boolean {
+    return (
+      (
+        document.getElementById("toggle-trees") as HTMLElement | null
+      )?.classList.contains("active") ?? true
+    );
+  }
+  function setPanoMode(on: boolean): void {
+    forest.setEnabled(on ? treesWanted() : false);
+    panoOccluders.forEach((m) => m.setEnabled(!on));
+  }
   const panoCard = document.getElementById("pano-card") as HTMLElement;
   const panoCaption = document.getElementById("pano-caption") as HTMLElement;
   const veil = document.getElementById("fade-veil") as HTMLElement;
@@ -707,6 +722,7 @@ async function main(): Promise<void> {
       const domeMesh = (panoDome as unknown as { mesh?: { position: Vector3 } })
         .mesh;
       if (domeMesh) domeMesh.position.copyFrom(walkCam.position);
+      setPanoMode(true);
       panoCard.hidden = false;
       const panoText = document.getElementById("pano-text");
       if (panoText)
@@ -729,6 +745,7 @@ async function main(): Promise<void> {
   function hidePano(): void {
     if (panoDome) panoDome.isVisible = false;
     panoCard.hidden = true;
+    setPanoMode(false);
   }
 
   function enterOrbit(): void {
