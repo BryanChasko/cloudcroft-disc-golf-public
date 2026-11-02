@@ -30,6 +30,7 @@
     <script>
       // Pre-paint theme: stored preference, else OS preference (no flash).
       (function () {
+        document.documentElement.classList.add("js");
         try {
           var t = localStorage.getItem("pref-theme");
           if (t !== "light" && t !== "dark") {
@@ -231,6 +232,69 @@
         }
       }
       .radio-row audio { width: 100%; min-width: 220px; }
+      /* survey progress ribbon */
+      #progress {
+        position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 60;
+        background: transparent;
+      }
+      #progress-bar {
+        height: 100%; width: 0%;
+        background: linear-gradient(90deg, var(--pine), var(--accent));
+        transition: width 0.15s ease-out;
+      }
+      /* reveal on scroll (JS adds .in; no-JS stays visible) */
+      html.js .reveal { opacity: 0; transform: translateY(14px); }
+      html.js .reveal.in {
+        opacity: 1; transform: translateY(0);
+        transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+      }
+      /* throw a disc */
+      .throw-stage {
+        position: relative; height: 7.5rem; margin: 1rem 0 0.2rem;
+        border: 1px dashed var(--line); border-radius: 12px; overflow: hidden;
+        background: linear-gradient(180deg, transparent 60%, rgb(31 92 63 / 0.08));
+      }
+      #disc {
+        position: absolute; left: 4%; bottom: 46%; width: 44px; height: 44px;
+        border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff 0 18%, #ff9900 19% 62%, #b7791f 100%);
+        box-shadow: 0 3px 8px rgb(20 61 42 / 0.35);
+        offset-path: path("M 0 0 C 120 -58 300 -64 470 -30 C 560 -14 610 6 660 18");
+        offset-rotate: auto;
+      }
+      #disc.fly { animation: fly 1.35s cubic-bezier(0.25, 0.6, 0.35, 1) both; }
+      @keyframes fly {
+        from { offset-distance: 0%; }
+        to { offset-distance: 100%; }
+      }
+      .basket {
+        position: absolute; right: 3.2rem; bottom: 18%; font-size: 2rem; line-height: 1;
+      }
+      .basket.hit { animation: rattle 0.5s ease-in-out 2; }
+      @keyframes rattle {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-5deg); }
+        75% { transform: rotate(5deg); }
+      }
+      #throw-note { min-height: 1.5em; }
+      /* mini scorecard game */
+      .play-row {
+        display: grid; grid-template-columns: 1fr auto auto; gap: 0.5rem 1rem;
+        align-items: center; padding: 0.55rem 0.7rem; margin: 0.4rem 0;
+        background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+        box-shadow: var(--shadow1);
+      }
+      .stepper { display: inline-flex; align-items: center; gap: 0.45rem; }
+      .stepper button {
+        width: 2.1rem; height: 2.1rem; font: inherit; font-size: 1.1rem; line-height: 1;
+        border: 1px solid var(--line); border-radius: 999px; cursor: pointer;
+        background: var(--card); color: var(--ink);
+      }
+      .stepper output { min-width: 1.4rem; text-align: center; font-weight: 700; font-size: 1.15rem; }
+      .vs { font-size: 0.82rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 999px; }
+      .vs-under { background: rgb(31 92 63 / 0.16); color: var(--pine-dark); }
+      .vs-even { background: rgb(92 102 92 / 0.16); color: var(--muted); }
+      .vs-over { background: rgb(183 121 31 / 0.18); color: var(--accent); }
+      #play-total { font-size: 1.05rem; }
       .radio-links { font-size: 0.9rem; line-height: 1.9; }
       .card h2 { margin: 0 0 0.5rem; font-size: 1.15rem; color: var(--pine-dark); }
       .card h3 { margin: 1rem 0 0.3rem; font-size: 1rem; color: var(--pine-dark); }
@@ -311,6 +375,7 @@
         </button>
         <p class="sub">AR map + scorecard for Cloudcroft NM disc golf — Weekend Challenge: Map it entry. Updated November 1, 2026.</p>
       </header>
+      <div id="progress" aria-hidden="true"><div id="progress-bar"></div></div>
       <main id="main">
         <p>
           On November 1 I walked the Cloudcroft Community course with a phone,
@@ -324,7 +389,13 @@
           <a href="/disc-golf/">Open the live map</a>
           <a class="ghost" href="/disc-golf/walk.html">3D walkthrough</a>
           <a class="ghost" href="/disc-golf/how-this-works/">How this works</a>
+          <button id="throw-btn" type="button" class="ghost">Throw a disc</button>
         </div>
+        <div class="throw-stage" aria-hidden="true">
+          <div id="disc"></div>
+          <svg id="basket" class="basket" viewBox="0 0 40 52" width="38" height="50" aria-hidden="true"><line x1="20" y1="6" x2="20" y2="50" stroke="#143d2a" stroke-width="3"/><ellipse cx="20" cy="10" rx="13" ry="3.5" fill="none" stroke="#ff9900" stroke-width="3"/><path d="M9 12 L14 30 M16 13 L18 30 M24 13 L22 30 M31 12 L26 30" stroke="#888" stroke-width="1.5"/><ellipse cx="20" cy="31" rx="9" ry="2.6" fill="none" stroke="#888" stroke-width="2"/></svg>
+        </div>
+        <p id="throw-note" class="meta" role="status" aria-live="polite">Hole 2 waits below: 245 feet of thin mountain air.</p>
         <figure>
           <picture><source type="image/webp" srcset="assets/map-hero.webp" /><img src="assets/map-hero.png" alt="Live 2D map of the Cloudcroft disc golf courses with trails and hole pins" width="1440" height="900" loading="eager" fetchpriority="high" decoding="async" /></picture>
           <figcaption>The live map — topo tiles, trails, hole table, cloud scorecard.</figcaption>
@@ -393,6 +464,30 @@
           <pre><code>python dataset/scripts/partial_holes.py
 # community: cloudcroft-community.json (2 surveyed rows, 21 survey points)
 # tiki: byron-ligon-tiki.json (0 surveyed rows, 6 survey points)</code></pre>
+        </section>
+
+        <section class="card" aria-labelledby="h-play">
+          <h2 id="h-play">Play the first two holes</h2>
+          <p class="meta">Real distances and pars off the tee signs. Tap your throws in — the full card takes it to DynamoDB.</p>
+          <div class="play-row" data-hole="1" data-par="4">
+            <span><strong>Hole 1</strong> — Par 4 (pro) · 411 ft</span>
+            <span class="stepper">
+              <button type="button" class="dec" aria-label="Hole 1 fewer strokes">−</button>
+              <output aria-live="polite">4</output>
+              <button type="button" class="inc" aria-label="Hole 1 more strokes">+</button>
+            </span>
+            <span class="vs vs-even">E</span>
+          </div>
+          <div class="play-row" data-hole="2" data-par="3">
+            <span><strong>Hole 2</strong> — Par 3 · 245 ft · mando right, fence OB right</span>
+            <span class="stepper">
+              <button type="button" class="dec" aria-label="Hole 2 fewer strokes">−</button>
+              <output aria-live="polite">3</output>
+              <button type="button" class="inc" aria-label="Hole 2 more strokes">+</button>
+            </span>
+            <span class="vs vs-even">E</span>
+          </div>
+          <p id="play-total" role="status" aria-live="polite">Even through 2. <a href="/disc-golf/">Open the full card →</a></p>
         </section>
 
         <section class="card" aria-labelledby="h-services">
@@ -522,6 +617,76 @@
           try { localStorage.setItem("pref-theme", next); } catch (e) {}
           label();
         });
+      })();
+      (function () {
+        // scroll progress ribbon
+        var bar = document.getElementById("progress-bar");
+        function onScroll() {
+          var h = document.documentElement;
+          var max = h.scrollHeight - h.clientHeight;
+          bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+        // reveal on scroll
+        var cardsEls = document.querySelectorAll("section.card");
+        cardsEls.forEach(function (c) { c.classList.add("reveal"); });
+        if ("IntersectionObserver" in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+            });
+          }, { threshold: 0.12 });
+          cardsEls.forEach(function (c) { io.observe(c); });
+        } else {
+          cardsEls.forEach(function (c) { c.classList.add("in"); });
+        }
+        // throw a disc
+        var disc = document.getElementById("disc");
+        var basket = document.getElementById("basket");
+        var note = document.getElementById("throw-note");
+        var lines = [
+          "Chains! Parked for the birdie look.",
+          "Hyzer held all the way — circles edge.",
+          "Off the cage. The mountain wind gets a vote.",
+          "Pure. That's the 245-footer at tee 2.",
+        ];
+        var i = 0;
+        document.getElementById("throw-btn").addEventListener("click", function () {
+          disc.classList.remove("fly");
+          void disc.offsetWidth;
+          disc.classList.add("fly");
+          note.textContent = lines[i++ % lines.length];
+          window.setTimeout(function () { basket.classList.add("hit"); }, 1250);
+          window.setTimeout(function () { basket.classList.remove("hit"); }, 2300);
+        });
+        // mini scorecard
+        var rows = Array.prototype.slice.call(document.querySelectorAll(".play-row"));
+        var totalEl = document.getElementById("play-total");
+        function update() {
+          var total = 0;
+          rows.forEach(function (row) {
+            var par = parseInt(row.getAttribute("data-par"), 10);
+            var v = parseInt(row.querySelector("output").textContent, 10);
+            var d = v - par;
+            total += d;
+            var vs = row.querySelector(".vs");
+            vs.textContent = d === 0 ? "E" : d > 0 ? "+" + d : "" + d;
+            vs.className = "vs " + (d < 0 ? "vs-under" : d > 0 ? "vs-over" : "vs-even");
+          });
+          var t = total === 0 ? "Even through 2." : total > 0 ? "+" + total + " through 2." : total + " through 2 — nice.";
+          totalEl.innerHTML = t + ' <a href="/disc-golf/">Open the full card →</a>';
+        }
+        rows.forEach(function (row) {
+          var out = row.querySelector("output");
+          row.querySelector(".dec").addEventListener("click", function () {
+            out.textContent = Math.max(1, parseInt(out.textContent, 10) - 1); update();
+          });
+          row.querySelector(".inc").addEventListener("click", function () {
+            out.textContent = Math.min(12, parseInt(out.textContent, 10) + 1); update();
+          });
+        });
+        update();
       })();
       (function () {
         var players = Array.prototype.slice.call(
