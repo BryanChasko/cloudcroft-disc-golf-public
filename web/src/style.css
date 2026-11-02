@@ -243,6 +243,18 @@ main {
   margin: 0 0 0.6rem;
 }
 
+#how-built summary {
+  cursor: pointer;
+}
+
+#how-built summary h2 {
+  display: inline;
+}
+
+#how-built summary::marker {
+  color: var(--pine-dark);
+}
+
 #how-built h3 {
   color: var(--pine-dark);
   font-size: 1rem;

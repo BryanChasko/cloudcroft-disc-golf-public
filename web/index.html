@@ -97,8 +97,17 @@
       <h1>Cloudcroft disc golf</h1>
       <p id="survey-status" class="note">survey in progress</p>
       <nav id="course-tabs" aria-label="courses">
-        <button type="button" data-course="tiki" class="active" aria-pressed="true">Byron Ligon Tiki · 9</button>
-        <button type="button" data-course="community" aria-pressed="false">Community · 18</button>
+        <button
+          type="button"
+          data-course="tiki"
+          class="active"
+          aria-pressed="true"
+        >
+          Byron Ligon Tiki · 9
+        </button>
+        <button type="button" data-course="community" aria-pressed="false">
+          Community · 18
+        </button>
         <a id="walk-link" href="./walk.html">Walkthrough →</a>
       </nav>
       <nav data-site-nav></nav>
@@ -123,14 +132,13 @@
             ><input type="checkbox" id="toggle-naip" /> NAIP 2022 overlay</label
           >
           <label
-            ><input type="checkbox" id="toggle-shots" checked /> Field photos
-            + panos</label
+            ><input type="checkbox" id="toggle-shots" checked /> Field photos +
+            panos</label
           >
           <p class="note">
-            Open data on this map: USGS NAIP 2022 (60&nbsp;cm) imagery
-            overlay and an OpenStreetMap trail extract. Hole elevation
-            math uses the USGS 3DEP 1&nbsp;m DEM; it is not drawn as a
-            layer on this 2D map.
+            Open data on this map: USGS NAIP 2022 (60&nbsp;cm) imagery overlay
+            and an OpenStreetMap trail extract. Hole elevation math uses the
+            USGS 3DEP 1&nbsp;m DEM; it is not drawn as a layer on this 2D map.
           </p>
         </section>
         <section id="place-nav" aria-labelledby="place-nav-h">
@@ -143,16 +151,16 @@
           </select>
           <p class="note" id="demo-route">
             Demo route: start at the Mountaintop, then tap any dot — dark
-            blue/gold are surveyed tees/baskets, orange are Pixel photos,
-            teal are panoramas you can stand in.
+            blue/gold are surveyed tees/baskets, orange are Pixel photos, teal
+            are panoramas you can stand in.
           </p>
           <button type="button" id="mountaintop-go">
             Start at the Mountaintop — Community tee 2
           </button>
           <div id="place-detail" aria-live="polite">
             <p class="note">
-              Every geolocated survey point, Pixel photo, and panorama from
-              the field day, by its recorded coordinates.
+              Every geolocated survey point, Pixel photo, and panorama from the
+              field day, by its recorded coordinates.
             </p>
           </div>
         </section>
@@ -211,91 +219,94 @@
       </aside>
     </main>
     <section id="how-built">
-      <h2>How this scorecard gets built</h2>
-      <ol>
-        <li>
-          <strong>Walk the course.</strong> At each tee an averaged GPS point
-          joins a photo of the tee sign and a note — par, distance, mando,
-          out-of-bounds. This one is real: community tee 2, par 3, 245 ft, mando
-          right, fence-line out of bounds right.
+      <details>
+        <summary><h2>How this scorecard gets built</h2></summary>
+        <ol>
+          <li>
+            <strong>Walk the course.</strong> At each tee an averaged GPS point
+            joins a photo of the tee sign and a note — par, distance, mando,
+            out-of-bounds. This one is real: community tee 2, par 3, 245 ft,
+            mando right, fence-line out of bounds right.
+            <figure>
+              <img
+                src="figures/fig-swmaps-community-tee2.webp"
+                alt="SW Maps recording community tee 2 with par, distance, and mando note"
+                loading="lazy"
+              />
+              <figcaption>
+                Field capture: averaged fix plus the remark that becomes this
+                hole's row.
+              </figcaption>
+            </figure>
+          </li>
+          <li>
+            <strong>Hand off the raw day.</strong> The survey app's project
+            backup carries every point, note, and attached photo in one file. A
+            small extractor turns it into open GeoJSON — no app lock-in.
+          </li>
+          <li>
+            <strong>Validate.</strong> Points must land inside the course
+            boundary; named tees and baskets must parse. Gaps are reported,
+            never silently invented — unsurveyed holes stay visibly blank, like
+            the scaffolds in the table above.
+          </li>
+          <li>
+            <strong>Build the holes.</strong> Tee-to-basket lines, elevation,
+            and a plays-like distance come from the 1&nbsp;m terrain model,
+            cross-checked against the tee signs.
+          </li>
+          <li>
+            <strong>Publish.</strong> The map, walkthrough, and this card read
+            the same data files, so the next field day lights up new holes with
+            no code change.
+          </li>
+        </ol>
+        <div id="field-gallery" aria-live="polite">
+          <h3>Every photo from the November 1 field day</h3>
+          <p class="note">loading the field gallery…</p>
+        </div>
+        <h3>Field evidence</h3>
+        <div id="evidence">
           <figure>
             <img
-              src="figures/fig-swmaps-community-tee2.webp"
-              alt="SW Maps recording community tee 2 with par, distance, and mando note"
+              src="evidence/kiosk.jpg"
+              alt="Course kiosk with posted layout"
               loading="lazy"
             />
-            <figcaption>
-              Field capture: averaged fix plus the remark that becomes this
-              hole's row.
-            </figcaption>
+            <figcaption>Course kiosk.</figcaption>
           </figure>
-        </li>
-        <li>
-          <strong>Hand off the raw day.</strong> The survey app's project backup
-          carries every point, note, and attached photo in one file. A small
-          extractor turns it into open GeoJSON — no app lock-in.
-        </li>
-        <li>
-          <strong>Validate.</strong> Points must land inside the course
-          boundary; named tees and baskets must parse. Gaps are reported, never
-          silently invented — unsurveyed holes stay visibly blank, like the
-          scaffolds in the table above.
-        </li>
-        <li>
-          <strong>Build the holes.</strong> Tee-to-basket lines, elevation, and
-          a plays-like distance come from the 1&nbsp;m terrain model,
-          cross-checked against the tee signs.
-        </li>
-        <li>
-          <strong>Publish.</strong> The map, walkthrough, and this card read the
-          same data files, so the next field day lights up new holes with no
-          code change.
-        </li>
-      </ol>
-      <div id="field-gallery" aria-live="polite">
-        <h3>Every photo from the November 1 field day</h3>
-        <p class="note">loading the field gallery…</p>
-      </div>
-      <h3>Field evidence</h3>
-      <div id="evidence">
-        <figure>
-          <img
-            src="evidence/kiosk.jpg"
-            alt="Course kiosk with posted layout"
-            loading="lazy"
-          />
-          <figcaption>Course kiosk.</figcaption>
-        </figure>
-        <figure>
-          <img
-            src="evidence/hole1-basket.jpg"
-            alt="Basket 1 at Cloudcroft Community"
-            loading="lazy"
-          />
-          <figcaption>Community basket 1.</figcaption>
-        </figure>
-        <figure>
-          <img
-            src="evidence/hole2-tee-sign.jpg"
-            alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds"
-            loading="lazy"
-          />
-          <figcaption>Hole 2 tee sign — the par source.</figcaption>
-        </figure>
-        <figure>
-          <img
-            src="evidence/hole2-basket.jpg"
-            alt="Basket 2 with fairway behind"
-            loading="lazy"
-          />
-          <figcaption>Community basket 2.</figcaption>
-        </figure>
-      </div>
+          <figure>
+            <img
+              src="evidence/hole1-basket.jpg"
+              alt="Basket 1 at Cloudcroft Community"
+              loading="lazy"
+            />
+            <figcaption>Community basket 1.</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="evidence/hole2-tee-sign.jpg"
+              alt="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds"
+              loading="lazy"
+            />
+            <figcaption>Hole 2 tee sign — the par source.</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="evidence/hole2-basket.jpg"
+              alt="Basket 2 with fairway behind"
+              loading="lazy"
+            />
+            <figcaption>Community basket 2.</figcaption>
+          </figure>
+        </div>
+      </details>
     </section>
     <footer>
       <span id="status" role="status" aria-live="polite">loading map…</span>
       <span id="coord-readout" aria-label="cursor coordinates"></span>
       <button id="locate">Find me</button>
+      <span id="app-version" title="build version">v0.007</span>
     </footer>
     <script src="shared/radio-tuner.js" defer></script>
     <script src="shared/site-nav.js" defer></script>
