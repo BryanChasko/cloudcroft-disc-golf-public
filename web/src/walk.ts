@@ -614,6 +614,13 @@ async function main(): Promise<void> {
     const unknownMat = new StandardMaterial("surveyMat", scene);
     unknownMat.diffuseColor = new Color3(0.62, 0.62, 0.62);
     unknownMat.emissiveColor = new Color3(0.12, 0.12, 0.12);
+    // Generous invisible tap target around every orb: the visible spheres
+    // are sub-meter at distance, unhittable on touch. Alpha-zero still
+    // raycasts; the transparent pipeline writes no depth, so the view is
+    // unchanged in Sky-Cam and First Person alike.
+    const hitMat = new StandardMaterial("pinHitMat", scene);
+    hitMat.alpha = 0;
+    hitMat.disableLighting = true;
     let pins = 0;
     for (const f of feats) {
       if (f.geometry.type !== "Point") continue;
@@ -644,6 +651,16 @@ async function main(): Promise<void> {
       m.metadata = { survey: p };
       clickables.push(m as Mesh);
       panoOccluders.push(m as Mesh);
+      const proxy = MeshBuilder.CreateSphere(
+        `${id}-hit`,
+        { diameter: 6 },
+        scene,
+      );
+      proxy.position.copyFrom(m.position);
+      proxy.material = hitMat;
+      proxy.metadata = { survey: p };
+      clickables.push(proxy as Mesh);
+      panoOccluders.push(proxy as Mesh);
       pins++;
     }
     const lineMat = new StandardMaterial("fairwayLineMat", scene);
