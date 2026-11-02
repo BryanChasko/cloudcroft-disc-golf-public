@@ -97,8 +97,8 @@
       <h1>Cloudcroft disc golf</h1>
       <p id="survey-status" class="note">survey in progress</p>
       <nav id="course-tabs" aria-label="courses">
-        <button data-course="tiki" class="active">Byron Ligon Tiki · 9</button>
-        <button data-course="community">Community · 18</button>
+        <button type="button" data-course="tiki" class="active" aria-pressed="true">Byron Ligon Tiki · 9</button>
+        <button type="button" data-course="community" aria-pressed="false">Community · 18</button>
         <a id="walk-link" href="./walk.html">Walkthrough →</a>
       </nav>
       <nav data-site-nav></nav>
@@ -126,6 +126,35 @@
             ><input type="checkbox" id="toggle-shots" checked /> Field photos
             + panos</label
           >
+          <p class="note">
+            Open data on this map: USGS NAIP 2022 (60&nbsp;cm) imagery
+            overlay and an OpenStreetMap trail extract. Hole elevation
+            math uses the USGS 3DEP 1&nbsp;m DEM; it is not drawn as a
+            layer on this 2D map.
+          </p>
+        </section>
+        <section id="place-nav" aria-labelledby="place-nav-h">
+          <h2 id="place-nav-h">Map points</h2>
+          <label for="place-select"
+            >Go to a surveyed point, photo, or panorama</label
+          >
+          <select id="place-select">
+            <option value="">Loading mapped points…</option>
+          </select>
+          <p class="note" id="demo-route">
+            Demo route: start at the Mountaintop, then tap any dot — dark
+            blue/gold are surveyed tees/baskets, orange are Pixel photos,
+            teal are panoramas you can stand in.
+          </p>
+          <button type="button" id="mountaintop-go">
+            Start at the Mountaintop — Community tee 2
+          </button>
+          <div id="place-detail" aria-live="polite">
+            <p class="note">
+              Every geolocated survey point, Pixel photo, and panorama from
+              the field day, by its recorded coordinates.
+            </p>
+          </div>
         </section>
         <section id="hole-list">
           <h2>Holes</h2>
