@@ -864,6 +864,9 @@
         grid-template-columns: 1fr 1fr;
         gap: 0.8rem;
       }
+      .fig-thumb img {
+        max-width: 200px;
+      }
       .footer-attention {
         font-size: 1rem;
         color: var(--ink);
@@ -1199,7 +1202,7 @@
         <section class="card" aria-labelledby="h-data">
           <h2 id="h-data">The dataset</h2>
           <p class="meta">
-            Four open sources, each verified covering Cloudcroft before use. No
+            Five open sources, each verified covering Cloudcroft before use. No
             personal or sensitive data anywhere.
           </p>
           <table>
@@ -1243,14 +1246,23 @@
                   honest scaffolding until the next field day.
                 </td>
               </tr>
+              <tr>
+                <td>NOAA US Climate Normals 1991–2020</td>
+                <td>
+                  Cloudcroft station monthly normals, fetched live from the
+                  Registry of Open Data bucket (<code>noaa-normals-pds</code>) —
+                  the one Registry dataset this build pulls programmatically.
+                </td>
+              </tr>
             </tbody>
           </table>
           <div class="grid-2">
-            <figure>
+            <figure class="fig-thumb">
               <img
                 src="assets/fig-swmaps-community-tee2.webp"
                 alt="SW Maps recording community tee 2 with par, distance, and mando note"
                 loading="lazy"
+                width="200"
               />
               <figcaption>
                 Field capture: the averaged fix plus the remark that becomes the
@@ -1297,6 +1309,15 @@
           </div>
           <div class="pipe-pane" data-pipe-pane="1">
             <p>
+              The field procedure, same every course: high-accuracy 30-fix
+              averages at each tee and basket, par + distance typed into the
+              point note, tee-sign and basket photos with camera location tags
+              on. The phone then uploads straight to a throwaway FTP dropbox on
+              the home LAN — no cables, no Drive round-trip:
+            </p>
+            <pre><code>python scripts/swmaps_ftpd.py &lt;password&gt;
+# serving dataset/survey/_incoming/ftp/ on 192.168.4.53:2121 as swmaps</code></pre>
+            <p>
               SW Maps project backups carry every point, note, and attached
               photo. A small extractor turns them into open GeoJSON — no app
               lock-in:
@@ -1323,6 +1344,29 @@
             <pre><code>python dataset/scripts/partial_holes.py
 # community: cloudcroft-community.json (2 surveyed rows, 21 survey points)
 # tiki: byron-ligon-tiki.json (0 surveyed rows, 6 survey points)</code></pre>
+            <p>
+              Serving it is a Rust Lambda (ARM64, sub-100&nbsp;ms plays-like
+              math) behind API Gateway, all in one CDK stack. Agents verify the
+              live resources over MCP (<code>call_aws</code>) instead of
+              trusting the console:
+            </p>
+            <pre><code>// backend/plays-like/src/main.rs — the whole model
+fn plays_like_ft(horizontal_ft: f64, elev_change_ft: f64) -&gt; f64 {
+    if elev_change_ft &gt;= 0.0 { horizontal_ft + elev_change_ft }
+    else { horizontal_ft + elev_change_ft * 0.5 }
+}
+
+// infra-cdk/lib/cloudcroft-disc-golf-stack.ts (assets built by
+// scripts/build-lambda-assets.sh)
+new lambda.Function(this, "PlaysLike", {
+  runtime: lambda.Runtime.PROVIDED_AL2023,
+  architecture: lambda.Architecture.ARM_64,
+  memorySize: 128,
+  handler: "bootstrap",
+  code: lambda.Code.fromAsset(
+    path.join(__dirname, "..", "assets", "plays-like"),
+  ),
+});</code></pre>
           </div>
           <h3>All 27 survey points, live</h3>
           <p class="meta">
