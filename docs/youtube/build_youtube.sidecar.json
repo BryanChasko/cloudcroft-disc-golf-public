@@ -24,6 +24,22 @@
     {
       "file": "yt-profile-800x800.webp",
       "size": [800, 800]
+    },
+    {
+      "file": "yt-banner-2560x1440.jpg",
+      "size": [2560, 1440]
+    },
+    {
+      "file": "yt-thumb-mountaintop-1280x720.jpg",
+      "size": [1280, 720]
+    },
+    {
+      "file": "yt-thumb-basket-1280x720.jpg",
+      "size": [1280, 720]
+    },
+    {
+      "file": "yt-profile-800x800.png",
+      "size": [800, 800]
     }
   ]
 }

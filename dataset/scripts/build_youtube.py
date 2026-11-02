@@ -4,11 +4,15 @@ Deterministic: same inputs -> same bytes. Brand per ~/writing/BRAND.md:
 house navy #0F141C panels/edge fade, badge navy #00002a, orange #ff9900
 accent (<= ~15% of frame), DejaVu Sans Bold for code-drawn text.
 
-Outputs (docs/youtube/):
-  yt-banner-2560x1440.webp  channel art (safe-area aware)
-  yt-thumb-mountaintop-1280x720.webp  video thumbnail, tee box 2 pano
-  yt-thumb-basket-1280x720.webp  video thumbnail, basket close-up
-  yt-profile-800x800.webp  channel avatar, basket close-up square
+Outputs (docs/youtube/): webp masters plus upload-ready derivatives —
+YouTube rejects webp, and thumbnails must stay under 2 MB:
+  yt-banner-2560x1440.jpg  channel art, safe-area aware (6 MB limit)
+  yt-thumb-mountaintop-1280x720.jpg  video thumbnail, tee box 2 pano
+  yt-thumb-basket-1280x720.jpg  video thumbnail, basket close-up
+  yt-profile-800x800.png  channel avatar, basket close-up square
+
+Thumbnails and avatar carry the brand frame: 6px badge navy #00002a
+plus a 3px orange keyline. Masters stay clean for reuse.
 
 Run:  python dataset/scripts/build_youtube.py
 Requires: Pillow (repo venv or system).
@@ -28,6 +32,7 @@ PANOS = ROOT / "web/public/data/panos"
 OUT = ROOT / "docs/youtube"
 
 NAVY = (15, 20, 28)  # #0F141C house navy
+BADGE_NAVY = (0, 0, 42)  # #00002a badge/frame navy
 PAPER = (247, 245, 239)
 GRAY = (176, 178, 182)
 ORANGE = (255, 153, 0)
@@ -134,19 +139,49 @@ def profile() -> Image.Image:
     return vignette(avatar, feather=40)
 
 
+def frame(img: Image.Image) -> Image.Image:
+    """Brand frame: 6px badge navy + 3px orange keyline, drawn inward."""
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    draw.rectangle([0, 0, w - 1, h - 1], outline=BADGE_NAVY, width=6)
+    draw.rectangle([6, 6, w - 7, h - 7], outline=ORANGE, width=3)
+    return img
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    jobs = {
-        "yt-banner-2560x1440.webp": build_banner(),
-        "yt-thumb-mountaintop-1280x720.webp": pano_thumb(),
-        "yt-thumb-basket-1280x720.webp": basket_thumb(),
-        "yt-profile-800x800.webp": profile(),
+    masters = {
+        "yt-banner-2560x1440": build_banner(),
+        "yt-thumb-mountaintop-1280x720": pano_thumb(),
+        "yt-thumb-basket-1280x720": basket_thumb(),
+        "yt-profile-800x800": profile(),
+    }
+    # Upload-ready derivatives: YouTube rejects webp; thumbs < 2 MB.
+    derivatives = {
+        "yt-banner-2560x1440.jpg": ("JPEG", {"quality": 90}),
+        "yt-thumb-mountaintop-1280x720.jpg": ("JPEG", {"quality": 86}),
+        "yt-thumb-basket-1280x720.jpg": ("JPEG", {"quality": 86}),
+        "yt-profile-800x800.png": ("PNG", {}),
+    }
+    derived_from = {
+        "yt-banner-2560x1440.jpg": "yt-banner-2560x1440",
+        "yt-thumb-mountaintop-1280x720.jpg": "yt-thumb-mountaintop-1280x720",
+        "yt-thumb-basket-1280x720.jpg": "yt-thumb-basket-1280x720",
+        "yt-profile-800x800.png": "yt-profile-800x800",
     }
     manifest = []
-    for name, img in jobs.items():
-        path = OUT / name
+    for name, img in masters.items():
+        path = OUT / f"{name}.webp"
         img.save(path, "WEBP", quality=88, method=6)
-        manifest.append({"file": name, "size": list(img.size)})
+        manifest.append({"file": path.name, "size": list(img.size)})
+    for name, (fmt, kw) in derivatives.items():
+        # Banner stays clean full-bleed (TV crops the edges anyway);
+        # thumbs + avatar get the brand frame.
+        base = masters[derived_from[name]].copy()
+        out = frame(base) if not name.startswith("yt-banner") else base
+        path = OUT / name
+        out.save(path, fmt, **kw)
+        manifest.append({"file": name, "size": list(out.size)})
     sidecar = {
         "generated_by": "dataset/scripts/build_youtube.py",
         "brand": "~/writing/BRAND.md",
@@ -159,7 +194,7 @@ def main() -> None:
     (OUT / "build_youtube.sidecar.json").write_text(
         json.dumps(sidecar, indent=2) + "\n"
     )
-    print(f"wrote {len(jobs)} assets to {OUT}")
+    print(f"wrote {len(manifest)} assets to {OUT}")
 
 
 if __name__ == "__main__":
