@@ -867,6 +867,49 @@
       .fig-thumb img {
         max-width: 200px;
       }
+      .fig-banner img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        object-position: center 30%;
+        border-radius: 8px;
+        display: block;
+      }
+      .stickybar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 0.45rem 0.8rem;
+        background: var(--pine-dark);
+        color: #fff;
+        font-size: 0.85rem;
+        border-top: 2px solid var(--accent);
+      }
+      .stickybar a {
+        color: #fff;
+        padding: 0.25rem 0.6rem;
+        border: 1px solid rgb(255 255 255 / 0.35);
+        border-radius: 999px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .stickybar a:hover {
+        border-color: var(--accent);
+      }
+      .stickybar .ver {
+        opacity: 0.75;
+        white-space: nowrap;
+      }
+      body {
+        padding-bottom: 3.2rem;
+      }
       .footer-attention {
         font-size: 1rem;
         color: var(--ink);
@@ -1599,7 +1642,7 @@ new lambda.Function(this, "PlaysLike", {
             >. Still to come: the under-3-minute demo video, then the Builder
             Center project post.
           </p>
-          <figure>
+          <figure class="fig-banner">
             <picture
               ><source
                 type="image/webp"
@@ -1615,19 +1658,6 @@ new lambda.Function(this, "PlaysLike", {
             <figcaption>
               From orbit — pins, trail ribbons, 1-meter terrain under NAIP
               imagery.
-            </figcaption>
-          </figure>
-          <figure>
-            <picture
-              ><source type="image/webp" srcset="assets/kiosk.webp" />
-              <img
-                src="assets/kiosk.jpg"
-                alt="Course kiosk with posted layout"
-                loading="lazy"
-                decoding="async"
-            /></picture>
-            <figcaption>
-              Where every round starts — the course kiosk.
             </figcaption>
           </figure>
           <p>
@@ -1681,10 +1711,8 @@ new lambda.Function(this, "PlaysLike", {
                   />
                   <h3>AI scoring</h3>
                   <p>
-                    For the bots: semantic HTML, JSON-LD for both courses, alt
-                    and ARIA on every image and control, honest status text.
-                    Crawl the <a href="/cloudcroft-disc-golf/app/">map</a> and
-                    this page — nothing needs a screenshot to parse.
+                    Semantic HTML, JSON-LD, alt + ARIA everywhere. Crawl the
+                    <a href="/cloudcroft-disc-golf/app/">map</a> and this page.
                   </p>
                 </div>
                 <div
@@ -1707,9 +1735,7 @@ new lambda.Function(this, "PlaysLike", {
                   />
                   <h3>Manideep Reddy Gillela — Cloud Infra Architect</h3>
                   <p>
-                    For the infra eye: whole stack as CDK, Rust ARM lambdas, and
-                    a prefix guard after the root site's
-                    <code>--delete</code> syncs threatened this project.
+                    CDK stack, Rust ARM lambdas, prefix guard included.
                     <a href="/cloudcroft-disc-golf/app/">Open the map →</a>
                   </p>
                 </div>
@@ -1733,9 +1759,7 @@ new lambda.Function(this, "PlaysLike", {
                   />
                   <h3>Ram Nethi</h3>
                   <p>
-                    Craft and execution: the map opens fast, every hole row
-                    flies there, and the walkthrough runs first-person on any
-                    screen — headset optional.
+                    Fast map, first-person walk on any screen.
                     <a href="/cloudcroft-disc-golf/app/walk.html"
                       >Open the walkthrough →</a
                     >
@@ -1761,8 +1785,7 @@ new lambda.Function(this, "PlaysLike", {
                   />
                   <h3>Yue Ning</h3>
                   <p>
-                    Usefulness: a pocket scorecard for players, and a survey
-                    recipe any town can run with a phone and an afternoon.
+                    Pocket scorecard + a survey recipe any town can run.
                     <a href="#h-play">Try the scorecard →</a>
                   </p>
                 </div>
@@ -1786,9 +1809,7 @@ new lambda.Function(this, "PlaysLike", {
                   />
                   <h3>Hari</h3>
                   <p>
-                    Technical innovation: plays-like distances from 1-meter
-                    elevation fused with ground GPS, geofences waiting on the
-                    next survey drop.
+                    Plays-like distance from 1m elevation + ground GPS.
                     <a
                       href="/cloudcroft-disc-golf/app/?course=community&amp;hole=1"
                       >See hole 1 →</a
@@ -1815,9 +1836,7 @@ new lambda.Function(this, "PlaysLike", {
                   />
                   <h3>Restelli Matteo</h3>
                   <p>
-                    Storytelling: Ray Haller cut this course from a hillside by
-                    hand. Stand on the mountaintop at tee box 2 and look at what
-                    he built.
+                    Ray Haller cut this course by hand.
                     <a href="/cloudcroft-disc-golf/app/walk.html?pano=tee2-area"
                       >Stand at tee box 2 →</a
                     >
@@ -1949,19 +1968,27 @@ new lambda.Function(this, "PlaysLike", {
                 power in the green — the wind moves the basket.
               </p>
               <p id="throw-prov" class="meta"></p>
-              <p class="meta">
-                Community 3 stays locked on purpose: basket 3 was photographed
-                on November 1, but its sign reads “TEE #4 · 80 FT” — the walk to
-                the next tee, not hole 3's length. No tee sign, par, distance,
-                or tee-to-basket GPS pair exists for it yet, so the game invents
-                nothing. It unlocks with the next survey drop.
-              </p>
+              <details class="meta">
+                <summary>Why Community 3 is locked</summary>
+                Basket 3 was photographed on November 1, but its sign reads “TEE
+                #4 · 80 FT” — the walk to the next tee, not hole 3's length. No
+                tee sign, par, distance, or tee-to-basket GPS pair exists for it
+                yet, so the game invents nothing. It unlocks with the next
+                survey drop.
+              </details>
             </section>
           </div>
         </section>
         <p>Bryan Chasko · Cloudcroft disc golf · v0.007</p>
       </footer>
     </div>
+    <nav class="stickybar" aria-label="Quick actions">
+      <a href="#h-judges">Judges</a>
+      <a href="#footer-game">Throw a disc</a>
+      <a href="/cloudcroft-disc-golf/app/">Map</a>
+      <a href="/cloudcroft-disc-golf/app/walk.html">Walk</a>
+      <span class="ver" title="build version">v0.007</span>
+    </nav>
     <script>
       (function () {
         var root = document.documentElement;
