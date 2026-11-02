@@ -1,14 +1,25 @@
+# rust
 target/
 backend/pkg/
 backend/**/out.json
+
+# dataset
 dataset/.venv/
 dataset/.work/
+dataset/survey/_incoming/
+dataset/media-out/
+
+# web
+web/dist/
+web/public/data/
 node_modules/
+
+# infra
 infra-cdk/cdk.out/
 infra-cdk/dist/
 infra-cdk/assets/
-web/dist/
-web/public/data/
+
+# general
 *.tsbuildinfo
 dist/
 *.log
@@ -17,4 +28,3 @@ android/.gradle/
 android/build/
 android/app/build/
 android/local.properties
-web/dist/
