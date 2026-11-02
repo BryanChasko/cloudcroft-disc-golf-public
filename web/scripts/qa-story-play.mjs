@@ -32,7 +32,13 @@ await page.waitForTimeout(1200);
 
 // 1. Throw a disc: mid-flight capture + note change + basket rattle class.
 const before = await page.textContent("#throw-note");
-await page.click("#throw-btn");
+// Hold-to-charge like a player: ~300ms hold ≈ 27% power throw.
+const btn = await page.$("#throw-btn");
+const bb = await btn.boundingBox();
+await page.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2);
+await page.mouse.down();
+await page.waitForTimeout(300);
+await page.mouse.up();
 await page.waitForTimeout(650);
 const midFlight = join(OUT, "story-disc-midflight.png");
 await page.screenshot({ path: midFlight });
