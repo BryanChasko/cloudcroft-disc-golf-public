@@ -2,8 +2,12 @@
 // (/cloudcroft-disc-golf/), the map app (/disc-golf/), and the 3D walk
 // (/disc-golf/walk.html). Mounts into every [data-radio-tuner] element.
 // Station choice persists in localStorage (dg-radio-station) so the
-// station follows you across pages. Direct streams only (verified
-// audio/mpeg); aggregator stations stay outbound links on the story page.
+// station follows you across pages. First load defaults to NV1 —
+// Native Voice One; a stored choice always wins. Direct streams only
+// (verified audio/mpeg); aggregator stations stay outbound links on
+// the story page. Each mount registers { mount, audio } on
+// window.__dgRadioMounts so page code (e.g. the walk's Babylon
+// equalizer) can hook the playing element without touching playback.
 (function () {
   "use strict";
   var STATIONS = [
@@ -27,27 +31,38 @@
     },
   ];
   var KEY = "dg-radio-station";
+  var DEFAULT_ID = "nv1";
+  function byId(id) {
+    for (var i = 0; i < STATIONS.length; i++)
+      if (STATIONS[i].id === id) return STATIONS[i];
+    return null;
+  }
   function saved() {
     try {
-      var id = localStorage.getItem(KEY);
-      for (var i = 0; i < STATIONS.length; i++)
-        if (STATIONS[i].id === id) return STATIONS[i];
+      var picked = byId(localStorage.getItem(KEY));
+      if (picked) return picked;
     } catch (e) {}
-    return STATIONS[0];
+    return byId(DEFAULT_ID) || STATIONS[0];
   }
   var css =
-    ".rt{border:1px solid var(--line,#d8d4c6);border-radius:12px;padding:.7rem .8rem;background:var(--card,#fff);box-shadow:0 1px 4px rgb(20 61 42/.08);margin:.6rem 0}" +
+    ".rt{--rt-on-pine:#fff;border:1px solid var(--line,#d8d4c6);border-radius:12px;padding:.7rem .8rem;background:var(--card,#fff);box-shadow:0 1px 4px rgb(20 61 42/.08);margin:.6rem 0}" +
     ".rt-head{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}" +
-    ".rt-play{width:2.6rem;height:2.6rem;border-radius:999px;border:1px solid var(--line,#d8d4c6);background:var(--pine-dark,#143d2a);color:#fff;font-size:1.05rem;cursor:pointer;line-height:1;flex:none}" +
+    ".rt-play{width:2.6rem;height:2.6rem;border-radius:999px;border:1px solid var(--line,#d8d4c6);background:var(--pine-dark,#143d2a);color:var(--rt-on-pine);font-size:1.05rem;cursor:pointer;line-height:1;flex:none}" +
     ".rt-now{min-width:0;flex:1}" +
     ".rt-name{font-weight:700;color:var(--pine-dark,#143d2a)}" +
-    ".rt-status{font-size:.82rem;color:var(--muted,#5c665c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
+    ".rt-status{font-size:.85rem;line-height:1.45;color:var(--muted,#5c665c)}" +
     ".rt-dial{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.55rem}" +
     ".rt-st{font:inherit;font-size:.82rem;padding:.3rem .6rem;border:1px solid var(--line,#d8d4c6);border-radius:999px;background:var(--paper,#f7f5ef);color:var(--ink,#22271f);cursor:pointer}" +
-    '.rt-st[aria-pressed="true"]{background:var(--pine-dark,#143d2a);color:#fff;border-color:var(--pine-dark,#143d2a)}' +
+    '.rt-st[aria-pressed="true"]{background:var(--pine-dark,#143d2a);color:var(--rt-on-pine);border-color:var(--pine-dark,#143d2a)}' +
     ".rt-vol{display:flex;align-items:center;gap:.4rem;font-size:.82rem;color:var(--muted,#5c665c);margin-top:.5rem}" +
     ".rt-vol input{flex:1;accent-color:var(--pine-dark,#143d2a)}" +
-    ".rt audio{display:none}";
+    ".rt audio{display:none}" +
+    // equalizer canvas (walk page only); transparent so the card shows through
+    ".rt-eq{display:block;width:100%;height:34px;margin-top:.5rem}" +
+    // dark themes redefine --pine-dark as a light mint (#a8dfc0), so
+    // white-on-pine fails contrast (~1.5:1); ink on mint is ~12:1
+    'html[data-theme="dark"] .rt{--rt-on-pine:#10140f}' +
+    '@media (prefers-color-scheme: dark){html[data-theme="auto"] .rt{--rt-on-pine:#10140f}}';
   var style = document.createElement("style");
   style.textContent = css;
   document.head.appendChild(style);
@@ -129,5 +144,13 @@
       audio.volume = parseFloat(vol.value);
     });
     tune(cur, false);
+    // opt-in hook for page-side extras (walk equalizer); playback unchanged
+    (window.__dgRadioMounts = window.__dgRadioMounts || []).push({
+      mount: mount,
+      audio: audio,
+      station: function () {
+        return cur;
+      },
+    });
   });
 })();

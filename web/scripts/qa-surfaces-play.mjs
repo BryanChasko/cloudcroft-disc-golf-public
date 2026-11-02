@@ -1,7 +1,7 @@
 // qa-surfaces-play.mjs — headless play-through of all three intertwined
 // surfaces: story (/cloudcroft-disc-golf/), map app (/disc-golf/), walk
 // (/disc-golf/walk.html). Drives public controls, asserts the survey
-// wiring counts (27 points, 15 photos, 5 panos, 20 screenshots), the
+// wiring counts (27 points, 15 photos, 6 panos, 20 screenshots), the
 // shared radio tuner, and deep links. Run from web/:
 //   node scripts/qa-surfaces-play.mjs
 import { chromium } from "playwright-core";
@@ -38,7 +38,7 @@ await page.goto(`${ORIGIN}/cloudcroft-disc-golf/`, {
 });
 await page.waitForTimeout(1500);
 
-// hold-to-charge throw: ~820ms ≈ 75% power, near hole-2 band
+// hold-to-charge throw: ~820ms ≈ 75% power, below the hole-1 band
 const noteBefore = await page.textContent("#throw-note");
 const box = await page.locator("#throw-btn").boundingBox();
 await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
@@ -65,16 +65,36 @@ check(
 );
 await shot("story-throw-v2.png");
 
-// hole pick changes the band
+// hole pick changes the band and the real pano backdrop
 const sweet1 = await page.$eval("#sweet", (el) => el.style.left);
-await page.click('[data-throw-hole="1"]');
+const pano1 = await page.$eval("#stage-pano", (el) => el.getAttribute("src"));
+await page.click('[data-throw-hole="tiki3"]');
 const sweet2 = await page.$eval("#sweet", (el) => el.style.left);
+const pano2 = await page.$eval("#stage-pano", (el) => el.getAttribute("src"));
 check(
   "throw: hole pick moves basket band",
   sweet1 !== sweet2,
   `${sweet1} -> ${sweet2}`,
 );
-await page.click('[data-throw-hole="2"]');
+check(
+  "throw: hole pick swaps the real pano backdrop",
+  /170324214/.test(pano1) && /175756282/.test(pano2),
+  `${pano1} -> ${pano2}`,
+);
+await page.click('[data-throw-hole="1"]');
+const comm3 = await page.evaluate(() => {
+  const btn = document.querySelector('[data-throw-hole="comm3"]');
+  return {
+    disabled: btn.disabled,
+    label: btn.textContent.trim(),
+    title: btn.getAttribute("title") ?? "",
+  };
+});
+check(
+  "throw: community 3 stays locked without invented metrics",
+  comm3.disabled && /awaiting survey/i.test(comm3.label) && comm3.title.length > 0,
+  comm3.label,
+);
 
 // course tabs
 await page.click('[data-course-tab="community"]');
@@ -118,7 +138,7 @@ const counts = await page.evaluate(() => ({
     document.querySelector("#pts-table tbody td.coords")?.textContent ?? "",
 }));
 check("gallery: 15 photos", counts.photos === 15, String(counts.photos));
-check("gallery: 5 panos", counts.panos === 5, String(counts.panos));
+check("gallery: 6 panos", counts.panos === 6, String(counts.panos));
 check("gallery: 20 screenshots", counts.shots === 20, String(counts.shots));
 check("points table: 27 rows", counts.rows === 27, String(counts.rows));
 check(
@@ -293,62 +313,80 @@ check(
 await page.waitForTimeout(2500);
 await shot("walk-pins.png");
 
-// pano deep link lands on the right pano with per-pano text
+// pano deep link lands on the right flat pano with per-pano text
 await page.goto(`${APP}/walk.html?pano=tiki-aspen`, {
   waitUntil: "load",
   timeout: 60000,
 });
 await page
-  .waitForFunction(() => !document.getElementById("pano-card")?.hidden, null, {
-    timeout: 60000,
-  })
+  .waitForFunction(
+    () => !document.querySelector(".pano-viewer")?.hidden,
+    null,
+    { timeout: 60000 },
+  )
   .catch(() => {});
 const pano = await page.evaluate(() => ({
-  title: document.getElementById("pano-title")?.textContent ?? "",
-  text: document.getElementById("pano-text")?.textContent ?? "",
-  caption: document.getElementById("pano-caption")?.textContent ?? "",
+  title:
+    document.querySelector(".pano-viewer-title")?.textContent ?? "",
+  meta: document.querySelector(".pano-viewer-meta")?.textContent ?? "",
+  src:
+    document.querySelector(".pano-viewer-img")?.getAttribute("src") ?? "",
 }));
 check(
   "walk: ?pano=tiki-aspen deep link",
-  /aspen/i.test(pano.title) && /32\.956922/.test(pano.text),
-  `${pano.title} · ${pano.caption}`,
+  /fairway 3/i.test(pano.title) &&
+    /32\.956922/.test(pano.meta) &&
+    /180216070/.test(pano.src),
+  `${pano.title} · ${pano.meta}`,
 );
-// the mountaintop button must land on tee box 2 (pin card, real pad
-// photos) — never the Hole 1 pano it showed before the Nov 2026 fix
+// the mountaintop button must land directly on the tee-box-2 pano
 await page.goto(`${APP}/walk.html`, { waitUntil: "load", timeout: 60000 });
 await page.waitForTimeout(1500);
 await page.click("#pano-tiki");
-await page.waitForFunction(() => !document.getElementById("pin-card")?.hidden, null, { timeout: 60000 }).catch(() => {});
+await page
+  .waitForFunction(
+    () => !document.querySelector(".pano-viewer")?.hidden,
+    null,
+    { timeout: 60000 },
+  )
+  .catch(() => {});
 const top = await page.evaluate(() => ({
-  title: document.getElementById("pin-title")?.textContent ?? "",
-  coords: document.getElementById("pin-coords")?.textContent ?? "",
-  photos: document.querySelectorAll("#pin-photos img").length,
+  title:
+    document.querySelector(".pano-viewer-title")?.textContent ?? "",
+  meta: document.querySelector(".pano-viewer-meta")?.textContent ?? "",
+  src:
+    document.querySelector(".pano-viewer-img")?.getAttribute("src") ?? "",
 }));
 check(
-  "walk: mountaintop button -> tee box 2",
-  /tee-2/.test(top.title) && /32\.961718/.test(top.coords) && top.photos >= 2,
-  `${top.title} · ${top.coords} · ${top.photos} photos`,
+  "walk: mountaintop button -> tee box 2 pano",
+  /tee box 2/i.test(top.title) &&
+    /32\.961722/.test(top.meta) &&
+    /173005849/.test(top.src),
+  `${top.title} · ${top.meta}`,
 );
 await shot("walk-pano-tiki.png");
 
-// ?pano=tee2 aliases the relabeled Hole 1 pano (back-compat, honest label)
+// ?pano=tee2 preserves the old tee-box-2 address after the pano rename
 await page.goto(`${APP}/walk.html?pano=tee2`, {
   waitUntil: "load",
   timeout: 60000,
 });
 await page
-  .waitForFunction(() => !document.getElementById("pano-card")?.hidden, null, {
-    timeout: 60000,
-  })
+  .waitForFunction(
+    () => !document.querySelector(".pano-viewer")?.hidden,
+    null,
+    { timeout: 60000 },
+  )
   .catch(() => {});
 const alias = await page.evaluate(() => ({
-  title: document.getElementById("pano-title")?.textContent ?? "",
-  caption: document.getElementById("pano-caption")?.textContent ?? "",
+  title:
+    document.querySelector(".pano-viewer-title")?.textContent ?? "",
+  meta: document.querySelector(".pano-viewer-meta")?.textContent ?? "",
 }));
 check(
-  "walk: ?pano=tee2 alias -> Hole 1 area",
-  /box 1 area/i.test(alias.title),
-  `${alias.title} · ${alias.caption}`,
+  "walk: ?pano=tee2 alias -> tee box 2 pano",
+  /tee box 2/i.test(alias.title) && /32\.961722/.test(alias.meta),
+  `${alias.title} · ${alias.meta}`,
 );
 
 // every swmz point carries its photos: tee 2 links the pad-side shots
