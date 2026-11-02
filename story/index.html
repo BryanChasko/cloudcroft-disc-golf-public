@@ -902,30 +902,38 @@
         z-index: 1;
       }
       .deck {
-        position: relative;
-        min-height: 15.5rem;
+        display: grid;
       }
       .deck-thumb {
         width: 100%;
-        height: 5.5rem;
+        aspect-ratio: 21 / 9;
+        height: auto;
         object-fit: cover;
+        object-position: center 40%;
         border-radius: 8px;
         display: block;
         margin-bottom: 0.5rem;
+        background: var(--pine-dark);
       }
       .deck-card {
-        position: absolute;
-        inset: 0;
+        grid-area: 1 / 1;
+        position: relative;
         opacity: 0;
+        visibility: hidden;
         pointer-events: none;
         transition:
           opacity 0.5s ease,
-          transform 0.5s ease;
+          transform 0.5s ease,
+          visibility 0s linear 0.5s;
         transform: rotate(-0.6deg) translateY(4px) scale(0.99);
       }
       .deck-card.on {
         opacity: 1;
+        visibility: visible;
         pointer-events: auto;
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
         transform: rotate(0deg) translateY(0) scale(1);
       }
       .deck-card h3 {
@@ -1000,9 +1008,6 @@
         .grid-2,
         .footer-grid {
           grid-template-columns: 1fr;
-        }
-        .deck {
-          min-height: 19rem;
         }
         .basket {
           right: 1rem;
