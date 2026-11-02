@@ -487,43 +487,105 @@ async function main(): Promise<void> {
     clickables.push(basket);
   }
 
-  // ---------- surveyed hole pins (Nov 1 ground truth) ----------
+  // ---------- surveyed pins: every Nov 1 ground-truth point ----------
   interface HoleFeature {
     geometry: { type: string; coordinates: number[] | number[][] };
-    properties: { kind: string; hole?: number };
+    properties: {
+      kind: string;
+      hole?: number;
+      survey_id?: string;
+      name?: string;
+      note?: string;
+      lat?: number;
+      lon?: number;
+      photo?: string | null;
+      elevation_m?: number;
+      accuracy_h_m?: number;
+    };
   }
   interface HolesFile2 {
     features?: HoleFeature[];
   }
-  async function holePins(): Promise<void> {
-    const data = (await (
-      await fetch(COURSES.community.holesUrl)
-    ).json()) as HolesFile2;
-    const feats = data.features ?? [];
-    const pts: Record<string, [number, number, number]> = {};
-    for (const f of feats) {
-      const k = f.properties.kind;
-      if (f.geometry.type === "Point" && (k === "tee" || k === "basket")) {
-        const [lon, lat] = f.geometry.coordinates as number[];
-        const [x, z] = toWorld(lon, lat);
-        pts[`${k}${f.properties.hole ?? ""}`] = [x, heightAt(lon, lat), z];
+  const pinCard = document.getElementById("pin-card") as HTMLElement | null;
+  function showPinCard(p: HoleFeature["properties"]): void {
+    if (!pinCard) return;
+    const title = document.getElementById("pin-title");
+    const text = document.getElementById("pin-text");
+    const coords = document.getElementById("pin-coords");
+    const img = document.getElementById("pin-photo") as HTMLImageElement | null;
+    if (title) title.textContent = p.name ?? "survey point";
+    if (text) {
+      const bits = [p.kind, p.note].filter(Boolean).join(" — ");
+      text.textContent =
+        bits || "Located November 1 — label lands with the next field day.";
+    }
+    if (coords) {
+      const meta: string[] = [];
+      if (typeof p.lat === "number" && typeof p.lon === "number")
+        meta.push(`${p.lat.toFixed(6)}, ${p.lon.toFixed(6)}`);
+      if (typeof p.elevation_m === "number")
+        meta.push(`elev ${p.elevation_m.toFixed(1)} m`);
+      if (typeof p.accuracy_h_m === "number") meta.push(`±${p.accuracy_h_m} m`);
+      coords.textContent = meta.join(" · ");
+    }
+    if (img) {
+      if (p.photo) {
+        img.src = p.photo;
+        img.alt = `Field photo at ${p.name ?? "survey point"}`;
+        img.hidden = false;
+      } else {
+        img.hidden = true;
+        img.removeAttribute("src");
       }
     }
+    pinCard.hidden = false;
+  }
+  async function holePins(): Promise<void> {
+    const files = await Promise.all(
+      Object.values(COURSES).map(
+        async (c) => (await (await fetch(c.holesUrl)).json()) as HolesFile2,
+      ),
+    );
+    const feats = files.flatMap((d) => d.features ?? []);
     const teeMat = new StandardMaterial("teeMat", scene);
     teeMat.diffuseColor = new Color3(0.1, 0.32, 0.46);
+    teeMat.emissiveColor = new Color3(0.04, 0.12, 0.2);
     const basketMat2 = new StandardMaterial("basketMat2", scene);
     basketMat2.diffuseColor = new Color3(0.72, 0.57, 0.04);
-    for (const [key, [x, y, z]] of Object.entries(pts)) {
-      const isTee = key.startsWith("tee");
-      const m = isTee
-        ? MeshBuilder.CreateSphere(key, { diameter: 1.2 }, scene)
-        : MeshBuilder.CreateCylinder(
-            key,
-            { diameterTop: 1.2, diameterBottom: 0.84, height: 0.4 },
-            scene,
-          );
+    basketMat2.emissiveColor = new Color3(0.2, 0.15, 0.01);
+    const unknownMat = new StandardMaterial("surveyMat", scene);
+    unknownMat.diffuseColor = new Color3(0.62, 0.62, 0.62);
+    unknownMat.emissiveColor = new Color3(0.12, 0.12, 0.12);
+    let pins = 0;
+    for (const f of feats) {
+      if (f.geometry.type !== "Point") continue;
+      const [lon, lat] = f.geometry.coordinates as number[];
+      const [x, z] = toWorld(lon, lat);
+      const y = heightAt(lon, lat);
+      const p = f.properties;
+      const id = p.survey_id ?? `pin${pins}`;
+      const m =
+        p.kind === "basket"
+          ? MeshBuilder.CreateCylinder(
+              id,
+              { diameterTop: 1.2, diameterBottom: 0.84, height: 0.4 },
+              scene,
+            )
+          : MeshBuilder.CreateSphere(
+              id,
+              { diameter: p.kind === "tee" ? 1.2 : 0.7 },
+              scene,
+            );
       m.position.set(x, y + 1, z);
-      m.material = isTee ? teeMat : basketMat2;
+      m.material =
+        p.kind === "tee"
+          ? teeMat
+          : p.kind === "basket"
+            ? basketMat2
+            : unknownMat;
+      m.metadata = { survey: p };
+      clickables.push(m as Mesh);
+      pins++;
     }
     const lineMat = new StandardMaterial("fairwayLineMat", scene);
     lineMat.emissiveColor = new Color3(0.18, 0.49, 0.2);
@@ -544,6 +606,9 @@ async function main(): Promise<void> {
         line.isVisible = true;
       }
     }
+    setStatus(
+      `${pins} survey pins from the November 1 field day — click any pin for its photo and coordinates`,
+    );
   }
   void holePins();
 
@@ -629,8 +694,9 @@ async function main(): Promise<void> {
     panoIdx = ((idx % PANOS.length) + PANOS.length) % PANOS.length;
     const p: PanoView = PANOS[panoIdx];
     const apply = () => {
-      enterWalk("community");
-      walkCam.position.y += 1.2;
+      enterWalk(p.course);
+      const [px, pz] = toWorld(p.lon, p.lat);
+      walkCam.position.set(px, heightAt(p.lon, p.lat) + 2, pz);
       if (!panoDome) {
         panoDome = new PhotoDome("pano", p.file, { size: 400 }, scene);
       } else {
@@ -638,7 +704,15 @@ async function main(): Promise<void> {
         if (lat) lat.url = p.file;
         panoDome.isVisible = true;
       }
+      const domeMesh = (panoDome as unknown as { mesh?: { position: Vector3 } })
+        .mesh;
+      if (domeMesh) domeMesh.position.copyFrom(walkCam.position);
       panoCard.hidden = false;
+      const panoText = document.getElementById("pano-text");
+      if (panoText)
+        panoText.textContent = `${p.note} (${p.lat.toFixed(6)}, ${p.lon.toFixed(6)})`;
+      const panoTitle = document.getElementById("pano-title");
+      if (panoTitle) panoTitle.textContent = p.label;
       panoCaption.textContent = `${p.label} (${panoIdx + 1} of ${PANOS.length} panos — ground survey, Nov 1)`;
       setStatus(
         `mountaintop pano — ${p.label.toLowerCase()} — drag to look around`,
@@ -716,6 +790,12 @@ async function main(): Promise<void> {
     const hit = pick?.pickedMesh;
     if (hit && clickables.includes(hit as Mesh) && hit.metadata?.courseId) {
       flyTo(hit.metadata.courseId as CourseId);
+    } else if (
+      hit &&
+      clickables.includes(hit as Mesh) &&
+      hit.metadata?.survey
+    ) {
+      showPinCard(hit.metadata.survey as HoleFeature["properties"]);
     }
   });
 
@@ -790,6 +870,17 @@ async function main(): Promise<void> {
     hidePano();
     setStatus("walk mode — drag to look, WASD/arrows to move, shift to hurry");
   });
+  (
+    document.getElementById("pin-close") as HTMLButtonElement | null
+  )?.addEventListener("click", () => {
+    if (pinCard) pinCard.hidden = true;
+  });
+  // Deep link from the map/story galleries: walk.html?pano=tee2
+  const wantPano = new URLSearchParams(location.search).get("pano");
+  if (wantPano) {
+    const idx = PANOS.findIndex((p) => p.id === wantPano);
+    if (idx >= 0) showPanoAt(idx);
+  }
   // First person on any screen: walk camera + fullscreen + exit chip.
   // Headsets switch to immersive-vr when one is present.
   const exitChip = document.getElementById(

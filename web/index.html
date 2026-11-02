@@ -13,21 +13,36 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Cloudcroft Disc Golf" />
-    <meta property="og:title" content="Cloudcroft Disc Golf — watch an AR scorecard get built" />
+    <meta
+      property="og:title"
+      content="Cloudcroft Disc Golf — watch an AR scorecard get built"
+    />
     <meta
       property="og:description"
       content="Ground GPS survey to playable scorecard, hole by hole: Byron Ligon Tiki (9) + Cloudcroft Community (18). Live map, walkthrough, open survey data."
     />
     <meta property="og:url" content="https://bryanchasko.com/disc-golf/" />
-    <meta property="og:image" content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg" />
-    <meta property="og:image:alt" content="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds" />
+    <meta
+      property="og:image"
+      content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg"
+    />
+    <meta
+      property="og:image:alt"
+      content="Hole 2 tee sign: 245 feet, par 3, mando and fence-line out of bounds"
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Cloudcroft Disc Golf — watch an AR scorecard get built" />
+    <meta
+      name="twitter:title"
+      content="Cloudcroft Disc Golf — watch an AR scorecard get built"
+    />
     <meta
       name="twitter:description"
       content="Ground GPS survey to playable scorecard, hole by hole. Live map, walkthrough, open survey data."
     />
-    <meta name="twitter:image" content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg" />
+    <meta
+      name="twitter:image"
+      content="https://bryanchasko.com/disc-golf/evidence/hole2-tee-sign.jpg"
+    />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -42,7 +57,12 @@
               "addressRegion": "NM",
               "postalCode": "88317"
             },
-            "geo": { "@type": "GeoCoordinates", "latitude": 32.95787, "longitude": -105.73887, "elevation": 8664.5 }
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 32.95787,
+              "longitude": -105.73887,
+              "elevation": 8664.5
+            }
           },
           {
             "@type": "SportsActivityLocation",
@@ -54,7 +74,12 @@
               "addressLocality": "Cloudcroft",
               "addressRegion": "NM"
             },
-            "geo": { "@type": "GeoCoordinates", "latitude": 32.9632, "longitude": -105.73996, "elevation": 8781.4 }
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 32.9632,
+              "longitude": -105.73996,
+              "elevation": 8781.4
+            }
           }
         ]
       }
@@ -69,6 +94,7 @@
         <button data-course="tiki" class="active">Byron Ligon Tiki · 9</button>
         <button data-course="community">Community · 18</button>
         <a id="walk-link" href="./walk.html">Walkthrough →</a>
+        <a id="story-link" href="/cloudcroft-disc-golf/">The story →</a>
       </nav>
     </header>
     <main>
@@ -134,6 +160,15 @@
           </div>
           <ul id="scores"></ul>
         </section>
+        <section id="radio">
+          <h2>Mountain radio</h2>
+          <div data-radio-tuner></div>
+          <p class="note">
+            Same tuner as
+            <a href="/cloudcroft-disc-golf/#h-radio">the story page</a>
+            and the walkthrough — your station follows you.
+          </p>
+        </section>
       </aside>
     </main>
     <section id="how-built">
@@ -178,6 +213,10 @@
           code change.
         </li>
       </ol>
+      <div id="field-gallery" aria-live="polite">
+        <h3>Every photo from the November 1 field day</h3>
+        <p class="note">loading the field gallery…</p>
+      </div>
       <h3>Field evidence</h3>
       <div id="evidence">
         <figure>
@@ -216,8 +255,10 @@
     </section>
     <footer>
       <span id="status" role="status" aria-live="polite">loading map…</span>
+      <span id="coord-readout" aria-label="cursor coordinates"></span>
       <button id="locate">Find me</button>
     </footer>
+    <script src="shared/radio-tuner.js" defer></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

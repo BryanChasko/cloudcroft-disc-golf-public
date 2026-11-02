@@ -46,6 +46,28 @@ interface HoleRow {
   status?: "surveyed" | "remote" | "scaffold";
   par_source?: string;
 }
+interface SurveyFeature {
+  type: "Feature";
+  geometry: { type: string; coordinates: unknown };
+  properties: {
+    kind?: string;
+    hole?: number;
+    survey_id?: string;
+    name?: string;
+    note?: string;
+    remark?: string;
+    lat?: number;
+    lon?: number;
+    course?: string;
+    photo?: string | null;
+    photos_web?: string[];
+    photo_remarks?: string[];
+    elevation_m?: number;
+    accuracy_h_m?: number;
+    averaging?: number;
+    sats_in_use?: number;
+  };
+}
 interface HolesFile {
   course: {
     name: string;
@@ -54,7 +76,7 @@ interface HolesFile {
     length_ft: number | string;
   };
   holes: HoleRow[];
-  features?: unknown[];
+  features?: SurveyFeature[];
 }
 
 let map: maplibregl.Map;
@@ -73,6 +95,77 @@ async function holesFor(courseId: CourseId): Promise<HolesFile> {
   ).json()) as HolesFile;
   holesCache[courseId] = data;
   return data;
+}
+
+function esc(s: unknown): string {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function surveyPopupHtml(p: SurveyFeature["properties"]): string {
+  const bits: string[] = [`<strong>${esc(p.name ?? "survey point")}</strong>`];
+  bits.push(
+    `<span class="pop-kind">${esc(p.kind ?? "")}${p.hole ? ` · hole ${p.hole}` : ""} · ${esc(p.survey_id ?? "")}</span>`,
+  );
+  if (p.photo) {
+    bits.push(
+      `<img class="pop-photo" src="${esc(p.photo)}" alt="Field photo at ${esc(p.name ?? "survey point")}" loading="lazy">`,
+    );
+  }
+  if (p.note) bits.push(`<span>${esc(p.note)}</span>`);
+  if (typeof p.lat === "number" && typeof p.lon === "number") {
+    bits.push(
+      `<span class="pop-coords">${p.lat.toFixed(6)}, ${p.lon.toFixed(6)}</span>`,
+    );
+  }
+  const meta: string[] = [];
+  if (typeof p.elevation_m === "number")
+    meta.push(`elev ${p.elevation_m.toFixed(1)} m`);
+  if (typeof p.accuracy_h_m === "number") meta.push(`±${p.accuracy_h_m} m`);
+  if (typeof p.averaging === "number") meta.push(`${p.averaging}-fix avg`);
+  if (meta.length)
+    bits.push(`<span class="pop-meta">${esc(meta.join(" · "))}</span>`);
+  return bits.join("<br>");
+}
+
+interface SurveyAsset {
+  asset_id: string;
+  kind: "photo" | "pano" | "screenshot";
+  label: string;
+  lat: number | null;
+  lon: number | null;
+  web_url: string;
+  pano_id?: string;
+}
+
+async function renderFieldGallery(): Promise<void> {
+  const host = document.getElementById("field-gallery");
+  if (!host) return;
+  try {
+    const data = (await (await fetch(DATA.surveyAssets)).json()) as {
+      assets: SurveyAsset[];
+    };
+    const photos = data.assets.filter((a) => a.kind === "photo");
+    const panos = data.assets.filter((a) => a.kind === "pano");
+    const fig = (a: SurveyAsset, href?: string) => {
+      const coords =
+        a.lat !== null && a.lon !== null
+          ? ` — ${a.lat.toFixed(6)}, ${a.lon.toFixed(6)}`
+          : "";
+      const img = `<img src="${esc(a.web_url)}" alt="${esc(a.label)}" loading="lazy">`;
+      return `<figure>${href ? `<a href="${href}">${img}</a>` : img}<figcaption>${esc(a.label)}${coords}</figcaption></figure>`;
+    };
+    host.innerHTML =
+      `<h3>Every photo from the November 1 field day (${photos.length})</h3>` +
+      `<div class="gallery-grid">${photos.map((a) => fig(a)).join("")}</div>` +
+      `<h3>Panoramas (${panos.length}) — open in the 3D walk to stand in them</h3>` +
+      `<div class="gallery-grid">${panos.map((a) => fig(a, `./walk.html?pano=${encodeURIComponent(a.pano_id ?? "")}`)).join("")}</div>`;
+  } catch {
+    host.innerHTML = '<p class="note">field gallery failed to load</p>';
+  }
 }
 
 function basemap(): Basemap {
@@ -421,6 +514,18 @@ function wireScorecard(): void {
 
 // ---------- boot ----------
 async function main(): Promise<void> {
+  // Deep links from the story page: ?course=community&hole=2
+  const params = new URLSearchParams(location.search);
+  const wantCourse = params.get("course");
+  if (wantCourse === "tiki" || wantCourse === "community") {
+    currentCourse = wantCourse;
+    document.querySelectorAll("#course-tabs button").forEach((b) => {
+      b.classList.toggle(
+        "active",
+        (b as HTMLElement).dataset["course"] === wantCourse,
+      );
+    });
+  }
   setStatus("authenticating…");
   const authHelper = await withIdentityPoolId(IDENTITY_POOL_ID, {
     clientConfig: { region: REGION },
@@ -442,6 +547,28 @@ async function main(): Promise<void> {
     addOverlays();
     setStatus("map live — topo + trails");
   });
+  // Per-point popups: name, note, coordinates, field photo (registered
+  // once; addOverlays re-runs on style swap and must not duplicate).
+  map.on("click", "survey-points", (e) => {
+    const f = e.features?.[0] as unknown as SurveyFeature | undefined;
+    if (!f) return;
+    new maplibregl.Popup({ offset: 12, maxWidth: "320px" })
+      .setLngLat(e.lngLat)
+      .setHTML(surveyPopupHtml(f.properties ?? {}))
+      .addTo(map);
+  });
+  map.on("mouseenter", "survey-points", () => {
+    map.getCanvas().style.cursor = "pointer";
+  });
+  map.on("mouseleave", "survey-points", () => {
+    map.getCanvas().style.cursor = "";
+  });
+  const readout = document.getElementById("coord-readout");
+  if (readout) {
+    map.on("mousemove", (e) => {
+      readout.textContent = `${e.lngLat.lat.toFixed(6)}, ${e.lngLat.lng.toFixed(6)}`;
+    });
+  }
   map.on("error", (e) =>
     setStatus(`map error: ${(e.error as Error)?.message ?? "unknown"}`),
   );
@@ -524,6 +651,18 @@ async function main(): Promise<void> {
 
   await renderHoles(currentCourse);
   wireScorecard();
+  void renderFieldGallery();
+  const wantHole = Number(params.get("hole"));
+  if (Number.isInteger(wantHole) && wantHole >= 1) {
+    const holeInput = document.getElementById(
+      "score-hole",
+    ) as HTMLInputElement | null;
+    if (holeInput) holeInput.value = String(wantHole);
+    flyToCourse(currentCourse);
+    setStatus(
+      `from the story page — ${currentCourse} hole ${wantHole} on the card`,
+    );
+  }
 }
 
 void main().catch((e: unknown) =>

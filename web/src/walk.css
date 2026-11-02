@@ -122,6 +122,66 @@ main {
   color: var(--muted);
 }
 
+#pin-card {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 17rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
+}
+
+#pin-card[hidden] {
+  display: none;
+}
+
+#pin-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 0.4rem 0;
+  display: block;
+}
+
+#pin-card img[hidden] {
+  display: none;
+}
+
+#pin-card p {
+  margin: 0.35rem 0;
+  color: var(--muted);
+}
+
+#pin-card .pin-coords {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.76rem;
+}
+
+#pin-card button {
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.32rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--pine);
+  color: #fff;
+  cursor: pointer;
+}
+
+#walk-radio {
+  position: absolute;
+  left: 1rem;
+  bottom: 2.6rem;
+  width: 19rem;
+  max-width: calc(100% - 2rem);
+  z-index: 5;
+  --card: var(--paper);
+}
+
 #pano-card button {
   font: inherit;
   font-size: 0.82rem;

@@ -36,6 +36,10 @@ export interface PanoView {
   lot: "kiosk" | "tee" | "basket" | "vista";
   label: string;
   file: string;
+  lon: number;
+  lat: number;
+  course: CourseId;
+  note: string;
 }
 export const PANOS: PanoView[] = [
   {
@@ -43,30 +47,50 @@ export const PANOS: PanoView[] = [
     lot: "basket",
     label: "Community basket 1",
     file: "data/panos/PXL_20261101_171610748.webp",
+    lon: -105.742064,
+    lat: 32.961281,
+    course: "community",
+    note: "Basket 1 area — a real 360° shot from the November 1 ground survey. Drag to look around.",
   },
   {
     id: "tee2",
     lot: "tee",
     label: "Community tee box 2 — par 3, 245 ft",
     file: "data/panos/PXL_20261101_170324214.webp",
+    lon: -105.742392,
+    lat: 32.962347,
+    course: "community",
+    note: "You are standing at Community tee box 2, 8,676 feet up, in a real 360° shot from the November 1 ground survey. Par 3, 245 ft — mando right, fence-line out of bounds right. Drag to look around the Sacramento Mountains.",
   },
   {
     id: "basket2",
     lot: "basket",
     label: "Community basket 2",
     file: "data/panos/PXL_20261101_173918101.webp",
+    lon: -105.741778,
+    lat: 32.962383,
+    course: "community",
+    note: "Basket 2 area — a real 360° shot from the November 1 ground survey. Drag to look around.",
   },
   {
     id: "tiki-aspen",
     lot: "vista",
     label: "Tiki south area — aspen grove",
     file: "data/panos/PXL_20261101_180216070.webp",
+    lon: -105.738531,
+    lat: 32.956922,
+    course: "tiki",
+    note: "Aspen grove at the Byron Ligon Tiki course — a real 360° shot from the November 1 ground survey. Drag to look around.",
   },
   {
     id: "tiki-vista",
     lot: "vista",
     label: "Tiki south area vista",
     file: "data/panos/PXL_20261101_175756282.webp",
+    lon: -105.738344,
+    lat: 32.956939,
+    course: "tiki",
+    note: "South-area vista at the Byron Ligon Tiki course — a real 360° shot from the November 1 ground survey. Drag to look around.",
   },
 ];
 export const MOUNTAINTOP_PANO: PanoView = PANOS[1];
@@ -75,4 +99,5 @@ export const DATA = {
   trails: "data/osm/trails.geojson",
   naip: "data/naip/course-area-naip.jpg",
   naipMeta: "data/naip/course-area-naip.jpg.json",
+  surveyAssets: "data/survey-assets.json",
 };

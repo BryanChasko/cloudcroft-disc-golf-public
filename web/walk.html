@@ -13,14 +13,23 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Cloudcroft Disc Golf" />
-    <meta property="og:title" content="Walk the mountain — Cloudcroft Disc Golf" />
+    <meta
+      property="og:title"
+      content="Walk the mountain — Cloudcroft Disc Golf"
+    />
     <meta
       property="og:description"
       content="3D walkthrough on 1 m terrain + real 360° panos from the November 1 ground survey. Stand on the mountaintop at Community tee box 2."
     />
-    <meta property="og:url" content="https://bryanchasko.com/disc-golf/walk.html" />
+    <meta
+      property="og:url"
+      content="https://bryanchasko.com/disc-golf/walk.html"
+    />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Walk the mountain — Cloudcroft Disc Golf" />
+    <meta
+      name="twitter:title"
+      content="Walk the mountain — Cloudcroft Disc Golf"
+    />
     <meta
       name="twitter:description"
       content="3D walkthrough on 1 m terrain + real 360° panos from the ground survey."
@@ -43,7 +52,11 @@
       </div>
     </header>
     <main>
-      <canvas id="scene" role="img" aria-label="3D walkthrough of the Cloudcroft disc golf courses">
+      <canvas
+        id="scene"
+        role="img"
+        aria-label="3D walkthrough of the Cloudcroft disc golf courses"
+      >
         <p>
           3D walkthrough needs WebGL. The course map and scorecard on the
           <a href="./">main page</a> work without it.
@@ -54,27 +67,48 @@
       <div id="pano-card" hidden>
         <strong id="pano-title">Stand on the mountaintop</strong>
         <p id="pano-text">
-          You are standing at Community tee box 2, 8,676 feet up, in a real
-          360° shot from the November 1 ground survey. Par 3, 245 ft — mando
-          right, fence-line out of bounds right. Drag to look around the
-          Sacramento Mountains.
+          You are standing at Community tee box 2, 8,676 feet up, in a real 360°
+          shot from the November 1 ground survey. Par 3, 245 ft — mando right,
+          fence-line out of bounds right. Drag to look around the Sacramento
+          Mountains.
         </p>
         <button id="pano-prev">← Prev pano</button>
         <button id="pano-next">Next pano →</button>
         <button id="pano-dismiss">Back to the walkthrough</button>
         <p id="pano-caption" class="pano-cap"></p>
       </div>
+      <div id="pin-card" hidden>
+        <strong id="pin-title">Survey point</strong>
+        <img id="pin-photo" alt="" loading="lazy" hidden />
+        <p id="pin-text"></p>
+        <p id="pin-coords" class="pin-coords"></p>
+        <button id="pin-close">Close</button>
+      </div>
+      <div id="walk-radio" data-radio-tuner></div>
       <aside id="judges-card" hidden aria-label="For the judges">
         <h2>For the judges</h2>
         <dl>
           <dt>Dataset</dt>
-          <dd>USGS 3DEP 1 m DEM + NAIP 2022 + OpenStreetMap trails + a Nov 1 ground GPS survey (21 community points, 6 tiki points, 5 panos). Every pin is an averaged fix, nothing fabricated.</dd>
+          <dd>
+            USGS 3DEP 1 m DEM + NAIP 2022 + OpenStreetMap trails + a Nov 1
+            ground GPS survey (21 community points, 6 tiki points, 5 panos).
+            Every pin is an averaged fix, nothing fabricated.
+          </dd>
           <dt>Map + services</dt>
-          <dd>Amazon Location Service tiles, Rust ARM lambdas, DynamoDB scorecard, this 1 m-terrain Babylon walkthrough.</dd>
+          <dd>
+            Amazon Location Service tiles, Rust ARM lambdas, DynamoDB scorecard,
+            this 1 m-terrain Babylon walkthrough.
+          </dd>
           <dt>Pattern to reuse</dt>
-          <dd>Walk → averaged points with remarks → GeoJSON → validator → playable card. The next survey drop lights new holes with zero code changes.</dd>
+          <dd>
+            Walk → averaged points with remarks → GeoJSON → validator → playable
+            card. The next survey drop lights new holes with zero code changes.
+          </dd>
           <dt>Try it</dt>
-          <dd>Stand on the mountaintop → tee box 2 pano → next/prev through the baskets → first person → walk the fairway.</dd>
+          <dd>
+            Stand on the mountaintop → tee box 2 pano → next/prev through the
+            baskets → first person → walk the fairway.
+          </dd>
         </dl>
         <button id="judges-close">Close</button>
       </aside>
@@ -84,7 +118,14 @@
         stand on the mountaintop for the real 360° photos from the survey
       </div>
     </main>
-    <footer><span id="walk-status" role="status" aria-live="polite">loading terrain…</span></footer>
+    <footer>
+      <span id="walk-status" role="status" aria-live="polite"
+        >loading terrain…</span
+      >
+      · <a href="/cloudcroft-disc-golf/">the story</a> ·
+      <a href="./">map + scorecard</a>
+    </footer>
+    <script src="shared/radio-tuner.js" defer></script>
     <script type="module" src="/src/walk.ts"></script>
   </body>
 </html>

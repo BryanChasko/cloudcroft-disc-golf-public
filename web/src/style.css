@@ -366,6 +366,63 @@ footer #status {
   }
 }
 
+/* survey point popups + field gallery */
+.maplibregl-popup-content {
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  border-radius: 10px;
+}
+.pop-kind {
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.pop-photo {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 8px;
+  margin: 0.3rem 0;
+  display: block;
+}
+.pop-coords {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+}
+.pop-meta {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+#coord-readout {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-left: 0.8rem;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.7rem;
+}
+.gallery-grid figure {
+  margin: 0;
+}
+.gallery-grid img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+.gallery-grid figcaption {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
