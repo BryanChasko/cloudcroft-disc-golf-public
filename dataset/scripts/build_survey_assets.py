@@ -4,7 +4,7 @@
 Reads dataset/survey/2026-11-01-community/MANIFEST.md (photo + pano
 tables carry lat/lon + human labels) and the screenshots/ directory,
 and writes dataset/survey-assets.json: one record per Pixel photo
-(15), pano (5), and SW Maps screenshot (20), each with coordinates
+(15), pano (6), and SW Maps screenshot (20), each with coordinates
 where known and the served WebP URL (web_assets.py emits the files,
 copy-data.mjs publishes them). Pano records carry pano_id joining
 them to web/src/config.ts PANOS.
@@ -32,13 +32,19 @@ PANO_IDS = {
     # it was mislabeled tee2 until the Nov 2026 mountaintop correction.
     "PXL_20261101_170324214.PANO.jpg": "tee1-area",
     "PXL_20261101_173918101.PANO.jpg": "basket2",
+    # south pair identified nov 2026 (bryan ground truth): 175756282 =
+    # Byron Ligon teebox 3, 180216070 = Byron Ligon fairway 3. pano_ids
+    # stay tiki-vista/tiki-aspen: stable join keys to web PANOS; the
+    # identified names live in MANIFEST.md labels + PANO-INDEX.md.
     "PXL_20261101_180216070.PANO.jpg": "tiki-aspen",
     "PXL_20261101_175756282.PANO.jpg": "tiki-vista",
+    "PXL_20261101_173005849.PANO.jpg": "tee2-area",
 }
 PANO_COURSE = {
     "basket1": "community",
     "tee1-area": "community",
     "basket2": "community",
+    "tee2-area": "community",
     "tiki-aspen": "tiki",
     "tiki-vista": "tiki",
 }
@@ -52,7 +58,7 @@ TRANSCRIBED = {
     "Screenshot_20261101-110039.png": {
         "lat": 32.956911667,
         "lon": -105.738341667,
-        "label": "Recording unknown-teebox-front at the south (Tiki) area",
+        "label": "Recording unknown-teebox-front (Byron Ligon teebox 3 area, identified nov 2026)",
     },
 }
 

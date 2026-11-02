@@ -34,7 +34,7 @@ def test_every_point_enriched():
 
 def test_survey_assets_index():
     data = json.loads((REPO / "dataset" / "survey-assets.json").read_text())
-    assert data["counts"] == {"photo": 15, "pano": 5, "screenshot": 20}
+    assert data["counts"] == {"photo": 15, "pano": 6, "screenshot": 20}
     for a in data["assets"]:
         assert a["web_url"].endswith(".webp")
         assert a["label"]
