@@ -580,6 +580,29 @@ async function main(): Promise<void> {
       strip.appendChild(el);
     }
     strip.hidden = shots.length === 0;
+    // One-tap 360: when the pin stands at a pano, offer the pano next to
+    // the photos instead of hiding it behind a second click.
+    const panoIdx =
+      typeof p.lat === "number" && typeof p.lon === "number"
+        ? nearestPanoIdx(p.lon, p.lat, 30)
+        : -1;
+    let panoBtn = document.getElementById(
+      "pin-pano",
+    ) as HTMLButtonElement | null;
+    if (panoIdx >= 0) {
+      if (!panoBtn) {
+        panoBtn = document.createElement("button");
+        panoBtn.id = "pin-pano";
+        panoBtn.type = "button";
+        panoBtn.textContent = "Enter 360°";
+        pinCard.insertBefore(panoBtn, pinCard.querySelector("#pin-close"));
+      }
+      panoBtn.hidden = false;
+      panoBtn.onclick = () => showPanoAt(panoIdx);
+    } else if (panoBtn) {
+      panoBtn.hidden = true;
+      panoBtn.onclick = null;
+    }
     if (img) {
       // Legacy single-photo slot kept for the first shot (deep-link
       // targets and older styles); hidden when the strip carries photos.
@@ -651,6 +674,19 @@ async function main(): Promise<void> {
       m.metadata = { survey: p };
       clickables.push(m as Mesh);
       panoOccluders.push(m as Mesh);
+      // Beacon pole: an 8 m needle in the pin's own color, visible from
+      // Sky-Cam altitude and across the fairway in First Person. Poles are
+      // clickable too — same asset as the orb.
+      const pole = MeshBuilder.CreateCylinder(
+        `${id}-pole`,
+        { diameterTop: 0.12, diameterBottom: 0.12, height: 8 },
+        scene,
+      );
+      pole.position.set(x, y + 4, z);
+      pole.material = m.material;
+      pole.metadata = { survey: p };
+      clickables.push(pole as Mesh);
+      panoOccluders.push(pole as Mesh);
       const proxy = MeshBuilder.CreateSphere(
         `${id}-hit`,
         { diameter: 6 },
@@ -962,14 +998,26 @@ async function main(): Promise<void> {
       clickables.includes(hit as Mesh) &&
       hit.metadata?.survey
     ) {
-      const props = hit.metadata.survey as HoleFeature["properties"];
-      const panoIdx =
-        typeof props.lon === "number" && typeof props.lat === "number"
-          ? nearestPanoIdx(props.lon, props.lat, 30)
-          : -1;
-      if (panoIdx >= 0) showPanoAt(panoIdx);
-      else showPinCard(props);
+      // Card first, always: photos + coordinates immediately, with a
+      // one-tap "Enter 360°" button when the pin stands at a pano.
+      showPinCard(hit.metadata.survey as HoleFeature["properties"]);
     }
+  });
+
+  // Hover affordance: pointer cursor over anything tappable, throttled so
+  // drag-look stays smooth. Skipped while dragging or when a pano covers
+  // the canvas.
+  let hoverAt = 0;
+  canvas.addEventListener("pointermove", (e) => {
+    if (dragging || panoOpen) return;
+    const now = performance.now();
+    if (now - hoverAt < 90) return;
+    hoverAt = now;
+    const rect = canvas.getBoundingClientRect();
+    const pick = scene.pick(e.clientX - rect.left, e.clientY - rect.top);
+    const hit = pick?.pickedMesh;
+    canvas.style.cursor =
+      hit && clickables.includes(hit as Mesh) ? "pointer" : "";
   });
 
   // Byron Ligon start: the hole 3 tee, opening its pano when a verified
