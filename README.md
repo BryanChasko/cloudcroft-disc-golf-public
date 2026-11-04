@@ -8,6 +8,10 @@ live at:
 - 2d map: https://bryanchasko.com/cloudcroft-disc-golf/app/
 - 3d walkthrough: https://bryanchasko.com/cloudcroft-disc-golf/app/walk.html
 
+built for the AWS Builder Center Weekend Challenge "Map it" (october 30–november 2, 2026). submission draft: [`docs/submission-draft.md`](docs/submission-draft.md).
+
+this repo is the public export of the private build repo `chasko-labs/cloudcroft-disc-golf` (see `export-public.sh`). the private repo holds the working tree, survey originals, and deploy credentials; everything here is sanitized for public use.
+
 ## what this is
 
 two public courses in a mountain village at 8,676 ft:
@@ -213,8 +217,8 @@ curl "https://<API_ID>.execute-api.us-east-1.amazonaws.com/scorecard?round_id=de
 clone the repo, install dependencies, and start the dev server:
 
 ```bash
-git clone https://github.com/chasko-labs/cloudcroft-disc-golf.git
-cd cloudcroft-disc-golf/web
+git clone https://github.com/BryanChasko/cloudcroft-disc-golf-public.git
+cd cloudcroft-disc-golf-public/web
 npm install
 npm run dev
 ```
@@ -247,6 +251,8 @@ pytest scripts/tests/
 the pipeline is idempotent — re-running after new GPS points land produces updated hole files without manual steps.
 
 ## media
+
+curated copies of the already-published images live in [`visuals/`](visuals/) with one-line provenance captions.
 
 ![Map view of Cloudcroft disc golf courses](https://bryanchasko.com/cloudcroft-disc-golf/map-hero.png)
 
